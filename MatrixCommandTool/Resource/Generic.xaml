@@ -184,21 +184,16 @@
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="5"
                                 SnapsToDevicePixels="True">
-                            <TextBox
-                                x:Name="PART_EditableTextBox"
-                                Grid.Column="1"
-                                Margin="2,0,0,0"
-                                VerticalAlignment="Center"
-                                Background="Transparent"
-                                BorderThickness="0"
-                                Focusable="True"
-                                FontSize="{TemplateBinding FontSize}"
-                                Foreground="{TemplateBinding Foreground}"
-                                IsReadOnly="{TemplateBinding IsReadOnly}"
-                                KeyboardNavigation.IsTabStop="True"
-                                Text="{TemplateBinding Text}"
-                                Visibility="Visible" />
+                            <ScrollViewer x:Name="PART_ContentHost" 
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"
+                                              Width="{TemplateBinding Width}"
+                                              Margin="10 0 0 0"
+                                              Focusable="False"
+                                              HorizontalScrollBarVisibility="Hidden" 
+                                              VerticalScrollBarVisibility="Hidden"/>
                         </Border>
+
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

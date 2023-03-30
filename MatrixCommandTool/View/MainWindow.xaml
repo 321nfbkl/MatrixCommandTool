@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MatrixCommandTool" 
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="MainWindow" Height="400" Width="400" Style="{StaticResource NoneWindowStyle_Radius}" WindowStartupLocation="CenterScreen"
+        Title="MainWindow" Height="420" Width="400" Style="{StaticResource NoneWindowStyle_Radius}" WindowStartupLocation="CenterScreen"
         DataContext="{Binding Source={StaticResource Locator}, Path=MainVM}">
     <Grid >
         <Grid.Background>
@@ -17,7 +17,8 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions> 
+        </Grid.RowDefinitions>
+
         <Rectangle Width="320"  
                    HorizontalAlignment="Left" 
                    Fill="Transparent"
@@ -33,7 +34,7 @@
 
         <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock Text="矩 阵 工 具" Foreground="#FFFFFF" FontSize="32" FontWeight="Bold" Margin="12"/>
-        </StackPanel>        
+        </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center">
             <RadioButton
                             x:Name="rbtn_Ip"
@@ -61,12 +62,12 @@
                             Style="{StaticResource RadioButtonStyle}"/>
 
         </StackPanel>
-
         <Border Grid.Row="3" Width="300" Height="200"  Margin="12" >
             <TabControl
                     Margin="2,0,0,2"
                     Background="Transparent"
-                    BorderThickness="0">
+                    BorderThickness="1"
+                BorderBrush="#ffffff">
                 <TabItem
                     Header="IPConnect"
                     IsSelected="{Binding ElementName=rbtn_Ip,Path=IsChecked}"
@@ -89,12 +90,14 @@
                            TextAlignment="Center" 
                            VerticalAlignment="Bottom"
                            HorizontalAlignment="Center"/>
-                            <TextBlock
+                        <TextBox
                                 Grid.Column="1"
                                 Width="200" Height="40" 
                                 Background="#ffffff"
                                 Foreground="Black"
                                 FontSize="16"
+                                x:Name="iptext"
+                                Style="{StaticResource TextBoxStyle}"
                                 Text="{Binding ConnIP,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"/>
@@ -113,6 +116,7 @@
                                  Background="#ffffff" 
                                  Foreground="Black" 
                                  FontSize="16"
+                                 Style="{StaticResource TextBoxStyle}"
                                  Text="{Binding ConnPort,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Center"/>
@@ -145,6 +149,7 @@
                         Height="40"
                         HorizontalAlignment="Center"
                         Text="串口号:" 
+                            Foreground="#FFFFFF"
                         Margin="0 10 0 0"
                         FontSize="14" 
                         TextAlignment="Center" />
@@ -162,18 +167,19 @@
                             <Button Content="识别串口"
                                     Margin="5"
                                     Height="40"
-                                    Width="60"
+                                    Width="80"
                                     Command="{Binding ScanSerialPortCommand}"
                                     Style="{StaticResource ButtonStyle}"/>
                         </StackPanel>
-                       
-                        
+
+
                         <TextBlock 
                             Grid.Row="1"
                         Width="60" 
                         Height="40"
                         HorizontalAlignment="Center"
                         Text="比特率:" 
+                             Foreground="#FFFFFF"
                         Margin="0 10 0 0"
                         FontSize="14" 
                         TextAlignment="Center" />
@@ -181,10 +187,11 @@
                         <TextBox 
                             Grid.Column="1"
                             Grid.Row="1"
-                            Width="200" Height="40" 
+                            Width="210" Height="40" 
                             Background="#ffffff"
                             Foreground="Black"
                             FontSize="16"
+                            Style="{StaticResource TextBoxStyle}"
                             Text="{Binding BoundRate,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
                             HorizontalAlignment="Left"
                         VerticalAlignment="Center"/>
@@ -197,8 +204,9 @@
                                 Style="{StaticResource ButtonStyle}"/>
                     </Grid>
                 </TabItem>
-          
+
             </TabControl>
         </Border>
+
     </Grid>
 </Window>

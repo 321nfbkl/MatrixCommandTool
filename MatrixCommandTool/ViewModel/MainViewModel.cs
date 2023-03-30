@@ -50,7 +50,7 @@ namespace MatrixCommandTool.ViewModel
             set => Set(ref this.mConnIP, value);
         }
 
-        private int mConnPort = 5000;
+        private int mConnPort = 50000;
         /// <summary>
         /// ¶Ë¿Ú
         /// </summary>

@@ -84,6 +84,7 @@
                              BorderBrush="#FFFFFF"
                              BorderThickness="1"
                              TextAlignment="Left"
+                             Style="{StaticResource TextBoxStyle}"
                              Text="{Binding FindInstructionsStr,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
                     <Button Width="100" Height="30" 
                             Margin="10 0 0 0"
@@ -116,7 +117,8 @@
                              Height="30"
                              BorderBrush="#FFFFFF"
                              BorderThickness="1"
-                             Text="{Binding SendIntevar}"/>
+                             Text="{Binding SendIntevar}"
+                             Style="{StaticResource TextBoxStyle}"/>
                     <TextBlock Text="ms" 
                                Foreground="#FFFFFF"
                                FontSize="16"  
@@ -265,6 +267,7 @@
                 <TextBox Width="300" 
                          BorderBrush="#FFFFFF"
                          BorderThickness="1"
+                         Style="{StaticResource TextBoxStyle}"
                                        Margin="12 "
                                    FontSize="16"
                                    TextAlignment="Left"
@@ -272,6 +275,7 @@
                 <TextBox Width="200" 
                          BorderThickness="1"
                          BorderBrush="#FFFFFF"
+                         Style="{StaticResource TextBoxStyle}"
                                        Margin="12 "
                                    FontSize="16"
                                    TextAlignment="Left"
