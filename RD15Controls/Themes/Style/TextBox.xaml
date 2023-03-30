@@ -1,0 +1,397 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:RD15Controls"
+    xmlns:cvr="clr-namespace:RD15Controls.Converters">
+    <cvr:BoolToVisible x:Key="boolToVisibilityConverter" />
+    <Style TargetType="{x:Type controls:IconAndTextTextBox}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:IconAndTextTextBox}">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        KeyboardNavigation.IsTabStop="False">
+                        <Grid KeyboardNavigation.IsTabStop="False">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="48" />
+                                <ColumnDefinition Width="3*" MaxWidth="230" />
+                                <ColumnDefinition Width="0.3*" MaxWidth="50" />
+                            </Grid.ColumnDefinitions>
+                            <Image
+                                x:Name="img"
+                                Grid.Column="0"
+                                KeyboardNavigation.IsTabStop="False"
+                                Source="{TemplateBinding TextExistIcon}"
+                                Stretch="None" />
+                            <controls:ToggleButtonEx
+                                x:Name="DeleteTextBox"
+                                Grid.Column="2"
+                                Width="20"
+                                Height="20"
+                                Margin="{TemplateBinding IconMargin}"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                BorderThickness="0"
+                                CheckIcon="{TemplateBinding DeleteIcon}"
+                                CheckOverIcon="{TemplateBinding DeleteIcon}"
+                                ClickMode="Press"
+                                Cursor="Arrow"
+                                Focusable="false"
+                                KeyboardNavigation.IsTabStop="False"
+                                ToggleButtonExType="Icon"
+                                UnCheckIcon="{TemplateBinding DeleteIcon}"
+                                UnCheckOverIcon="{TemplateBinding DeleteIcon}"
+                                Visibility="Hidden" />
+                            <TextBlock
+                                x:Name="bgText"
+                                Grid.Column="1"
+                                Margin="3,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Background="Transparent"
+                                FontSize="{TemplateBinding FontSize}"
+                                Foreground="{TemplateBinding WaterMarkColor}"
+                                KeyboardNavigation.IsTabStop="False"
+                                Text="{TemplateBinding WaterMarkText}" />
+                            <TextBox
+                                x:Name="PART_EditableTextBox"
+                                Grid.Column="1"
+                                Margin="2,0,0,0"
+                                VerticalAlignment="Center"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Focusable="True"
+                                FontSize="{TemplateBinding FontSize}"
+                                Foreground="{TemplateBinding Foreground}"
+                                IsReadOnly="{TemplateBinding IsReadOnly}"
+                                KeyboardNavigation.IsTabStop="True"
+                                Text="{TemplateBinding Text}"
+                                Visibility="Visible" />
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="{x:Type controls:WaterMarkTextBox}">
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:WaterMarkTextBox}">
+                    <Border
+                        Width="{TemplateBinding Width}"
+                        Height="{TemplateBinding Height}"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        KeyboardNavigation.IsTabStop="False">
+                        <Grid KeyboardNavigation.IsTabStop="False">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                x:Name="bgText"
+                                Grid.Column="0"
+                                Margin="4,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                Background="Transparent"
+                                FontSize="{TemplateBinding FontSize}"
+                                Foreground="{TemplateBinding WaterMarkColor}"
+                                KeyboardNavigation.IsTabStop="False"
+                                Text="{TemplateBinding WaterMarkText}"
+                                TextWrapping="{TemplateBinding TextWrapping}"
+                                Visibility="Collapsed" />
+                            <ScrollViewer
+                                x:Name="PART_ContentHost"
+                                Focusable="False"
+                                HorizontalScrollBarVisibility="Hidden"
+                                VerticalScrollBarVisibility="Hidden" />
+                            <controls:ToggleButtonEx
+                                x:Name="DeleteTextBox"
+                                Grid.Column="1"
+                                Width="{TemplateBinding IconWidth}"
+                                Height="{TemplateBinding IconHeight}"
+                                Margin="{TemplateBinding IconMargin}"
+                                BorderThickness="0"
+                                CheckIcon="{TemplateBinding DeleteIcon}"
+                                CheckOverIcon="{TemplateBinding DeleteIcon}"
+                                ClickMode="Press"
+                                Cursor="Arrow"
+                                Focusable="false"
+                                KeyboardNavigation.IsTabStop="False"
+                                ToggleButtonExType="Icon"
+                                UnCheckIcon="{TemplateBinding DeleteIcon}"
+                                UnCheckOverIcon="{TemplateBinding DeleteIcon}"
+                                Visibility="{Binding IsCanDelete, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource boolToVisibilityConverter}, ConverterParameter=False}" />
+
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Text" Value="">
+                            <Setter TargetName="bgText" Property="Visibility" Value="Visible" />
+                            <!--  使用触发器来控制水印的隐藏显示：当文本框没有字符时显示水印文字  -->
+                            <Setter TargetName="DeleteTextBox" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="False">
+                            <Setter TargetName="DeleteTextBox" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="{x:Type controls:WaterMarkTextBoxNoFocus}">
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:WaterMarkTextBoxNoFocus}">
+                    <Border
+                        Width="{TemplateBinding Width}"
+                        Height="{TemplateBinding Height}"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        KeyboardNavigation.IsTabStop="False">
+                        <Grid KeyboardNavigation.IsTabStop="False">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                x:Name="bgText"
+                                Grid.Column="0"
+                                Margin="4,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                Background="Transparent"
+                                FontSize="{TemplateBinding FontSize}"
+                                Foreground="{TemplateBinding WaterMarkColor}"
+                                KeyboardNavigation.IsTabStop="False"
+                                Text="{TemplateBinding WaterMarkText}"
+                                TextWrapping="{TemplateBinding TextWrapping}"
+                                Visibility="Collapsed" />
+                            <ScrollViewer
+                                x:Name="PART_ContentHost"
+                                Focusable="False"
+                                HorizontalScrollBarVisibility="Hidden"
+                                VerticalScrollBarVisibility="Hidden" />
+                            <controls:ToggleButtonEx
+                                x:Name="DeleteTextBox"
+                                Grid.Column="1"
+                                Width="{TemplateBinding IconWidth}"
+                                Height="{TemplateBinding IconHeight}"
+                                Margin="{TemplateBinding IconMargin}"
+                                BorderThickness="0"
+                                CheckIcon="{TemplateBinding DeleteIcon}"
+                                CheckOverIcon="{TemplateBinding DeleteIcon}"
+                                ClickMode="Press"
+                                Cursor="Arrow"
+                                Focusable="false"
+                                KeyboardNavigation.IsTabStop="False"
+                                ToggleButtonExType="Icon"
+                                UnCheckIcon="{TemplateBinding DeleteIcon}"
+                                UnCheckOverIcon="{TemplateBinding DeleteIcon}"
+                                Visibility="{Binding IsCanDelete, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource boolToVisibilityConverter}, ConverterParameter=False}" />
+
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Text" Value="">
+                            <Setter TargetName="bgText" Property="Visibility" Value="Visible" />
+                            <!--  使用触发器来控制水印的隐藏显示：当文本框没有字符时显示水印文字  -->
+                            <Setter TargetName="DeleteTextBox" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="False">
+                            <Setter TargetName="DeleteTextBox" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type controls:DescriptionTextBox}">
+        <Setter Property="Background" Value="#FFFFFF" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:DescriptionTextBox}">
+                    <Border
+                        Width="{TemplateBinding Width}"
+                        Height="{TemplateBinding Height}"
+                        Background="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        KeyboardNavigation.IsTabStop="False">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Grid.Column="0"
+                                Width="{TemplateBinding DescriptionWidth}"
+                                Margin="4,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                FontSize="{TemplateBinding DescriptionFontSize}"
+                                Foreground="{TemplateBinding DescriptionForeground}"
+                                TextAlignment="Right">
+                                <Run Foreground="Red" Text="{TemplateBinding DescriptionMark}" />
+                                <Run Text="{TemplateBinding Description}" />
+                            </TextBlock>
+                            <TextBlock
+                                x:Name="bgText"
+                                Grid.Column="1"
+                                Margin="4,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                Background="Transparent"
+                                FontSize="{TemplateBinding FontSize}"
+                                Foreground="{TemplateBinding WaterMarkColor}"
+                                KeyboardNavigation.IsTabStop="False"
+                                Text="{TemplateBinding WaterMarkText}"
+                                TextWrapping="{TemplateBinding TextWrapping}"
+                                Visibility="Collapsed" />
+                            <ScrollViewer
+                                x:Name="PART_ContentHost"
+                                Grid.Column="1"
+                                Focusable="False"
+                                HorizontalScrollBarVisibility="Hidden"
+                                VerticalScrollBarVisibility="Hidden" />
+                            <!--  默认水印文字隐藏  -->
+                            <controls:ToggleButtonEx
+                                x:Name="DeleteTextBox"
+                                Grid.Column="2"
+                                Width="{TemplateBinding IconWidth}"
+                                Height="{TemplateBinding IconHeight}"
+                                Margin="{TemplateBinding IconMargin}"
+                                BorderThickness="0"
+                                CheckIcon="{TemplateBinding DeleteIcon}"
+                                CheckOverIcon="{TemplateBinding DeleteIcon}"
+                                ClickMode="Press"
+                                Cursor="Arrow"
+                                Focusable="false"
+                                KeyboardNavigation.IsTabStop="False"
+                                ToggleButtonExType="Icon"
+                                UnCheckIcon="{TemplateBinding DeleteIcon}"
+                                UnCheckOverIcon="{TemplateBinding DeleteIcon}"
+                                Visibility="{Binding IsCanDelete, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource boolToVisibilityConverter}, ConverterParameter=False}" />
+
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Text" Value="">
+                            <Setter TargetName="bgText" Property="Visibility" Value="Visible" />
+                            <!--  使用触发器来控制水印的隐藏显示：当文本框没有字符时显示水印文字  -->
+                            <Setter TargetName="DeleteTextBox" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="False">
+                            <Setter TargetName="DeleteTextBox" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="{x:Type controls:SJTextBox}">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="Gray" />
+        <Setter Property="Cursor" Value="IBeam" />
+        <Setter Property="Padding" Value="3,0,0,0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:SJTextBox}">
+                    <Border
+                        x:Name="border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding BorderCornerRadius}"
+                        SnapsToDevicePixels="True">
+
+                        <StackPanel
+                            Width="{TemplateBinding Width}"
+                            KeyboardNavigation.IsTabStop="False"
+                            Orientation="Horizontal">
+
+                            <TextBlock
+                                Width="{TemplateBinding DescriptionWidth}"
+                                Margin="4,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                FontSize="{TemplateBinding DescriptionFontSize}"
+                                Foreground="{TemplateBinding DescriptionForeground}"
+                                Text="{TemplateBinding Description}"
+                                TextAlignment="Right" />
+                            <Grid Width="{TemplateBinding TextWidth}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="auto" />
+                                </Grid.ColumnDefinitions>
+                                <ScrollViewer
+                                    x:Name="PART_ContentHost"
+                                    Focusable="False"
+                                    HorizontalScrollBarVisibility="Hidden"
+                                    VerticalScrollBarVisibility="Hidden" />
+                                <TextBlock
+                                    x:Name="txtRemark"
+                                    Margin="{TemplateBinding Padding}"
+                                    VerticalAlignment="Center"
+                                    Foreground="Gray"
+                                    Text="{TemplateBinding WaterRemark}"
+                                    Visibility="Collapsed" />
+                                <!--  默认水印文字隐藏  -->
+                                <controls:ToggleButtonEx
+                                    x:Name="DeleteTextBox"
+                                    Grid.Column="1"
+                                    Width="{TemplateBinding IconWidth}"
+                                    Height="{TemplateBinding IconHeight}"
+                                    Margin="{TemplateBinding IconMargin}"
+                                    BorderThickness="0"
+                                    CheckIcon="{TemplateBinding DeleteIcon}"
+                                    CheckOverIcon="{TemplateBinding DeleteIcon}"
+                                    ClickMode="Press"
+                                    Cursor="Arrow"
+                                    Focusable="false"
+                                    KeyboardNavigation.IsTabStop="False"
+                                    ToggleButtonExType="Icon"
+                                    UnCheckIcon="{TemplateBinding DeleteIcon}"
+                                    UnCheckOverIcon="{TemplateBinding DeleteIcon}"
+                                    Visibility="{Binding IsCanDelete, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource boolToVisibilityConverter}, ConverterParameter=False}" />
+
+                            </Grid>
+                        </StackPanel>
+
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Text" Value="">
+                            <!--  使用触发器来控制水印的隐藏显示：当文本框没有字符时显示水印文字  -->
+                            <Setter TargetName="txtRemark" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="DeleteTextBox" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="False">
+                            <Setter TargetName="DeleteTextBox" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+</ResourceDictionary>

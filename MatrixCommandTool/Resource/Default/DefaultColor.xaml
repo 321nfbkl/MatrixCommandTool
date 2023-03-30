@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Brush x:Key="TBoxWaterMarkColor">#999999</Brush>
+    <Brush x:Key="CheckBoxCheckedForeground">#00233E</Brush>
+    <Brush x:Key="HighLightColor">#00D2F7</Brush>
+    <Brush x:Key="CheckBoxBgColor">#FFFFFF</Brush>
+    <Brush x:Key="ForeColor">#FFFFFF</Brush>
+
+
+    <SolidColorBrush x:Key="NormalBrush" Color="#009FD3" />
+    <SolidColorBrush x:Key="MouseOverBrush" Color="#16FBF8" />
+    <SolidColorBrush x:Key="PressBrush" Color="#2FEAE8" />
+</ResourceDictionary>

@@ -1,0 +1,26 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:RD15Controls">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/RD15Controls;component/Themes/Style/CardGroupBoxStyle.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/RD15Controls;component/Themes/Style/CircleProgressBarStyle.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/RD15Controls;component/Themes/Style/IPAddressTextBoxStyle.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/RD15Controls;component/Themes/Style/ITCButton.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/RD15Controls;component/Themes/Style/PasswordBoxStyle.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/RD15Controls;component/Themes/Style/ToggleButtonSwtichStyle.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/RD15Controls;component/Themes/Style/ToggleButtonExStyle.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/RD15Controls;component/Themes/Style/ComboBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/RD15Controls;component/Themes/Style/TextBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/RD15Controls;component/Themes/Style/RadioButton.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/RD15Controls;component/Themes/Style/Button.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/RD15Controls;component/Themes/Style/ImageCheckBoxStyle.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/RD15Controls;component/Themes/Style/ScrollViewStyle.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/RD15Controls;component/Themes/Style/CheckBoxStyle.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/RD15Controls;component/Themes/Style/DateControl/DateControlDictionary.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/RD15Controls;component/Themes/Style/IconTextBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/RD15Controls;component/Themes/Style/ErrorTips.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/RD15Controls;component/Themes/Style/LoadingCircleStyle.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

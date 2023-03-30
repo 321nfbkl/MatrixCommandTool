@@ -1,0 +1,591 @@
+﻿<Window x:Class="MatrixCommandTool.View.SetCommandWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MatrixCommandTool.View" 
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="SetCommandWindow" Height="1000" Width="900"  Style="{StaticResource NoneWindowStyle_Radius}" WindowStartupLocation="CenterScreen"
+        DataContext="{Binding Source={StaticResource Locator}, Path=SetCommandVM}">
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="{StaticResource icon_bg}" Stretch="Fill"/>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Rectangle Width="1000"  Grid.ColumnSpan="2" 
+                   Margin="0 0 80 0"
+                   HorizontalAlignment="Left" 
+                   Fill="Transparent"
+                   MouseMove="DragWindowMove"/>
+        <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Top" Height="40" HorizontalAlignment="Right" Margin="10">
+            <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="30" Height="30" Padding="0" Background="{x:Null}" Foreground="#FFFFFF" BorderBrush="{x:Null}" Click="WindowMin_Click">
+                <materialDesign:PackIcon Kind="Minimize"/>
+            </Button>
+            <Button x:Name="ButtonClose" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="30" Height="30" Padding="0" Foreground="#FFFFFF" Background="{x:Null}" BorderBrush="{x:Null}" Click="ButtonClose_Click">
+                <materialDesign:PackIcon Kind="Close"/>
+            </Button>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="50 0 0 0">
+            <Button Width="150" Height="40" 
+                    Margin="10 0 0 0"
+                    HorizontalAlignment="Center" 
+                    Content="扫描板卡" 
+                    Style="{StaticResource ButtonStyle}"
+                    Command="{Binding ScanBoardInstructions}"/>
+        </StackPanel>
+        <Border Margin="12" Grid.Row="2" Grid.ColumnSpan="2" BorderBrush="#FFFFFF" BorderThickness="2" Width="800" Height="150">
+            <ListBox
+                                x:Name="input"
+                                Grid.Row="1"
+                                Margin="8,0,0,0"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                ItemContainerStyle="{StaticResource NoBgListBoxItemStyle}"
+                                ItemTemplate="{StaticResource BoardItemTemplate}"
+                                ItemsSource="{Binding BoardCardList}"
+                                ScrollViewer.CanContentScroll="True"
+                                SelectedItem="{Binding SelectedBoard}">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" Margin="5 0 0 0"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
+        </Border>
+        <Border Margin="0 12 0 0" Grid.Row="3" Grid.ColumnSpan="2" BorderBrush="#FFFFFF" BorderThickness="2" Width="800" Height="300">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="250"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" Grid.ColumnSpan="3">
+                    <TextBox x:Name="search" 
+                             Width="200" 
+                             Margin="6"
+                             FontSize="16"
+                             BorderBrush="#FFFFFF"
+                             BorderThickness="1"
+                             TextAlignment="Left"
+                             Text="{Binding FindInstructionsStr,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button Width="100" Height="30" 
+                            Margin="10 0 0 0"
+                            HorizontalAlignment="Center" 
+                            Content="搜索" 
+                            Style="{StaticResource ButtonStyle}"/>
+                    <StackPanel Orientation="Horizontal" Margin="12">
+                        <CheckBox IsChecked="{Binding IsMutilCheck}"
+                                  Width="20"
+                                  Height="20"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Center"
+                                  Content="{DynamicResource l_login_rememberpwd}"
+                                  Cursor="Hand"
+                                  Foreground="#F4A932"
+                                  Style="{StaticResource CheckBoxDefaultStyle}"/>
+                        <TextBlock
+                            FontSize="16"
+                            Foreground="#FFFFFF"
+                            Text="批量发送"
+                            VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <TextBlock Text="批量发送间隔时长:" 
+                               FontSize="16"  
+                               Foreground="#FFFFFF"
+                               Margin="12" 
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+                    <TextBox Width="60"
+                             Height="30"
+                             BorderBrush="#FFFFFF"
+                             BorderThickness="1"
+                             Text="{Binding SendIntevar}"/>
+                    <TextBlock Text="ms" 
+                               Foreground="#FFFFFF"
+                               FontSize="16"  
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+                <Border Grid.Row="1" BorderBrush="#FFFFFF" BorderThickness="1">
+                    <Grid Margin="12">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="配置板卡型号:" 
+                                       FontSize="16" 
+                                       Foreground="#FFFFFF"/>
+                            <ComboBox
+                                Height="20"
+                                Width="200"
+                                Margin="5 0 0 0"
+                                VerticalAlignment="Center"
+                                DisplayMemberPath="."
+                                FontSize="14"
+                                Foreground="#000000"
+                                ItemContainerStyle="{StaticResource ComboBoxItemBaseStyle}"
+                                SelectedIndex="0"
+                                ItemsSource="{Binding CardMode}"
+                                SelectedItem="{Binding SelectedModel}"
+                                Template="{StaticResource ComboBoxTemplate}">
+                            </ComboBox>
+                        </StackPanel>
+                        <ListBox
+                            Grid.Row="1"
+                            Margin="0,4"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            ItemsSource="{Binding InstructionsList}"
+
+                            ScrollViewer.VerticalScrollBarVisibility="Disabled" SelectionMode="Multiple">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="{x:Type ListBoxItem}">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+
+                                                <StackPanel
+                                                    Orientation="Horizontal"
+                                                    x:Name="bd"
+                                                    Height="48"
+                                                    Background="Transparent"
+                                                    Cursor="Hand">
+                                                    <CheckBox   IsChecked="{Binding IsCheckInstructions}"
+                                                                x:Name="selectCommand"
+                                                                Width="40"
+                                                                Height="40"
+                                                                VerticalAlignment="Center"
+                                                                HorizontalAlignment="Center"
+                                                                Cursor="Hand"
+                                                                Foreground="#C0C4CC"
+                                                                Style="{StaticResource CheckBoxDefaultStyle}"/>
+                                                    <TextBlock
+                                                                x:Name="txt_name"
+                                                                Margin="5,0,0,0"
+                                                                HorizontalAlignment="Left"
+                                                                VerticalAlignment="Center"
+                                                                FontSize="16"
+                                                                Foreground="Black"
+                                                                Text="{Binding Instructions}" />
+                                                </StackPanel>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                        </ListBox>
+                    </Grid>
+                </Border>
+
+                <Button Grid.Column="1" Grid.Row="1"
+                        Width="80"
+                        Height="50"
+                        Content="发送"
+                        Command="{Binding SendInstructionsCommand}"
+                         Style="{StaticResource ButtonStyle}"/>
+
+                <Border Grid.Row="1" Grid.Column="2" BorderBrush="#FFFFFF" BorderThickness="1">
+                    <Grid Margin="12">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock
+                    FontSize="16"
+                    Foreground="#FFFFFF"
+                    Text="已发送命令" />
+                        <ListBox
+                            Grid.Row="1"
+                            Margin="0,4"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            ItemsSource="{Binding SendInstructionsList}"
+                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                            ScrollViewer.CanContentScroll="True">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="{x:Type ListBoxItem}">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                                <StackPanel
+                                                    Orientation="Horizontal"
+                                                    x:Name="bd"
+                                                    Height="48"
+                                                    Background="Transparent"
+                                                    Cursor="Hand">
+                                                    <TextBlock
+                                                                x:Name="txt_name"
+                                                                Margin="5,0,0,0"
+                                                                HorizontalAlignment="Left"
+                                                                VerticalAlignment="Center"
+                                                                FontSize="16"
+                                                                Foreground="Black"
+                                                                Text="{Binding Code}" />
+                                                </StackPanel>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                        </ListBox>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+        <Border Margin="0 12 0 0" Grid.Row="4" Grid.ColumnSpan="2" BorderBrush="#FFFFFF" BorderThickness="2" Width="800" Height="70">
+            <StackPanel Orientation="Horizontal">
+                <TextBox Width="300" 
+                         BorderBrush="#FFFFFF"
+                         BorderThickness="1"
+                                       Margin="12 "
+                                   FontSize="16"
+                                   TextAlignment="Left"
+                                   Text="{Binding InputInstruction}"/>
+                <TextBox Width="200" 
+                         BorderThickness="1"
+                         BorderBrush="#FFFFFF"
+                                       Margin="12 "
+                                   FontSize="16"
+                                   TextAlignment="Left"
+                                   Text="{Binding InputCode}"/>
+                <Button Width="100"
+                                Margin="12"
+                                Height="40"
+                                Content="添加命令"
+                                Command="{Binding AddInstructionsCommand}"
+                                Style="{StaticResource ButtonStyle}"/>
+                <Button Width="100"
+                                Margin="12 "
+                                Height="40"
+                                Content="发送"
+                                Command="{Binding EditInstructionsCommand}"
+                                Style="{StaticResource ButtonStyle}"/>
+            </StackPanel>
+        </Border>
+        <Border Margin="50,12,19,0" Grid.Row="5" Background="Transparent"   Height="200">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel
+                Margin="12"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Orientation="Horizontal">
+                    <TextBlock Text="锐度" 
+                               Width="60"
+                               Foreground="#FFFFFF"
+                               Height="24"
+                               FontSize="14"
+                               TextAlignment="Center"/>
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="16"
+                        Foreground="#FFFFFF"
+                        Margin="0 0 18 0"
+                        Text="{Binding ElementName=sharpnessslider_Scale, Path=Value, StringFormat={}{0}}" />
+                    <Slider
+                        x:Name="sharpnessslider_Scale"
+                        Width="250"
+                        VerticalAlignment="Center"
+                        IsMoveToPointEnabled="True"
+                        IsSnapToTickEnabled="True"
+                              Maximum="99"
+                        Foreground="#F4A932"
+                        Minimum="0"
+                        SmallChange="1"  
+                        Value="{Binding CurrentSharpness}"
+                        PreviewMouseLeftButtonUp="sharpnessslider_PreviewMouseDown"
+                        Thumb.DragDelta="sharpnessslider_DragDelta"/>
+                </StackPanel>
+
+                <StackPanel
+                    Grid.Row="1"
+                    Margin="12"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Orientation="Horizontal">
+                    <TextBlock Text="对比度" 
+                               Width="60"
+                               Height="24"
+                               FontSize="14"
+                               Foreground="#FFFFFF"
+                               TextAlignment="Center"/>
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="16"
+                        Foreground="#FFFFFF"
+                        Margin="0 0 18 0"
+                        Text="{Binding ElementName=slider_ScaleContrast, Path=Value, StringFormat={}{0}}" />
+
+                    <Slider
+                         Width="250"
+                        x:Name="slider_ScaleContrast"
+                        VerticalAlignment="Center"
+                        IsMoveToPointEnabled="True"
+                        IsSnapToTickEnabled="True"
+                             Maximum="99"
+                        Minimum="0"
+                        Foreground="#F4A932"
+                        SmallChange="1" 
+                        Value="{Binding CurrentContrast}"
+                        PreviewMouseLeftButtonUp="sliderContrast_PreviewMouseDown"
+                        Thumb.DragDelta="slider_DragDeltaContrast"/>
+                </StackPanel>
+
+                <StackPanel
+                    Grid.Row="2"
+                    Margin="12"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Orientation="Horizontal">
+                    <TextBlock Text="饱和度" 
+                               Width="60"
+                               Foreground="#FFFFFF"
+                               Height="24"
+                               FontSize="14"
+                               TextAlignment="Center"/>
+                    <TextBlock
+                         HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="16"
+                        Foreground="#FFFFFF"
+                        Margin="0 0 18 0"
+                        Text="{Binding ElementName=saturationslider_Scale, Path=Value, StringFormat={}{0}}" />
+
+                    <Slider
+                         Width="250"
+                        x:Name="saturationslider_Scale"
+                        VerticalAlignment="Center"
+                        IsMoveToPointEnabled="True"
+                        IsSnapToTickEnabled="True"
+                             Maximum="99"
+                        Foreground="#F4A932"
+                        Minimum="0"
+                        SmallChange="1" 
+                        Value="{Binding CurrentSaturation}"
+                        PreviewMouseLeftButtonUp="saturationslider_PreviewMouseDown"
+                        Thumb.DragDelta="saturationslider_DragDelta"/>
+
+                </StackPanel>
+                <StackPanel
+                    Grid.Row="3"
+                    Margin="12"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Orientation="Horizontal">
+                    <TextBlock Text="音量调节" 
+                               Foreground="#FFFFFF"
+                               Width="60"
+                               Height="24"
+                               FontSize="14"
+                               TextAlignment="Center"/>
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="16"
+                        Foreground="#FFFFFF"
+                        Margin="0 0 18 0"
+                        Text="{Binding ElementName=volumeslider_Scale, Path=Value, StringFormat={}{0}}" />
+
+                    <Slider
+                        x:Name="volumeslider_Scale"
+                         Width="250"
+                        VerticalAlignment="Center"
+                        IsMoveToPointEnabled="True"
+                        IsSnapToTickEnabled="True"
+                        Maximum="99"
+                        Minimum="0"
+                        Foreground="#F4A932"
+                        SmallChange="1" 
+                        Value="{Binding CurrentVolume}"
+                        PreviewMouseLeftButtonUp="volumeslider_PreviewMouseDown"
+                        Thumb.DragDelta="volumeslider_DragDelta"/>
+                </StackPanel>
+            </Grid>
+
+        </Border>
+
+        <Border  Grid.Row="5" Margin="0 12 0 0" Grid.Column="1"   Height="200">
+            <Grid Margin="0,0,30,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel
+                Margin="12"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Orientation="Horizontal">
+                    <TextBlock Text="亮度" 
+                               Width="60"
+                               Foreground="#FFFFFF"
+                               Height="24"
+                               FontSize="14"
+                               TextAlignment="Center"/>
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="16"
+                        Foreground="#FFFFFF"
+                        Margin="0 0 18 0"
+                        Text="{Binding ElementName=brightnessslider_Scale, Path=Value, StringFormat={}{0}}" />
+
+                    <Slider
+                        x:Name="brightnessslider_Scale"
+                         Width="250"
+                        VerticalAlignment="Center"
+                        IsMoveToPointEnabled="True"
+                        IsSnapToTickEnabled="True"
+                        Maximum="99"
+                        Foreground="#F4A932"
+                        Minimum="0"
+                        SmallChange="1" 
+                        Value="{Binding CurrentBrightness}"
+                        PreviewMouseLeftButtonUp="brightnessslider_PreviewMouseDown"
+                        Thumb.DragDelta="brightnessslider_DragDelta"/>
+                </StackPanel>
+
+                <StackPanel
+                    Grid.Row="1"
+                    Margin="12"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Orientation="Horizontal">
+                    <TextBlock Text="红色调" 
+                               Foreground="#FFFFFF"
+                               Width="60"
+                               Height="24"
+                               FontSize="14"
+                               TextAlignment="Center"/>
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="16"
+                        Foreground="#FFFFFF"
+                        Margin="0 0 18 0"
+                        Text="{Binding ElementName=redslider_Scale, Path=Value, StringFormat={}{0}}" />
+                    <Slider
+                        x:Name="redslider_Scale"
+                         Width="250"
+                        VerticalAlignment="Center"
+                        IsMoveToPointEnabled="True"
+                        IsSnapToTickEnabled="True"
+                              Maximum="99"
+                        Foreground="#F4A932"
+                        Minimum="0"
+                        SmallChange="1" 
+                        Value="{Binding CurrentRedTone}"
+                        PreviewMouseLeftButtonUp="redslider_PreviewMouseDown"
+                        Thumb.DragDelta="redslider_DragDelta"/>
+                </StackPanel>
+
+                <StackPanel
+                    Grid.Row="2"
+                    Margin="12"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Orientation="Horizontal">
+                    <TextBlock Text="绿色调" 
+                               Foreground="#FFFFFF"
+                               Width="60"
+                               Height="24"
+                               FontSize="14"
+                               TextAlignment="Center"/>
+                    <TextBlock
+                         HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="16"
+                        Foreground="#FFFFFF"
+                        Margin="0 0 18 0"
+                        Text="{Binding ElementName=greenslider_Scale, Path=Value, StringFormat={}{0}}" />
+
+                    <Slider
+                        x:Name="greenslider_Scale"
+                         Width="250"
+                        VerticalAlignment="Center"
+                        IsMoveToPointEnabled="True"
+                        IsSnapToTickEnabled="True"
+                        Maximum="99"
+                        Minimum="0"
+                        SmallChange="1" 
+                        Foreground="#F4A932"
+                        Value="{Binding CurrentGreenTone}"
+                        PreviewMouseLeftButtonUp="greenslider_PreviewMouseDown"
+                        Thumb.DragDelta="greenslider_DragDelta"/>
+                </StackPanel>
+
+                <StackPanel
+                    Grid.Row="3"
+                    Margin="12"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Orientation="Horizontal">
+                    <TextBlock Text="蓝色调" 
+                               Foreground="#FFFFFF"
+                               Width="60"
+                               Height="24"
+                               FontSize="14"
+                               TextAlignment="Center"/>
+                    <TextBlock
+                         HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="16"
+                        Foreground="#FFFFFF"
+                        Margin="0 0 18 0"
+                        Text="{Binding ElementName=blueslider_Scale, Path=Value, StringFormat={}{0}}" />
+
+                    <Slider
+                        x:Name="blueslider_Scale"
+                         Width="250"
+                        VerticalAlignment="Center"
+                        IsMoveToPointEnabled="True"
+                        IsSnapToTickEnabled="True"
+                        Maximum="99"
+                        Foreground="#F4A932"
+                        Minimum="0"
+                        SmallChange="1" 
+                        Value="{Binding CurrentBlueTone}"
+                        PreviewMouseLeftButtonUp="blueslider_PreviewMouseDown"
+                        Thumb.DragDelta="blueslider_DragDelta"/>
+                </StackPanel>
+            </Grid>
+
+        </Border>
+    </Grid>
+</Window>
