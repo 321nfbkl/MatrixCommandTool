@@ -140,5 +140,6 @@ namespace MatrixCommandTool.View
         {
             this.WindowState = WindowState.Minimized;
         }
+
     }
 }

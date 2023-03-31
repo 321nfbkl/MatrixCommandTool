@@ -8,10 +8,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="420" Width="400" Style="{StaticResource NoneWindowStyle_Radius}" WindowStartupLocation="CenterScreen"
         DataContext="{Binding Source={StaticResource Locator}, Path=MainVM}">
-    <Grid >
-        <Grid.Background>
-            <ImageBrush ImageSource="{StaticResource icon_bg}" Stretch="Fill"/>
-        </Grid.Background>
+    <Grid Background="{DynamicResource BgDefaultColor}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -24,6 +21,15 @@
                    Fill="Transparent"
                    MouseMove="DragWindowMove"/>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Height="40" HorizontalAlignment="Right" Margin="10">
+            <Button x:Name="changeskin" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="30" Height="30" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFFFFF" Click="changeskin_Click">
+                <Button.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem x:Name="menuBlue"  Header="夏日初恋" Click="menuAero_Click"/>
+                        <MenuItem x:Name="menuRoyale" Header="梦醒时分" Click="menuRoyale_Click"/>
+                    </ContextMenu>
+                </Button.ContextMenu>
+                <materialDesign:PackIcon Kind="Color" ToolTip="主题"/>
+            </Button>
             <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="30" Height="30" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFFFFF" Click="WinMin_Click">
                 <materialDesign:PackIcon Kind="Minimize"/>
             </Button>
@@ -45,7 +51,7 @@
                             IsChecked="{Binding IsCheckIp}"
                             Width="150"
                             Content="网络连接"
-                            Style="{StaticResource RadioButtonStyle}"/>
+                            Style="{DynamicResource RadioButtonStyle}"/>
 
 
             <RadioButton
@@ -59,7 +65,7 @@
                             Height="40"
                             Content="串口连接"
                             IsChecked="{Binding IsCheckSerialPort}"
-                            Style="{StaticResource RadioButtonStyle}"/>
+                            Style="{DynamicResource RadioButtonStyle}"/>
 
         </StackPanel>
         <Border Grid.Row="3" Width="300" Height="200"  Margin="12" >
@@ -126,7 +132,7 @@
                                 HorizontalAlignment="Center" 
                                 Content="连接" 
                                 Command="{Binding LoginByNetCommand}"
-                                Style="{StaticResource ButtonStyle}"/>
+                                Style="{DynamicResource ButtonStyle}"/>
                     </Grid>
                 </TabItem>
 
@@ -169,7 +175,7 @@
                                     Height="40"
                                     Width="80"
                                     Command="{Binding ScanSerialPortCommand}"
-                                    Style="{StaticResource ButtonStyle}"/>
+                                    Style="{DynamicResource ButtonStyle}"/>
                         </StackPanel>
 
 
@@ -201,7 +207,8 @@
                                 HorizontalAlignment="Center" 
                                 Content="打开串口" 
                                 Command="{Binding OpenSerialPortCommand}"
-                                Style="{StaticResource ButtonStyle}"/>
+                                Style="{DynamicResource ButtonStyle}"/>
+                
                     </Grid>
                 </TabItem>
 

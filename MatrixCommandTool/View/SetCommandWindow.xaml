@@ -31,6 +31,7 @@
                    Fill="Transparent"
                    MouseMove="DragWindowMove"/>
         <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Top" Height="40" HorizontalAlignment="Right" Margin="10">
+       
             <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="30" Height="30" Padding="0" Background="{x:Null}" Foreground="#FFFFFF" BorderBrush="{x:Null}" Click="WindowMin_Click">
                 <materialDesign:PackIcon Kind="Minimize"/>
             </Button>
@@ -43,7 +44,7 @@
                     Margin="10 0 0 0"
                     HorizontalAlignment="Center" 
                     Content="扫描板卡" 
-                    Style="{StaticResource ButtonStyle}"
+                    Style="{DynamicResource ButtonStyle}"
                     Command="{Binding ScanBoardInstructions}"/>
         </StackPanel>
         <Border Margin="12" Grid.Row="2" Grid.ColumnSpan="2" BorderBrush="#FFFFFF" BorderThickness="2" Width="800" Height="150">
@@ -90,7 +91,7 @@
                             Margin="10 0 0 0"
                             HorizontalAlignment="Center" 
                             Content="搜索" 
-                            Style="{StaticResource ButtonStyle}"/>
+                            Style="{DynamicResource ButtonStyle}"/>
                     <StackPanel Orientation="Horizontal" Margin="12">
                         <CheckBox IsChecked="{Binding IsMutilCheck}"
                                   Width="20"
@@ -207,7 +208,7 @@
                         Height="50"
                         Content="发送"
                         Command="{Binding SendInstructionsCommand}"
-                         Style="{StaticResource ButtonStyle}"/>
+                         Style="{DynamicResource ButtonStyle}"/>
 
                 <Border Grid.Row="1" Grid.Column="2" BorderBrush="#FFFFFF" BorderThickness="1">
                     <Grid Margin="12">
@@ -285,13 +286,13 @@
                                 Height="40"
                                 Content="添加命令"
                                 Command="{Binding AddInstructionsCommand}"
-                                Style="{StaticResource ButtonStyle}"/>
+                                Style="{DynamicResource ButtonStyle}"/>
                 <Button Width="100"
                                 Margin="12 "
                                 Height="40"
                                 Content="发送"
                                 Command="{Binding EditInstructionsCommand}"
-                                Style="{StaticResource ButtonStyle}"/>
+                                Style="{DynamicResource ButtonStyle}"/>
             </StackPanel>
         </Border>
         <Border Margin="50,12,19,0" Grid.Row="5" Background="Transparent"   Height="200">
@@ -326,7 +327,7 @@
                         VerticalAlignment="Center"
                         IsMoveToPointEnabled="True"
                         IsSnapToTickEnabled="True"
-                              Maximum="99"
+                        Maximum="99"
                         Foreground="#F4A932"
                         Minimum="0"
                         SmallChange="1"  
@@ -433,7 +434,7 @@
                         IsSnapToTickEnabled="True"
                         Maximum="99"
                         Minimum="0"
-                        Foreground="#F4A932"
+                        Foreground="{DynamicResource SliderDefaultColor}"
                         SmallChange="1" 
                         Value="{Binding CurrentVolume}"
                         PreviewMouseLeftButtonUp="volumeslider_PreviewMouseDown"

@@ -1,4 +1,5 @@
-﻿using MatrixCommandTool.View;
+﻿using MaterialDesignThemes.Wpf;
+using MatrixCommandTool.View;
 using System;
 using System.Collections.Generic;
 using System.IO.Ports;
@@ -29,7 +30,7 @@ namespace MatrixCommandTool
         {
             InitializeComponent();
             App.MainWindow = this;
-            
+
             GalaSoft.MvvmLight.Messaging.Messenger.Default.Register<object>(this, "ShowSetCommandView", o =>
             {
                 App.RunInUIThread(() =>
@@ -69,5 +70,37 @@ namespace MatrixCommandTool
             this.WindowState = WindowState.Minimized;
         }
 
+        /// <summary>
+        /// 夏日初恋
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void menuAero_Click(object sender, RoutedEventArgs e)
+        {
+            ResourceDictionary resource = (ResourceDictionary)Application.LoadComponent(new Uri("/Resource/Generic.xaml", UriKind.Relative));
+            Application.Current.Resources.MergedDictionaries[0] = resource;
+        }
+
+        /// <summary>
+        /// 梦醒时分
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void menuRoyale_Click(object sender, RoutedEventArgs e)
+        {
+            ResourceDictionary resource = (ResourceDictionary)Application.LoadComponent(new Uri("/Resource/Default/RedSkin.xaml", UriKind.Relative));
+            Application.Current.Resources.MergedDictionaries[0] = resource;
+        }
+
+        /// <summary>
+        /// 换肤
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void changeskin_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)e.OriginalSource;
+            button.ContextMenu.IsOpen = true;
+        }
     }
 }

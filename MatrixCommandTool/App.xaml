@@ -3,13 +3,14 @@
     <ResourceDictionary>
       <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:MatrixCommandTool.ViewModel" />
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MatrixCommandTool;component/Resource/Generic.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MatrixCommandTool;component/Resource/Default/DefaultColor.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MatrixCommandTool;component/Resource/Generic.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MatrixCommandTool;component/Resource/ImageSource.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MatrixCommandTool;component/Resource/DataTemplates.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MatrixCommandTool;component/Resource/ControlStyle/ResourceDictionarys.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MatrixCommandTool;component/Resource/Default/DefaultColor.xaml"/>
+                <!--<ResourceDictionary Source="pack://application:,,,/MatrixCommandTool;component/Resource/Default/RedSkin.xaml"/>-->
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
   </Application.Resources>

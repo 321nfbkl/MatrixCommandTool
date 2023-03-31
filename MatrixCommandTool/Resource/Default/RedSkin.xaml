@@ -1,9 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <SolidColorBrush x:Key="SliderDefaultColor" Color="#F4A932"/>
-    <SolidColorBrush x:Key="BgDefaultColor" Color="#307E6D"/>
-    
+    <SolidColorBrush x:Key="SliderDefaultColor" Color="#F23B00"/>
+    <SolidColorBrush x:Key="BgDefaultColor" Color="#204593"/>
+
     <!--  默认无选中样式的ListBoxItem  -->
     <Style x:Key="NoBgListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
         <Setter Property="UIElement.SnapsToDevicePixels" Value="True" />
@@ -88,7 +88,7 @@
     </Style>
 
     <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
-        <Setter Property="Background" Value="#F4A932" />
+        <Setter Property="Background" Value="#F23B00" />
         <Setter Property="Foreground" Value="White" />
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Template">
@@ -114,12 +114,12 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="#FBCD64" />
+                            <Setter TargetName="border" Property="Background" Value="#E73F32" />
                             <Setter TargetName="txt" Property="Foreground" Value="#FFFFFF" />
-                            <Setter TargetName="border" Property="BorderBrush" Value="#FBCD64" />
+                            <Setter TargetName="border" Property="BorderBrush" Value="#E73F32" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="#FBCD64" />
+                            <Setter TargetName="border" Property="Background" Value="#E73F32" />
                             <Setter TargetName="txt" Property="Foreground" Value="#FFFFFF" />
 
                         </Trigger>
@@ -130,7 +130,7 @@
     </Style>
 
     <Style x:Key="RadioButtonStyle" TargetType="{x:Type RadioButton}">
-        <Setter Property="Background" Value="#F4A932" />
+        <Setter Property="Background" Value="#F23B00" />
         <Setter Property="Foreground" Value="White" />
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Template">
@@ -156,12 +156,12 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="#FBCD64" />
+                            <Setter TargetName="border" Property="Background" Value="#E73F32" />
                             <Setter TargetName="txt" Property="Foreground" Value="#FFFFFF" />
-                            <Setter TargetName="border" Property="BorderBrush" Value="#FBCD64" />
+                            <Setter TargetName="border" Property="BorderBrush" Value="#E73F32" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="#FBCD64" />
+                            <Setter TargetName="border" Property="Background" Value="#E73F32" />
                             <Setter TargetName="txt" Property="Foreground" Value="#FFFFFF" />
 
                         </Trigger>
@@ -170,39 +170,4 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-    <Style x:Key="TextBoxStyle" TargetType="{x:Type TextBox}">
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Foreground" Value="Black" />
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type TextBox}">
-                    <Grid x:Name="btn">
-                        <Border
-                            x:Name="border"
-                            Width="{TemplateBinding Width}"
-                                Height="{TemplateBinding Height}"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="5"
-                                SnapsToDevicePixels="True">
-                            <ScrollViewer x:Name="PART_ContentHost" 
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Center"
-                                              Width="{TemplateBinding Width}"
-                                              Margin="10 0 0 0"
-                                              Focusable="False"
-                                              HorizontalScrollBarVisibility="Hidden" 
-                                              VerticalScrollBarVisibility="Hidden"/>
-                        </Border>
-
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-
 </ResourceDictionary>
