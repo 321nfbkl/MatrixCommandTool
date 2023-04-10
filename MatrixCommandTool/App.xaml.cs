@@ -72,7 +72,7 @@ namespace MatrixCommandTool
         {
             services.AddSingleton<ViewModel.MainViewModel>();
             services.AddSingleton<ViewModel.SetCommandViewModel>();
-
+            services.AddSingleton<NineOneMartixSettingViewModel>();
         }
 
 

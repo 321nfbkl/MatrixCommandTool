@@ -90,7 +90,16 @@ namespace MatrixCommandTool.ViewModel
             set => Set(ref this.mSelectedSerialPortName, value);
         }
 
+        private string mSelectedMartixType;
+        public  string SelectedMartixType
+        {
+            get => this.mSelectedMartixType;    
+            set=>Set(ref this.mSelectedMartixType, value);  
+        }
+
         public IList<string> SerialPortList { get; set; } = new ObservableCollection<string>();
+
+        public IList<string> MartixTypeList { get; set; }=new ObservableCollection<string>();   
         #endregion
 
         #region Command
@@ -108,6 +117,10 @@ namespace MatrixCommandTool.ViewModel
             this.LoginByNetCommand = new RelayCommand(LoginByNet);
             this.ScanSerialPortCommand = new RelayCommand(ScanSerialPort);
             this.OpenSerialPortCommand=new RelayCommand(OpenSerialPort);
+            this.MartixTypeList.Add("91系列");
+            this.MartixTypeList.Add("94系列");
+            if (this.SelectedMartixType == null)
+                this.SelectedMartixType = this.MartixTypeList.FirstOrDefault();
         }
 
 
@@ -117,16 +130,17 @@ namespace MatrixCommandTool.ViewModel
             {
                 try
                 {
+                    if(this.SelectedSerialPortName==null)
+                    {
+                        MessageBox.Show("请选择串口", "错误提示");
+                        return;
+                    }
                     Serial.PortName=this.SelectedSerialPortName.ToString();
                     Serial.BaudRate = this.BoundRate;
                     Serial.Open();
                     IsOpen = true;
                     if (IsOpen)
                         GalaSoft.MvvmLight.Messaging.Messenger.Default.Send<object>(null, "ShowSetCommandView");
-                    //this.Serial.DataReceived += (s, e) =>
-                    //{
-                    //    Console.WriteLine("接收到数据！");
-                    //};
                 }
                 catch (Exception)
                 {
@@ -158,30 +172,6 @@ namespace MatrixCommandTool.ViewModel
                 this.SerialPortList.Add(s);
                 last_name = s;//保存最新的一个
             }
-        
-
-
-            //bool IsComExit = false;
-            //this.SerialPortList.Clear();
-            //for(int i = 0; i < 10; i++)
-            //{
-            //    try
-            //    {
-            //        SerialPort port = new SerialPort("Com" + (i + 1).ToString());
-            //        port.Open();
-            //        port.Close();
-            //        this.SerialPortList.Add("Com" + (i + 1).ToString());
-            //        IsComExit = true;
-            //    }
-            //    catch (Exception)
-            //    {
-            //        continue;
-            //    }
-            //}
-            //if (IsComExit==false)
-            //{
-            //    MessageBox.Show("没有找到可用的串口", "错误提示");
-            //}
         }
 
         /// <summary>
@@ -193,7 +183,10 @@ namespace MatrixCommandTool.ViewModel
         {
             if (notify.Status == true)
             {
-                GalaSoft.MvvmLight.Messaging.Messenger.Default.Send<object>(null, "ShowSetCommandView");
+                if (this.SelectedMartixType == "94系列")
+                    GalaSoft.MvvmLight.Messaging.Messenger.Default.Send<object>(null, "ShowSetCommandView");
+                else if (this.SelectedMartixType == "91系列")
+                    GalaSoft.MvvmLight.Messaging.Messenger.Default.Send<object>(null, "ShowNine0neMartixSettingWindow");
                 this._socket.NotifyFactory.ConnectionChangedEvent -= NotifyFactory_ConnectionChangedEvent;
             }
             else
@@ -205,6 +198,11 @@ namespace MatrixCommandTool.ViewModel
         /// </summary>
         private void LoginByNet()
         {
+            if (this.ConnIP == null)
+            {
+                MessageBox.Show("请输入正确的IP或端口", "错误提示");
+                return;
+            }
             this._socket.Connection(ConnIP, ConnPort);
         }
     }

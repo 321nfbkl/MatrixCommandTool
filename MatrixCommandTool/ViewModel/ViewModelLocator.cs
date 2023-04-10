@@ -42,6 +42,17 @@ namespace MatrixCommandTool.ViewModel
             }
         }
 
+        public NineOneMartixSettingViewModel NineOneMartixSettingVM
+        {
+            get
+            {
+                using (var scop = this.mProvider.CreateScope())
+                {
+                    return scop.ServiceProvider.GetRequiredService<NineOneMartixSettingViewModel>();
+                }
+            }
+        }
+
         public static void Cleanup()
         {
             // TODO Clear the ViewModels

@@ -23,6 +23,19 @@
                    HorizontalAlignment="Left" 
                    Fill="Transparent"
                    MouseMove="DragWindowMove"/>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <ComboBox 
+                    Width="130" Height="40" 
+                    Background="#ffffff"
+                    Foreground="Black"
+                    FontSize="16"
+                    Margin="10"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    SelectedIndex="0"                                
+                    ItemsSource="{Binding MartixTypeList}"
+                    SelectedItem="{Binding SelectedMartixType}"/>
+        </StackPanel>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Height="40" HorizontalAlignment="Right" Margin="10">
             <Button x:Name="changeskin" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="30" Height="30" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFFFFF" Click="changeskin_Click">
                 <Button.ContextMenu>

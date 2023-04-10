@@ -40,6 +40,16 @@ namespace MatrixCommandTool
                     this.Close();
                 });
             });
+
+            GalaSoft.MvvmLight.Messaging.Messenger.Default.Register<object>(this, "ShowNine0neMartixSettingWindow", o =>
+            {
+                App.RunInUIThread(() =>
+                {
+                    Nine0neMartixSettingWindow nineone = new Nine0neMartixSettingWindow();
+                    nineone.Show();
+                    this.Close();
+                });
+            });
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
