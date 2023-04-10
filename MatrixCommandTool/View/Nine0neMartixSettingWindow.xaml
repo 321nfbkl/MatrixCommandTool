@@ -154,6 +154,7 @@
                             Margin="10 0 0 0"
                             HorizontalAlignment="Center" 
                             Content="搜索" 
+                                        Command="{Binding FindInstructionListCommand}"
                             Style="{DynamicResource ButtonStyle}"/>
                                 <StackPanel Orientation="Horizontal" Margin="12">
                                     <CheckBox IsChecked="{Binding IsMutilCheck}"
@@ -554,7 +555,7 @@
                         Width="200"
                         Height="50"
                         Content="发送"
-                        Command="{Binding SendColorAdjInstructionsCommand}"
+                        Command="{Binding SendEdidInstructionsCommand}"
                          Style="{DynamicResource ButtonStyle}"/>
 
                             </Grid>
@@ -570,7 +571,7 @@
                         Width="140"
                         Height="50"
                         Content="查询所有EDID预案"
-                        Command="{Binding SendColorAdjInstructionsCommand}"
+                        Command="{Binding ScanAllEdidPlanCommand}"
                          Style="{DynamicResource ButtonStyle}"/>
                                     <ListBox
                             Grid.Row="1"
@@ -638,7 +639,7 @@
                         Width="140"
                         Height="50"
                         Content="查询所有预案"
-                        Command="{Binding SendColorAdjInstructionsCommand}"
+                        Command="{Binding AllPresetScanCommand}"
                          Style="{DynamicResource ButtonStyle}"/>
                                     <ListBox
                                 x:Name="input"
@@ -1067,7 +1068,7 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Button Width="120" Grid.Row="0" Height="40" Content="获取网口信息" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding SendColorAdjInstructionsCommand}" Style="{DynamicResource ButtonStyle}"/>
+                                <Button Width="120" Grid.Row="0" Height="40" Content="获取网口信息" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding QueryNetSetCommand}" Style="{DynamicResource ButtonStyle}"/>
                                 <Button Width="120" Grid.Row="1" Height="40" Content="复位网口设置" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding SendColorAdjInstructionsCommand}" Style="{DynamicResource ButtonStyle}"/>
                                 <Button Width="120" Grid.Row="2" Height="40" Content="设置IP" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding SendColorAdjInstructionsCommand}" Style="{DynamicResource ButtonStyle}"/>
                                 <Button Width="120" Grid.Row="3" Height="40" Content="设置端口号" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding SendColorAdjInstructionsCommand}" Style="{DynamicResource ButtonStyle}"/>

@@ -308,6 +308,8 @@ namespace MatrixCommandTool.ViewModel
         public ICommand EditInstructionsCommand { get; set; }
 
         public ICommand AddInstructionsCommand { get; set; }
+
+        public ICommand FindInstructionListCommand { get; set; }
         #endregion
 
         public SetCommandViewModel(ScanBoardListRequest scanBoardListRequest, ClientSocket clientSocket)

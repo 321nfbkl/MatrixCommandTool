@@ -91,6 +91,7 @@
                             Margin="10 0 0 0"
                             HorizontalAlignment="Center" 
                             Content="搜索" 
+                            Command="{Binding FindInstructionListCommand}"
                             Style="{DynamicResource ButtonStyle}"/>
                     <StackPanel Orientation="Horizontal" Margin="12">
                         <CheckBox IsChecked="{Binding IsMutilCheck}"
