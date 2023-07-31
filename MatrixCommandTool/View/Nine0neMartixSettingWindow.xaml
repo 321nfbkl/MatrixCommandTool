@@ -5,17 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MatrixCommandTool.View"
          xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:controls="clr-namespace:MatrixCommandTool.Controls"
         mc:Ignorable="d"
-        Title="SetCommandWindow" Height="700" Width="1200"  Style="{StaticResource NoneWindowStyle_Radius}" WindowStartupLocation="CenterScreen"
+        Title="SetCommandWindow" Height="800" Width="1400"  Style="{StaticResource NoneWindowStyle_Radius}" WindowStartupLocation="CenterScreen"
         DataContext="{Binding Source={StaticResource Locator}, Path=NineOneMartixSettingVM}">
-    <Grid x:Name="nineonegrid">
-        <Grid.Background>
-            <ImageBrush ImageSource="{StaticResource icon_bg}" Stretch="Fill"/>
-        </Grid.Background>
+    <Grid x:Name="nineonegrid" Background="#224038">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -28,11 +27,24 @@
                    Grid.ColumnSpan="2"
                    MouseMove="DragWindowMove"/>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Height="40" HorizontalAlignment="Right" Margin="10" Grid.Column="1">
+            <controls:TitleSwitchButtonControl
+                x:Name="switch"
+                Width="50"
+                Margin="0,0,16,0"
+                VerticalAlignment="Center"
+                Background="{DynamicResource SliderDefaultColor}"
+                CheckedText="蜂鸣器开"
+                DockPanel.Dock="Right"
+                Foreground="#FFFFFF"
+                Style="{StaticResource VerticalTitleSwitchButtonStyle}"
+                UnCheckedText="蜂鸣器关" 
+                IsChecked="{Binding IsOpenBuzzer}"
+                Command="{Binding SwitchBuzzerCommand}" Cursor="Hand"/>
+
             <Button x:Name="changeskin" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="30" Height="30" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFFFFF" Click="changeskin_Click">
                 <Button.ContextMenu>
                     <ContextMenu>
                         <MenuItem x:Name="menuBlue"  Header="夏日初恋" Click="menuAero_Click"/>
-                        <MenuItem x:Name="menuRoyale" Header="梦醒时分" Click="menuRoyale_Click"/>
                     </ContextMenu>
                 </Button.ContextMenu>
                 <materialDesign:PackIcon Kind="Color" ToolTip="主题"/>
@@ -60,7 +72,7 @@
                             Checked="rbtn_color_Checked"
                             GroupName="Tb"
                             IsChecked="{Binding IsCheckedColor}"
-                            Content="色调调整"
+                            Content="色调及分辨率调整"
                             Height="50"
                             Style="{DynamicResource RadioButtonStyle}"/>
             <RadioButton
@@ -191,32 +203,37 @@
                                VerticalAlignment="Center"/>
                             </StackPanel>
                             <Border Grid.Row="1" BorderBrush="#FFFFFF" BorderThickness="1">
-                                <Grid Margin="12">
-                                    <ListBox
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid  Margin="12" Grid.Column="0">
+                                        <ListBox
                             Margin="0,4"
                             Background="Transparent"
                             BorderThickness="0"
-                            ItemsSource="{Binding NineOneColorAdj}"
+                            ItemsSource="{Binding OutPutChannels}"
 
                             ScrollViewer.VerticalScrollBarVisibility="Disabled" SelectionMode="Multiple">
-                                        <ListBox.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <StackPanel />
-                                            </ItemsPanelTemplate>
-                                        </ListBox.ItemsPanel>
-                                        <ListBox.ItemContainerStyle>
-                                            <Style TargetType="{x:Type ListBoxItem}">
-                                                <Setter Property="Template">
-                                                    <Setter.Value>
-                                                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                            <ListBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel />
+                                                </ItemsPanelTemplate>
+                                            </ListBox.ItemsPanel>
+                                            <ListBox.ItemContainerStyle>
+                                                <Style TargetType="{x:Type ListBoxItem}">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
 
-                                                            <StackPanel
+                                                                <StackPanel
                                                     Orientation="Horizontal"
                                                     x:Name="bd"
                                                     Height="48"
                                                     Background="Transparent"
                                                     Cursor="Hand">
-                                                                <CheckBox   IsChecked="{Binding IsCheckInstructions}"
+                                                                    <CheckBox   IsChecked="{Binding IsCheckChannel}"
                                                                 x:Name="selectCommand"
                                                                 Width="40"
                                                                 Height="40"
@@ -225,22 +242,75 @@
                                                                 Cursor="Hand"
                                                                 Foreground="#C0C4CC"
                                                                 Style="{StaticResource CheckBoxDefaultStyle}"/>
-                                                                <TextBlock
+                                                                    <TextBlock
                                                                 x:Name="txt_name"
                                                                 Margin="5,0,0,0"
                                                                 HorizontalAlignment="Left"
                                                                 VerticalAlignment="Center"
                                                                 FontSize="16"
                                                                 Foreground="Black"
+                                                                Text="{Binding OnputChannel}" />
+                                                                </StackPanel>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </ListBox.ItemContainerStyle>
+                                        </ListBox>
+                                    </Grid>
+                                    <Grid Margin="12" Grid.Column="1">
+                                        <ListBox
+                            Margin="0,4"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            ItemsSource="{Binding NineOneColorAdj}"
+
+                            ScrollViewer.VerticalScrollBarVisibility="Disabled" SelectionMode="Multiple">
+                                            <ListBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel />
+                                                </ItemsPanelTemplate>
+                                            </ListBox.ItemsPanel>
+                                            <ListBox.ItemContainerStyle>
+                                                <Style TargetType="{x:Type ListBoxItem}">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+
+                                                                <StackPanel
+                                                    Orientation="Horizontal"
+                                                    x:Name="bd"
+                                                    Height="48"
+                                                    Background="Transparent"
+                                                    Cursor="Hand">
+                                                                    <CheckBox   IsChecked="{Binding IsCheckInstructions}"
+                                                                x:Name="selectCommand"
+                                                                Width="40"
+                                                                Height="40"
+                                                                VerticalAlignment="Center"
+                                                                HorizontalAlignment="Center"
+                                                                Cursor="Hand"
+                                                                Foreground="#C0C4CC"
+                                                                Style="{StaticResource CheckBoxDefaultStyle}"/>
+                                                                    <TextBlock
+                                                                x:Name="txt_name"
+                                                                Margin="5,0,0,0"
+                                                                HorizontalAlignment="Left"
+                                                                VerticalAlignment="Center"
+                                                                FontSize="16"
+                                                                        TextWrapping="Wrap"
+                                                                Foreground="Black"
                                                                 Text="{Binding Instructions}" />
-                                                            </StackPanel>
-                                                        </ControlTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Style>
-                                        </ListBox.ItemContainerStyle>
-                                    </ListBox>
+                                                                </StackPanel>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </ListBox.ItemContainerStyle>
+                                        </ListBox>
+                                    </Grid>
                                 </Grid>
+                             
                             </Border>
 
                             <Button Grid.Column="1" Grid.Row="1"
@@ -309,7 +379,12 @@
                          IsSelected="{Binding ElementName=rbtn_switch,Path=IsChecked}"
                          Visibility="Collapsed">
                     <Border BorderBrush="#FFFFFF" BorderThickness="2"  Height="300"  HorizontalAlignment="Center" VerticalAlignment="Top">
-                        <DataGrid Background="Transparent" 
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <DataGrid Background="Transparent" 
                                   HorizontalAlignment="Center"
                                   CanUserAddRows="False" 
                                   CanUserDeleteRows="False" 
@@ -321,112 +396,116 @@
                                   BorderThickness="1"  
                                   RowHeaderWidth="0" 
                                   ItemsSource="{Binding PagesSource}" GridLinesVisibility="None">
-                            <DataGrid.ColumnHeaderStyle>
-                                <Style TargetType="{x:Type DataGridColumnHeader}">
-                                    <Setter Property="Padding" Value="18 0 0 0" />
-                                    <Setter Property="VerticalContentAlignment" Value="Center" />
-                                    <Setter Property="Foreground" Value="White" />
-                                    <Setter Property="Background" Value="Transparent" />
-                                    <Setter Property="FontSize" Value="16" />
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
-                                                <Border BorderBrush="Transparent"
+                                <DataGrid.ColumnHeaderStyle>
+                                    <Style TargetType="{x:Type DataGridColumnHeader}">
+                                        <Setter Property="Padding" Value="18 0 0 0" />
+                                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                                        <Setter Property="Foreground" Value="White" />
+                                        <Setter Property="Background" Value="Transparent" />
+                                        <Setter Property="FontSize" Value="16" />
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
+                                                    <Border BorderBrush="Transparent"
                                                         Margin="0"
                                                         BorderThickness="1 1 1 1"
                                                         Height="56"
                                                         Background="{TemplateBinding Background}"
                                                         Padding="{TemplateBinding Padding}">
-                                                    <Grid HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                        <Grid HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition />
-                                                            <ColumnDefinition Width="Auto" />
-                                                        </Grid.ColumnDefinitions>
-                                                        <ContentPresenter RecognizesAccessKey="True" VerticalAlignment="Center" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                                                    </Grid>
-                                                </Border>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                            </DataGrid.ColumnHeaderStyle>
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="输出设备" IsReadOnly="True" Width="100" Binding="{Binding OutputName}"/>
-                                <DataGridTemplateColumn Header="输入1" Width="80">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Button Style="{DynamicResource ButtonStyle}"
-                                            Width="20" Height="20" HorizontalAlignment="Center" Margin="10 0 0 0"
-                                            Command="{Binding RelativeSource={RelativeSource AncestorType=local:Nine0neMartixSettingWindow,Mode=FindAncestor},Path=DataContext.SwitchOneCommand}"
-                                            CommandParameter="{Binding OutputName}" />
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="输入2" Width="80">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Button Style="{DynamicResource ButtonStyle}"
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition />
+                                                                <ColumnDefinition Width="Auto" />
+                                                            </Grid.ColumnDefinitions>
+                                                            <ContentPresenter RecognizesAccessKey="True" VerticalAlignment="Center" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                                        </Grid>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </DataGrid.ColumnHeaderStyle>
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="输出设备" IsReadOnly="True" Width="100" Binding="{Binding OutputName}"/>
+                                    <DataGridTemplateColumn Header="输入1" Width="80">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Style="{DynamicResource ButtonStyle}"
+                                                    Width="20" Height="20" HorizontalAlignment="Center" Margin="10 0 0 0"
+                                                    Command="{Binding RelativeSource={RelativeSource AncestorType=local:Nine0neMartixSettingWindow,Mode=FindAncestor},Path=DataContext.SwitchOneCommand}"
+                                                    CommandParameter="{Binding OutputName}" 
+                                                    Cursor="Hand"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="输入2" Width="80">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Style="{DynamicResource ButtonStyle}"
                                             Width="20" Height="20" HorizontalAlignment="Center" Margin="10 0 0 0"
                                             Command="{Binding RelativeSource={RelativeSource AncestorType=local:Nine0neMartixSettingWindow,Mode=FindAncestor},Path=DataContext.SwitchTwoCommand}"
                                             CommandParameter="{Binding OutputName}" />
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="输入3" Width="80">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Button Style="{DynamicResource ButtonStyle}"
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="输入3" Width="80">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Style="{DynamicResource ButtonStyle}"
                                             Width="20" Height="20" HorizontalAlignment="Center" Margin="10 0 0 0"
                                             Command="{Binding RelativeSource={RelativeSource AncestorType=local:Nine0neMartixSettingWindow,Mode=FindAncestor},Path=DataContext.SwitchThreeCommand}"
                                             CommandParameter="{Binding OutputName}" />
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="输入4" Width="80">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Button Style="{DynamicResource ButtonStyle}"
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="输入4" Width="80">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Style="{DynamicResource ButtonStyle}"
                                             Width="20" Height="20" HorizontalAlignment="Center" Margin="10 0 0 0"
                                             Command="{Binding RelativeSource={RelativeSource AncestorType=local:Nine0neMartixSettingWindow,Mode=FindAncestor},Path=DataContext.SwitchFourCommand}"
                                             CommandParameter="{Binding OutputName}" />
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
 
-                            </DataGrid.Columns>
-                            <DataGrid.CellStyle>
-                                <Style TargetType="{x:Type DataGridCell}">
-                                    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-                                    <Setter Property="FontSize" Value="16"/>
-                                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="{x:Type DataGridCell}">
-                                                <Border Padding="10" >
-                                                    <ContentPresenter/>
-                                                </Border>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                    <Style.Triggers>
-                                        <MultiTrigger>
-                                            <!-- 失去焦点时背景颜色 -->
-                                            <MultiTrigger.Conditions>
-                                                <Condition Property="IsSelected" Value="true"/>
-                                                <Condition Property="Selector.IsSelectionActive" Value="false"/>
-                                            </MultiTrigger.Conditions>
-                                            <Setter Property="Foreground" Value="White"/>
-                                        </MultiTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </DataGrid.CellStyle>
-                            <DataGrid.RowStyle>
-                                <Style TargetType="DataGridRow">
-                                    <Setter Property="Background" Value="Transparent"/>
-                                </Style>
-                            </DataGrid.RowStyle>
-                        </DataGrid>
+                                </DataGrid.Columns>
+                                <DataGrid.CellStyle>
+                                    <Style TargetType="{x:Type DataGridCell}">
+                                        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                        <Setter Property="FontSize" Value="16"/>
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                                    <Border Padding="10" >
+                                                        <ContentPresenter/>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Style.Triggers>
+                                            <MultiTrigger>
+                                                <!-- 失去焦点时背景颜色 -->
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsSelected" Value="true"/>
+                                                    <Condition Property="Selector.IsSelectionActive" Value="false"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter Property="Foreground" Value="White"/>
+                                            </MultiTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGrid.CellStyle>
+                                <DataGrid.RowStyle>
+                                    <Style TargetType="DataGridRow">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                    </Style>
+                                </DataGrid.RowStyle>
+                            </DataGrid>
+                            <TextBlock Grid.Row="1" Text="*一个输入只能给一个输出" Foreground="Black" FontSize="20"/>
+                        </Grid>
+                        
                     </Border>
                 </TabItem>
 
@@ -438,6 +517,7 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="450"/>
                             </Grid.ColumnDefinitions>
 
@@ -447,15 +527,18 @@
                                     <ColumnDefinition Width="200"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
+                                    <RowDefinition Height="20"/>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
+                                <TextBlock Text="通     道" FontSize="16" Foreground="Black" />
+                                <TextBlock Text="预     案" Grid.Column="1"  FontSize="16" Foreground="Black"/>
                                 <ListBox
                             Margin="0,4"
                             Background="Transparent"
                             BorderThickness="0"
                             ItemsSource="{Binding InputEdid}"
-
+                            Grid.Row="1"
                             ScrollViewer.VerticalScrollBarVisibility="Disabled" SelectionMode="Multiple">
                                     <ListBox.ItemsPanel>
                                         <ItemsPanelTemplate>
@@ -501,6 +584,7 @@
 
                                 <ListBox
                                     Grid.Column="1"
+                                    Grid.Row="1"
                             Margin="0,4"
                             Background="Transparent"
                             BorderThickness="0"
@@ -550,17 +634,17 @@
                                 </ListBox>
 
                                 <Button Grid.Column="0" 
-                                    Grid.Row="1"
+                                    Grid.Row="2"
                                     Grid.ColumnSpan="2"
                         Width="200"
                         Height="50"
                         Content="发送"
                         Command="{Binding SendEdidInstructionsCommand}"
                          Style="{DynamicResource ButtonStyle}"/>
-
+                               
                             </Grid>
 
-
+                            <TextBlock Text="*选择n号EDID预案给到通道x" FontSize="16" Foreground="Black" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
                             <Border Grid.Column="2" BorderBrush="#FFFFFF" BorderThickness="1">
                                 <Grid Margin="12">
                                     <Grid.RowDefinitions>
@@ -583,7 +667,7 @@
                             ScrollViewer.CanContentScroll="True">
                                         <ListBox.ItemsPanel>
                                             <ItemsPanelTemplate>
-                                                <StackPanel />
+                                                <StackPanel Orientation="Horizontal"/>
                                             </ItemsPanelTemplate>
                                         </ListBox.ItemsPanel>
                                         <ListBox.ItemContainerStyle>
@@ -594,7 +678,6 @@
                                                             <StackPanel
                                                     Orientation="Horizontal"
                                                     x:Name="bd"
-                                                    Height="48"
                                                     Background="Transparent"
                                                     Cursor="Hand">
                                                                 <TextBlock
@@ -604,7 +687,7 @@
                                                                 VerticalAlignment="Center"
                                                                 FontSize="16"
                                                                 Foreground="Black"
-                                                                Text="{Binding Code}" />
+                                                                Text="{Binding EDEDIDInfo}" />
                                                             </StackPanel>
                                                         </ControlTemplate>
                                                     </Setter.Value>
@@ -647,7 +730,6 @@
                                 Margin="8,0,0,0"
                                 Background="Transparent"
                                 BorderThickness="0"
-                                ItemContainerStyle="{StaticResource NoBgListBoxItemStyle}"
                                 ItemTemplate="{StaticResource BoardItemTemplate}"
                                 ItemsSource="{Binding ScenePlanList}"
                                 ScrollViewer.CanContentScroll="True"
@@ -657,6 +739,30 @@
                                                 <WrapPanel Orientation="Horizontal" Margin="5 0 0 0"/>
                                             </ItemsPanelTemplate>
                                         </ListBox.ItemsPanel>
+                                        <ListBox.ItemContainerStyle>
+                                            <Style TargetType="{x:Type ListBoxItem}">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                                            <StackPanel
+                                                    Orientation="Horizontal"
+                                                    x:Name="bd"
+                                                    Background="Transparent"
+                                                    Cursor="Hand">
+                                                                <TextBlock
+                                                                x:Name="txt_name"
+                                                                Margin="5,0,0,0"
+                                                                HorizontalAlignment="Left"
+                                                                VerticalAlignment="Center"
+                                                                FontSize="16"
+                                                                Foreground="Black"
+                                                                Text="{Binding PlanInfo}" />
+                                                            </StackPanel>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </ListBox.ItemContainerStyle>
                                     </ListBox>
                                 </Grid>
                             </Border>
@@ -664,11 +770,10 @@
                             <Border Grid.Column="1"  BorderBrush="#FFFFFF" BorderThickness="1">
                                 <Grid Margin="12">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="*"/>
-                                        <RowDefinition Height="*"/>
-                                        <RowDefinition Height="*"/>
-                                        <RowDefinition Height="*"/>
-                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="50"/>
+                                        <RowDefinition Height="20"/>
+                                        <RowDefinition Height="80"/>
+                                        <RowDefinition Height="80"/>
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="100"/>
@@ -677,40 +782,44 @@
                                         <ColumnDefinition Width="100"/>
                                         <ColumnDefinition Width="100"/>
                                     </Grid.ColumnDefinitions>
-                                    <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
+                                    <!--<StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
                                         <TextBlock Text="预案编号" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        <TextBlock Text="{Binding SelectedScenePlan.Index}" FontSize="16" Foreground="Black" Background="#ffffff" Height="20" Width="80"/>
+                                        <TextBlock Text="{Binding PlanIndex,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontSize="16" Foreground="Black" Background="#ffffff" Height="20" Width="80"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="12 0 0 0 " Grid.ColumnSpan="2">
                                         <TextBlock Text="预案名称" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        <TextBlock Text="{Binding SelectedScenePlan.PlanName}" FontSize="16" Foreground="Black" Background="#ffffff" Height="20" Width="80"/>
-                                    </StackPanel>
-                                    <StackPanel Grid.Row="1" Grid.ColumnSpan="4" Orientation="Horizontal" >
+                                        <TextBlock Text="{Binding PlanName}" FontSize="16" Foreground="Black" Background="#ffffff" Height="20" Width="80"/>
+                                    </StackPanel>-->
+                                    
+                                    <StackPanel Grid.ColumnSpan="4" Orientation="Horizontal" >
                                         <TextBlock Text="修改" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        <TextBlock Text="{Binding SelectedScenePlan.PlanName}" FontSize="16" Foreground="Black" Background="#ffffff" Width="60" Height="20"/>
-                                        <TextBlock Text="号预案名称" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
+                                        <TextBox Text="{Binding ModifyPlanIndex}" FontSize="14" Foreground="Black" Background="#ffffff" Width="60" Height="30" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <TextBlock Text="号预案名称为" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <TextBox Text="{Binding NewPlanName}" FontSize="16" Foreground="Black" Background="#ffffff" Width="150" Height="30"/>
                                     </StackPanel>
+                                    
+                                    <TextBlock Grid.Row="1"  VerticalAlignment="Top" Grid.Column="2" Grid.ColumnSpan="3" Text="*修改的场景名称长度不超过10"  FontSize="16" Foreground="Black" HorizontalAlignment="Left"/>
+                                   
                                     <StackPanel Grid.Row="2" Orientation="Horizontal" Grid.ColumnSpan="4"  >
                                         <TextBlock Text="选择" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        <TextBlock Text="{Binding SelectedScenePlan.PlanName}" FontSize="16" Foreground="Black" Background="#ffffff" Width="60" Height="20"/>
+                                        <TextBox TextAlignment="Center" Text="{Binding PlanIndex,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontSize="16" Foreground="Black" Background="#ffffff" Width="60" Height="30"/>
                                         <TextBlock Text="号预案" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
                                     </StackPanel>
-                                    <StackPanel Grid.Row="3" Orientation="Horizontal" Grid.ColumnSpan="4"  >
+                                    <!--<StackPanel Grid.Row="3" Orientation="Horizontal" Grid.ColumnSpan="4"  >
                                         <TextBlock Text="保存场景预案到新增序号" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
-                                    </StackPanel>
-                                    <StackPanel Grid.Row="4" Orientation="Horizontal" Grid.ColumnSpan="4" >
+                                    </StackPanel>-->
+                                    
+                                    <StackPanel Grid.Row="3" Orientation="Horizontal" Grid.ColumnSpan="4" >
                                         <TextBlock Text="保存预案到序号" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        <TextBlock Text="{Binding SelectedScenePlan.PlanName}" FontSize="16" Foreground="Black" Background="#ffffff" Width="60" Height="20"/>
+                                        <TextBox Text="{Binding SavePlanToIndex}" TextAlignment="Center" FontSize="16" Foreground="Black" Background="#ffffff" Width="60" Height="30"/>
 
 
                                     </StackPanel>
-                                    <Button Width="60" Grid.Row="1" Grid.Column="4"   Height="20" Content="确定修改" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding SendColorAdjInstructionsCommand}" Style="{DynamicResource ButtonStyle}"/>
-                                    <Button Width="60"  Grid.Row="2" Grid.Column="4"  Height="20" Content="确定选择" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding SendColorAdjInstructionsCommand}" Style="{DynamicResource ButtonStyle}"/>
-                                    <Button Width="60" Grid.Row="3" Grid.Column="4"   Height="20" Content="确定新增" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding SendColorAdjInstructionsCommand}" Style="{DynamicResource ButtonStyle}"/>
-                                    <Button Width="60" Grid.Row="4" Grid.Column="4"  Height="20" Content="确定保存" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding SendColorAdjInstructionsCommand}" Style="{DynamicResource ButtonStyle}"/>
+                                    <Button Width="60"  Grid.Column="4"   Height="20" Content="确定修改" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding ModifyPlanNameCommand}" Style="{DynamicResource ButtonStyle}"/>
+                                    <Button Width="60"  Grid.Row="2" Grid.Column="4"  Height="20" Content="确定选择" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding ChoosePlanCommand}" Style="{DynamicResource ButtonStyle}"/>
+                                    <!--<Button Width="60" Grid.Row="3" Grid.Column="4"   Height="20" Content="确定新增" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding SendColorAdjInstructionsCommand}" Style="{DynamicResource ButtonStyle}"/>-->
+                                    <Button Width="60" Grid.Row="3" Grid.Column="4"  Height="20" Content="确定保存" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding SavePlanAsIndexCommand}" Style="{DynamicResource ButtonStyle}"/>
                                 </Grid>
 
                             </Border>
@@ -881,8 +990,8 @@
                                 <TextBlock Text="输出板卡" Grid.ColumnSpan="5" Foreground="#ffffff" FontSize="16" Width="120" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 <TextBlock Text="编号" FontSize="14" Foreground="#ffffff" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 <TextBlock Text="输出格式" FontSize="14" Foreground="#ffffff" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="背景" FontSize="14" Foreground="#ffffff" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="音频" FontSize="14" Foreground="#ffffff" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="音频" FontSize="14" Foreground="#ffffff" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="背景" FontSize="14" Foreground="#ffffff" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 <TextBlock Text="输出类型" FontSize="14" Foreground="#ffffff" Grid.Row="1" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
                                 <TextBlock Text="4K60" FontSize="14" Foreground="#FFFFFF" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -1053,10 +1162,8 @@
 
                     <Grid  HorizontalAlignment="Center" Width="1100">
                         <Border Grid.Column="1"  BorderBrush="#FFFFFF" BorderThickness="1">
-                            <Grid Margin="12">
+                            <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="*"/>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="*"/>
@@ -1064,22 +1171,76 @@
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="250"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="200"/>
+                                    <!--<ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="180"/>-->
+                           
                                 </Grid.ColumnDefinitions>
-                                <Button Width="120" Grid.Row="0" Height="40" Content="获取网口信息" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding QueryNetSetCommand}" Style="{DynamicResource ButtonStyle}"/>
-                                <Button Width="120" Grid.Row="1" Height="40" Content="复位网口设置" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding SendColorAdjInstructionsCommand}" Style="{DynamicResource ButtonStyle}"/>
-                                <Button Width="120" Grid.Row="2" Height="40" Content="设置IP" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding SendColorAdjInstructionsCommand}" Style="{DynamicResource ButtonStyle}"/>
-                                <Button Width="120" Grid.Row="3" Height="40" Content="设置端口号" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding SendColorAdjInstructionsCommand}" Style="{DynamicResource ButtonStyle}"/>
-                                <Button Width="120" Grid.Row="4" Height="40" Content="设置子网掩码" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding SendColorAdjInstructionsCommand}" Style="{DynamicResource ButtonStyle}"/>
+                 
+                                <Button Width="120" Grid.Column="0" Height="40" Content="获取网口信息" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding QueryNetSetCommand}" Style="{DynamicResource ButtonStyle}"/>
+                                <Button Width="120" Grid.Column="5" Height="40" Content="复位网口设置" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ResetNetSetCommand}" Style="{DynamicResource ButtonStyle}"/>
+                                <Button Width="120" Grid.Column="1" Height="40" Content="设置IP" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ModifyIPCommand}" Style="{DynamicResource ButtonStyle}"/>
+                                <Button Width="120" Grid.Column="1" Grid.Row="1" Height="40" Content="设置端口号" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ModifyPortCommand}" Style="{DynamicResource ButtonStyle}"/>
+                                <Button Width="120" Grid.Column="1" Grid.Row="2"  Height="40" Content="设置子网掩码" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ModifyNetmaskCommand}" Style="{DynamicResource ButtonStyle}"/>
+                                <Button Width="120" Grid.Column="1" Grid.Row="3" Height="40" Content="设置网关" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ModifyGatewayCommand}" Style="{DynamicResource ButtonStyle}"/>
+                                <Button Width="120" Grid.Column="5" Grid.Row="1"  Height="40" Content="恢复出厂设置" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ResetAllSetingCommand}" Style="{DynamicResource ButtonStyle}"/>
 
-                                <Button Width="120" Grid.Row="0" Grid.Column="2" Height="40" Content="恢复出厂设置" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding SendColorAdjInstructionsCommand}" Style="{DynamicResource ButtonStyle}"/>
-                                <Button Width="120" Grid.Row="1" Grid.Column="2" Height="40" Content="获取指令列表" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding SendColorAdjInstructionsCommand}" Style="{DynamicResource ButtonStyle}"/>
-                                <Button Width="120" Grid.Row="2" Grid.Column="2" Height="40" Content="查询板卡型号" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding SendColorAdjInstructionsCommand}" Style="{DynamicResource ButtonStyle}"/>
-                                <Button Width="120" Grid.Row="3" Grid.Column="2" Height="40" Content="查询软硬件版本" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding SendColorAdjInstructionsCommand}" Style="{DynamicResource ButtonStyle}"/>
-                                <Button Width="120" Grid.Row="4" Grid.Column="2" Height="40" Content="设置网关" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding SendColorAdjInstructionsCommand}" Style="{DynamicResource ButtonStyle}"/>
+                            <!--网口信息-->
+                                <ListBox
+                                    Grid.Row="1"
+                                    Grid.RowSpan="3"
+                                    Margin="0,4"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Left"
+                                    ItemsSource="{Binding NetInfoList}"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    ScrollViewer.CanContentScroll="True">
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                    <ListBox.ItemContainerStyle>
+                                        <Style TargetType="{x:Type ListBoxItem}">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                                        <StackPanel
+                                                    Orientation="Horizontal"
+                                                    x:Name="bd"
+                                                    Background="Transparent"
+                                                    Cursor="Hand">
+                                                            <TextBlock
+                                                                x:Name="txt_name"
+                                                                Margin="5,0,0,0"
+                                                                HorizontalAlignment="Left"
+                                                                VerticalAlignment="Center"
+                                                                FontSize="16"
+                                                                Foreground="Black"
+                                                                Text="{Binding NetInfo}" />
+                                                        </StackPanel>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </ListBox.ItemContainerStyle>
+                                </ListBox>
 
+                            <!--设置信息-->
+                                <TextBox Margin="12" Grid.Column="2" TextAlignment="Left" HorizontalAlignment="Left" Text="{Binding SetIpAddr,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontSize="16" Foreground="Black" Background="#ffffff" Width="250" Height="40"/>
+                                <TextBox Margin="12" Grid.Column="2" Grid.Row="1" TextAlignment="Left" HorizontalAlignment="Left" Text="{Binding SetPort,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontSize="16" Foreground="Black" Background="#ffffff" Width="250" Height="40"/>
+                                <TextBox Margin="12" Grid.Column="2" Grid.Row="2" TextAlignment="Left" HorizontalAlignment="Left" Text="{Binding SetNetMask,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontSize="16" Foreground="Black" Background="#ffffff" Width="250" Height="40"/>
+                                <TextBox Margin="12" Grid.Column="2" Grid.Row="3" TextAlignment="Left" HorizontalAlignment="Left" Text="{Binding SetGateway,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontSize="16" Foreground="Black" Background="#ffffff" Width="250" Height="40"/>
+
+                                <!--<Button Width="60" Margin="12"  Grid.Column="3" Height="40" Content="确定修改" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ModifyIPCommand}" Style="{DynamicResource ButtonStyle}"/>
+                                <Button Width="60" Margin="12" Grid.Column="3" Grid.Row="1" Height="40" Content="确定修改" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ModifyPortCommand}" Style="{DynamicResource ButtonStyle}"/>
+                                <Button Width="60" Margin="12" Grid.Column="3" Grid.Row="2"  Height="40" Content="确定修改" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ModifyNetmaskCommand}" Style="{DynamicResource ButtonStyle}"/>
+                                <Button Width="60" Margin="12" Grid.Column="3" Grid.Row="3"  Height="40" Content="确定修改" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ModifyGatewayCommand}" Style="{DynamicResource ButtonStyle}"/>-->
                             </Grid>
                         </Border>
                     </Grid>
@@ -1088,34 +1249,97 @@
             </TabControl>
         </Border>
 
-        <Border Margin="12" Grid.Row="3" Background="Transparent"   Height="200">
+        <Border Grid.Row="3" Grid.ColumnSpan="2" BorderBrush="#FFFFFF" BorderThickness="2" Margin="12">
             <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width=".5*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="60"/>
                 </Grid.RowDefinitions>
-                <StackPanel
+                <ListBox
+                    
+                            Margin="0,4"
+                            Background="Transparent"
+                            BorderThickness="0"
+                    HorizontalAlignment="Center"
+                            ItemsSource="{Binding OutPutColorChannels}"
+                            ScrollViewer.VerticalScrollBarVisibility="Disabled" SelectionMode="Multiple">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListBoxItem}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+
+                                        <StackPanel
+                                                    Orientation="Horizontal"
+                                                    x:Name="bd"
+                                                    Height="48"
+                                                    Background="Transparent"
+                                                    Cursor="Hand">
+                                            <CheckBox   IsChecked="{Binding IsCheckChannel}"
+                                                                x:Name="selectCommand"
+                                                                Width="40"
+                                                                Height="40"
+                                                                VerticalAlignment="Center"
+                                                                HorizontalAlignment="Center"
+                                                                Cursor="Hand"
+                                                                Foreground="#C0C4CC"
+                                                                Style="{StaticResource CheckBoxDefaultStyle}"/>
+                                            <TextBlock
+                                                                x:Name="txt_name"
+
+                                                                HorizontalAlignment="Left"
+                                                                VerticalAlignment="Center"
+                                                                FontSize="16"
+                                                                Foreground="Black"
+                                                                Text="{Binding OnputChannel}" />
+                                        </StackPanel>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+                <Border Margin="12" Grid.Column="1" Background="Transparent"   Height="220">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel
                 Margin="12"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Orientation="Horizontal">
-                    <TextBlock Text="设置色调" 
+                            <TextBlock Text="设置色调" 
                                Width="60"
                                Foreground="#FFFFFF"
                                Height="24"
                                FontSize="14"
                                TextAlignment="Center"/>
-                    <TextBlock
+                            <TextBlock
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         FontSize="16"
                         Foreground="#FFFFFF"
                         Margin="0 0 18 0"
-                        Text="{Binding ElementName=sharpnessslider_Scale, Path=Value, StringFormat={}{0}}" />
-                    <Slider
-                        x:Name="sharpnessslider_Scale"
+                        Text="{Binding ElementName=colorslider_Scale, Path=Value, StringFormat={}{0}}" />
+                            <Slider
+                        x:Name="colorslider_Scale"
                         Width="250"
                         VerticalAlignment="Center"
                         IsMoveToPointEnabled="True"
@@ -1124,24 +1348,23 @@
                         Foreground="{DynamicResource SliderDefaultColor}"
                         Minimum="0"
                         SmallChange="1"  
-                        Value="{Binding CurrentSharpness}"
-                        PreviewMouseLeftButtonUp="sharpnessslider_PreviewMouseDown"
-                        Thumb.DragDelta="sharpnessslider_DragDelta"/>
-                </StackPanel>
+                        PreviewMouseLeftButtonUp="colorslider_PreviewMouseDown"
+                        Thumb.DragDelta="colorslider_DragDelta"/>
+                        </StackPanel>
 
-                <StackPanel
+                        <StackPanel
                     Grid.Row="1"
                     Margin="12"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Orientation="Horizontal">
-                    <TextBlock Text="对比度" 
+                            <TextBlock Text="对比度" 
                                Width="60"
                                Height="24"
                                FontSize="14"
                                Foreground="#FFFFFF"
                                TextAlignment="Center"/>
-                    <TextBlock
+                            <TextBlock
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         FontSize="16"
@@ -1149,7 +1372,7 @@
                         Margin="0 0 18 0"
                         Text="{Binding ElementName=slider_ScaleContrast, Path=Value, StringFormat={}{0}}" />
 
-                    <Slider
+                            <Slider
                          Width="250"
                         x:Name="slider_ScaleContrast"
                         VerticalAlignment="Center"
@@ -1162,21 +1385,21 @@
                         Value="{Binding CurrentContrast}"
                         PreviewMouseLeftButtonUp="sliderContrast_PreviewMouseDown"
                         Thumb.DragDelta="slider_DragDeltaContrast"/>
-                </StackPanel>
+                        </StackPanel>
 
-                <StackPanel
+                        <StackPanel
                     Grid.Row="2"
                     Margin="12"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Orientation="Horizontal">
-                    <TextBlock Text="饱和度" 
+                            <TextBlock Text="饱和度" 
                                Width="60"
                                Foreground="#FFFFFF"
                                Height="24"
                                FontSize="14"
                                TextAlignment="Center"/>
-                    <TextBlock
+                            <TextBlock
                          HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         FontSize="16"
@@ -1184,7 +1407,7 @@
                         Margin="0 0 18 0"
                         Text="{Binding ElementName=saturationslider_Scale, Path=Value, StringFormat={}{0}}" />
 
-                    <Slider
+                            <Slider
                          Width="250"
                         x:Name="saturationslider_Scale"
                         VerticalAlignment="Center"
@@ -1198,29 +1421,29 @@
                         PreviewMouseLeftButtonUp="saturationslider_PreviewMouseDown"
                         Thumb.DragDelta="saturationslider_DragDelta"/>
 
-                </StackPanel>
-                <StackPanel
+                        </StackPanel>
+                        <StackPanel
                     Grid.Row="3"
                     Margin="12"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Orientation="Horizontal">
-                    <TextBlock Text="设置R值" 
+                            <TextBlock Text="设置R值" 
                                Foreground="#FFFFFF"
                                Width="60"
                                Height="24"
                                FontSize="14"
                                TextAlignment="Center"/>
-                    <TextBlock
+                            <TextBlock
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         FontSize="16"
                         Foreground="#FFFFFF"
                         Margin="0 0 18 0"
-                        Text="{Binding ElementName=volumeslider_Scale, Path=Value, StringFormat={}{0}}" />
+                        Text="{Binding ElementName=rvalueslider_Scale, Path=Value, StringFormat={}{0}}" />
 
-                    <Slider
-                        x:Name="volumeslider_Scale"
+                            <Slider
+                        x:Name="rvalueslider_Scale"
                          Width="250"
                         VerticalAlignment="Center"
                         IsMoveToPointEnabled="True"
@@ -1230,33 +1453,33 @@
                         Foreground="{DynamicResource SliderDefaultColor}"
                         SmallChange="1" 
                         Value="{Binding CurrentVolume}"
-                        PreviewMouseLeftButtonUp="volumeslider_PreviewMouseDown"
-                        Thumb.DragDelta="volumeslider_DragDelta"/>
-                </StackPanel>
-            </Grid>
+                        PreviewMouseLeftButtonUp="rvalueslider_PreviewMouseDown"
+                        Thumb.DragDelta="rvalueslider_DragDelta"/>
+                        </StackPanel>
+                    </Grid>
 
-        </Border>
+                </Border>
 
-        <Border  Grid.Row="3" Margin="12" Grid.Column="1"   Height="200">
-            <Grid Margin="0,0,30,0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <StackPanel
+                <Border  Margin="12" Grid.Column="2"   Height="200">
+                    <Grid Margin="0,0,30,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel
                 Margin="12"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Orientation="Horizontal">
-                    <TextBlock Text="亮度" 
+                            <TextBlock Text="亮度" 
                                Width="60"
                                Foreground="#FFFFFF"
                                Height="24"
                                FontSize="14"
                                TextAlignment="Center"/>
-                    <TextBlock
+                            <TextBlock
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         FontSize="16"
@@ -1264,7 +1487,7 @@
                         Margin="0 0 18 0"
                         Text="{Binding ElementName=brightnessslider_Scale, Path=Value, StringFormat={}{0}}" />
 
-                    <Slider
+                            <Slider
                         x:Name="brightnessslider_Scale"
                          Width="250"
                         VerticalAlignment="Center"
@@ -1277,29 +1500,29 @@
                         Value="{Binding CurrentBrightness}"
                         PreviewMouseLeftButtonUp="brightnessslider_PreviewMouseDown"
                         Thumb.DragDelta="brightnessslider_DragDelta"/>
-                </StackPanel>
+                        </StackPanel>
 
-                <StackPanel
+                        <StackPanel
                     Grid.Row="1"
                     Margin="12"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Orientation="Horizontal">
-                    <TextBlock Text="设置G值" 
+                            <TextBlock Text="设置G值" 
                                Foreground="#FFFFFF"
                                Width="60"
                                Height="24"
                                FontSize="14"
                                TextAlignment="Center"/>
-                    <TextBlock
+                            <TextBlock
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         FontSize="16"
                         Foreground="#FFFFFF"
                         Margin="0 0 18 0"
-                        Text="{Binding ElementName=redslider_Scale, Path=Value, StringFormat={}{0}}" />
-                    <Slider
-                        x:Name="redslider_Scale"
+                        Text="{Binding ElementName=gvalueslider_Scale, Path=Value, StringFormat={}{0}}" />
+                            <Slider
+                        x:Name="gvalueslider_Scale"
                          Width="250"
                         VerticalAlignment="Center"
                         IsMoveToPointEnabled="True"
@@ -1309,32 +1532,32 @@
                         Minimum="0"
                         SmallChange="1" 
                         Value="{Binding CurrentRedTone}"
-                        PreviewMouseLeftButtonUp="redslider_PreviewMouseDown"
-                        Thumb.DragDelta="redslider_DragDelta"/>
-                </StackPanel>
+                        PreviewMouseLeftButtonUp="gslider_PreviewMouseDown"
+                        Thumb.DragDelta="gslider_DragDelta"/>
+                        </StackPanel>
 
-                <StackPanel
+                        <StackPanel
                     Grid.Row="2"
                     Margin="12"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Orientation="Horizontal">
-                    <TextBlock Text="设置B值" 
+                            <TextBlock Text="设置B值" 
                                Foreground="#FFFFFF"
                                Width="60"
                                Height="24"
                                FontSize="14"
                                TextAlignment="Center"/>
-                    <TextBlock
+                            <TextBlock
                          HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         FontSize="16"
                         Foreground="#FFFFFF"
                         Margin="0 0 18 0"
-                        Text="{Binding ElementName=greenslider_Scale, Path=Value, StringFormat={}{0}}" />
+                        Text="{Binding ElementName=bslider_Scale, Path=Value, StringFormat={}{0}}" />
 
-                    <Slider
-                        x:Name="greenslider_Scale"
+                            <Slider
+                        x:Name="bslider_Scale"
                          Width="250"
                         VerticalAlignment="Center"
                         IsMoveToPointEnabled="True"
@@ -1344,14 +1567,65 @@
                         SmallChange="1" 
                         Foreground="{DynamicResource SliderDefaultColor}"
                         Value="{Binding CurrentGreenTone}"
-                        PreviewMouseLeftButtonUp="greenslider_PreviewMouseDown"
-                        Thumb.DragDelta="greenslider_DragDelta"/>
+                        PreviewMouseLeftButtonUp="bslider_PreviewMouseDown"
+                        Thumb.DragDelta="bslider_DragDelta"/>
+                        </StackPanel>
+
+
+                    </Grid>
+
+                </Border>
+
+                <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <Button Width="120"  Grid.Row="1"  Height="40" Content="获取色彩参数" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding GetColorInfoCommand}" Style="{DynamicResource ButtonStyle}"/>
+                    <Button Margin="120 0 0 0" Width="120"  Grid.Row="1" Grid.Column="1"  Height="40" Content="复位色彩参数" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ResetColorInfoCommand}" Style="{DynamicResource ButtonStyle}"/>
+                    <TextBlock Margin="120 0 0 0"  Grid.Row="1" Grid.Column="1" Foreground="Black" FontSize="16" Text="{Binding Tips,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 </StackPanel>
 
-
+                <ListBox    Grid.Column="3"
+                            Grid.Row="0"
+                            Grid.RowSpan="2"
+                            Margin="0 12"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            HorizontalAlignment="Center"
+                            ItemsSource="{Binding ColorSettingsList}"
+                            ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListBoxItem}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                        <StackPanel
+                                                    Orientation="Horizontal"
+                                                    x:Name="bd"
+                                                    Background="Transparent"
+                                                    Cursor="Hand">
+                                            <TextBlock
+                                                                x:Name="txt_name"
+                                                                Margin="5,0,0,0"
+                                                                HorizontalAlignment="Left"
+                                                                VerticalAlignment="Center"
+                                                                FontSize="16"
+                                                                Foreground="Black"
+                                                                Text="{Binding ColorSettings}" />
+                                        </StackPanel>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
             </Grid>
-
+            
         </Border>
+
+
 
     </Grid>
 </Window>

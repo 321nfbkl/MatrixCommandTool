@@ -89,9 +89,9 @@ namespace MatrixCommandTool
         {
             ResourceDictionary resource = (ResourceDictionary)Application.LoadComponent(new Uri("/Resource/Generic.xaml", UriKind.Relative));
             Application.Current.Resources.MergedDictionaries[0] = resource;
-            ImageBrush imageBrush = new ImageBrush();
-            imageBrush.ImageSource = new BitmapImage(new Uri("pack://application:,,,/MatrixCommandTool;component/Resource/Image/cat.bmp"));
-            this.windowgrid.Background = imageBrush;
+            //ImageBrush imageBrush = new ImageBrush();
+            //imageBrush.ImageSource = new BitmapImage(new Uri("pack://application:,,,/MatrixCommandTool;component/Resource/Image/3.bmp"));
+            //this.windowgrid.Background = imageBrush;
         }
 
         /// <summary>
@@ -103,9 +103,9 @@ namespace MatrixCommandTool
         {
             ResourceDictionary resource = (ResourceDictionary)Application.LoadComponent(new Uri("/Resource/Default/RedSkin.xaml", UriKind.Relative));
             Application.Current.Resources.MergedDictionaries[0] = resource;
-            ImageBrush imageBrush = new ImageBrush();
-            imageBrush.ImageSource = new BitmapImage(new Uri("pack://application:,,,/MatrixCommandTool;component/Resource/Image/meng.bmp"));
-            this.windowgrid.Background = imageBrush;
+            //ImageBrush imageBrush = new ImageBrush();
+            //imageBrush.ImageSource = new BitmapImage(new Uri("pack://application:,,,/MatrixCommandTool;component/Resource/Image/4.bmp"));
+            //this.windowgrid.Background = imageBrush;
         }
 
         /// <summary>

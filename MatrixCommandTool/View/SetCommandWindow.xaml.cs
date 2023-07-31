@@ -141,5 +141,43 @@ namespace MatrixCommandTool.View
             this.WindowState = WindowState.Minimized;
         }
 
+        /// <summary>
+        /// 夏日初恋
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void menuAero_Click(object sender, RoutedEventArgs e)
+        {
+            ResourceDictionary resource = (ResourceDictionary)Application.LoadComponent(new Uri("/Resource/Generic.xaml", UriKind.Relative));
+            Application.Current.Resources.MergedDictionaries[0] = resource;
+            //ImageBrush imageBrush = new ImageBrush();
+            //imageBrush.ImageSource = new BitmapImage(new Uri("pack://application:,,,/MatrixCommandTool;component/Resource/Image/3.bmp"));
+            //this.ninefourgrid.Background = imageBrush;
+        }
+
+        /// <summary>
+        /// 梦醒时分
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void menuRoyale_Click(object sender, RoutedEventArgs e)
+        {
+            ResourceDictionary resource = (ResourceDictionary)Application.LoadComponent(new Uri("/Resource/Default/RedSkin.xaml", UriKind.Relative));
+            Application.Current.Resources.MergedDictionaries[0] = resource;
+            //ImageBrush imageBrush = new ImageBrush();
+            //imageBrush.ImageSource = new BitmapImage(new Uri("pack://application:,,,/MatrixCommandTool;component/Resource/Image/4.bmp"));
+            //this.ninefourgrid.Background = imageBrush;
+        }
+
+        /// <summary>
+        /// 换肤
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void changeskin_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)e.OriginalSource;
+            button.ContextMenu.IsOpen = true;
+        }
     }
 }

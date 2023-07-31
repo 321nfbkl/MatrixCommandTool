@@ -7,7 +7,7 @@
     <Brush x:Key="ForeColor">#FFFFFF</Brush>
 
 
-    <SolidColorBrush x:Key="NormalBrush" Color="#F4A932" />
-    <SolidColorBrush x:Key="MouseOverBrush" Color="#FBCD64" />
-    <SolidColorBrush x:Key="PressBrush" Color="#FBCD64" />
+    <SolidColorBrush x:Key="NormalBrush" Color="#E4BE8F" />
+    <SolidColorBrush x:Key="MouseOverBrush" Color="#D2AA6C" />
+    <SolidColorBrush x:Key="PressBrush" Color="#D2AA6C" />
 </ResourceDictionary>

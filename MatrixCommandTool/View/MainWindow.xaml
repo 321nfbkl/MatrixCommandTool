@@ -4,14 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MatrixCommandTool" 
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+        xmlns:controls="clr-namespace:MatrixCommandTool.Controls"
         mc:Ignorable="d"
         Title="MainWindow" Height="420" Width="400" Style="{StaticResource NoneWindowStyle_Radius}" WindowStartupLocation="CenterScreen"
         DataContext="{Binding Source={StaticResource Locator}, Path=MainVM}">
-    <Grid x:Name="windowgrid">
-        <Grid.Background>
-            <ImageBrush ImageSource="{DynamicResource icon_bg}" Stretch="Fill"/>
-        </Grid.Background>
+    <Grid x:Name="windowgrid" Background="{DynamicResource BgDefaultColor}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -35,13 +33,15 @@
                     SelectedIndex="0"                                
                     ItemsSource="{Binding MartixTypeList}"
                     SelectedItem="{Binding SelectedMartixType}"/>
+
+          
+
         </StackPanel>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Height="40" HorizontalAlignment="Right" Margin="10">
             <Button x:Name="changeskin" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="30" Height="30" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFFFFF" Click="changeskin_Click">
                 <Button.ContextMenu>
                     <ContextMenu>
                         <MenuItem x:Name="menuBlue"  Header="夏日初恋" Click="menuAero_Click"/>
-                        <MenuItem x:Name="menuRoyale" Header="梦醒时分" Click="menuRoyale_Click"/>
                     </ContextMenu>
                 </Button.ContextMenu>
                 <materialDesign:PackIcon Kind="Color" ToolTip="主题"/>

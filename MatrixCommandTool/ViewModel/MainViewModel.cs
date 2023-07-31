@@ -76,7 +76,7 @@ namespace MatrixCommandTool.ViewModel
             set => Set(ref this.mIsOpen, value);
         }
 
-        private SerialPort mSerial=new SerialPort();
+        private SerialPort mSerial = new SerialPort();
         public SerialPort Serial
         {
             get => this.mSerial;
@@ -91,15 +91,17 @@ namespace MatrixCommandTool.ViewModel
         }
 
         private string mSelectedMartixType;
-        public  string SelectedMartixType
+        public string SelectedMartixType
         {
-            get => this.mSelectedMartixType;    
-            set=>Set(ref this.mSelectedMartixType, value);  
+            get => this.mSelectedMartixType;
+            set => Set(ref this.mSelectedMartixType, value);
         }
+
+
 
         public IList<string> SerialPortList { get; set; } = new ObservableCollection<string>();
 
-        public IList<string> MartixTypeList { get; set; }=new ObservableCollection<string>();   
+        public IList<string> MartixTypeList { get; set; } = new ObservableCollection<string>();
         #endregion
 
         #region Command
@@ -109,6 +111,7 @@ namespace MatrixCommandTool.ViewModel
 
         public ICommand OpenSerialPortCommand { get; set; }
 
+
         #endregion
         public MainViewModel(ClientSocket clientSocket)
         {
@@ -117,13 +120,14 @@ namespace MatrixCommandTool.ViewModel
             this.LoginByNetCommand = new RelayCommand(LoginByNet);
             this.ScanSerialPortCommand = new RelayCommand(ScanSerialPort);
             this.OpenSerialPortCommand=new RelayCommand(OpenSerialPort);
+
             this.MartixTypeList.Add("91系列");
             this.MartixTypeList.Add("94系列");
             if (this.SelectedMartixType == null)
                 this.SelectedMartixType = this.MartixTypeList.FirstOrDefault();
         }
 
-
+     
         private void OpenSerialPort()
         {
             if (IsOpen == false)
@@ -139,7 +143,9 @@ namespace MatrixCommandTool.ViewModel
                     Serial.BaudRate = this.BoundRate;
                     Serial.Open();
                     IsOpen = true;
-                    if (IsOpen)
+                    if (IsOpen&&this.SelectedMartixType== "91系列")
+                        GalaSoft.MvvmLight.Messaging.Messenger.Default.Send<object>(null, "ShowNine0neMartixSettingWindow");
+                    else if(IsOpen && this.SelectedMartixType == "94系列")
                         GalaSoft.MvvmLight.Messaging.Messenger.Default.Send<object>(null, "ShowSetCommandView");
                 }
                 catch (Exception)

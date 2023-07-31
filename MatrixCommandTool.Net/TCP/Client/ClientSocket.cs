@@ -15,6 +15,9 @@ using MatrixCommandTool.Net.Args;
 using FastSocket.Client.Protocol;
 using FastSocket.SocketBase;
 using System.Threading;
+using System.Timers;
+using NLog.Time;
+using Microsoft.SqlServer.Server;
 
 namespace MatrixCommandTool.Net.TCP
 {
@@ -39,6 +42,8 @@ namespace MatrixCommandTool.Net.TCP
         /// </summary>
         private System.Threading.ManualResetEvent mConnectionTimeoutEvent;
 
+
+
         private DelegateFactory _notifyFactory;
 
         /// <summary>
@@ -49,12 +54,12 @@ namespace MatrixCommandTool.Net.TCP
         public DelegateFactory NotifyFactory => this._notifyFactory;
 
         public ClientSocket(DelegateFactory factory)
-            :this (new CustomProtocol(),1024,1500)
+            : this(new CustomProtocol(), 1024, 1500)
         {
             this._notifyFactory = factory;
         }
 
-        public ClientSocket(DelegateFactory factory,CustomProtocol protocol, int bufferSize, int timeout)
+        public ClientSocket(DelegateFactory factory, CustomProtocol protocol, int bufferSize, int timeout)
        : this(new ClientProtocol() { Protocols = protocol }, bufferSize, bufferSize, timeout, timeout)
         {
             this._notifyFactory = factory;
@@ -78,6 +83,8 @@ namespace MatrixCommandTool.Net.TCP
                  millisecondsReceiveTimeout)
         {
             this.mProtocol = protocol;
+            this._recvTimer = new System.Threading.Timer(this.MessageRecvFinished, null, Timeout.Infinite, Timeout.Infinite);
+
         }
 
 
@@ -210,12 +217,21 @@ namespace MatrixCommandTool.Net.TCP
         }
 
         /// <summary>
+        /// 接收消息定时器
+        /// </summary>
+        private System.Threading.Timer _recvTimer;
+
+        /// <summary>
         /// 接收消息
         /// </summary>
         /// <param name="connection"></param>
         /// <param name="e"></param>
         protected override void OnMessageReceived(IConnection connection, MessageReceivedEventArgs e)
         {
+
+            //设置计时器的间隔时间，单位为毫秒
+            //timer.Interval = 10000;
+
             if (!this.Status)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
@@ -238,14 +254,30 @@ namespace MatrixCommandTool.Net.TCP
                 return;
             }
 
+            this._recvTimer.Change(500, Timeout.Infinite);
+
             if (message != null)
             {
                 string msg = Encoding.UTF8.GetString(message.Payload);
-                this._notifyFactory.InvokeMessageChanged(msg);
-                //_logger.Info(msg);
-                NotifyMessageFactory.AddMessageInQueue(msg);
+                this._recvMessageCache += msg;
             }
             e.SetReadlength(readlength);
+        }
+
+        private string _recvMessageCache = string.Empty;
+
+        private void MessageRecvFinished(object _)
+        {
+            if (string.IsNullOrEmpty(this._recvMessageCache))
+                return;
+
+            this._notifyFactory.InvokeMessageChanged(this._recvMessageCache);
+            //_logger.Info(msg);
+            NotifyMessageFactory.AddMessageInQueue(this._recvMessageCache);
+            //timer.Start();
+
+            this._recvMessageCache = string.Empty;
+            this._recvTimer.Change(Timeout.Infinite, Timeout.Infinite);
         }
 
     }

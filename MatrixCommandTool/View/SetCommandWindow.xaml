@@ -4,14 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MatrixCommandTool.View" 
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+        xmlns:controls="clr-namespace:MatrixCommandTool.Controls"
         mc:Ignorable="d"
         Title="SetCommandWindow" Height="1000" Width="900"  Style="{StaticResource NoneWindowStyle_Radius}" WindowStartupLocation="CenterScreen"
         DataContext="{Binding Source={StaticResource Locator}, Path=SetCommandVM}">
-    <Grid>
-        <Grid.Background>
-            <ImageBrush ImageSource="{StaticResource icon_bg}" Stretch="Fill"/>
-        </Grid.Background>
+    <Grid x:Name="ninefourgrid" Background="{DynamicResource BgDefaultColor}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -31,7 +29,28 @@
                    Fill="Transparent"
                    MouseMove="DragWindowMove"/>
         <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Top" Height="40" HorizontalAlignment="Right" Margin="10">
-       
+            <controls:TitleSwitchButtonControl
+                x:Name="switch"
+                Width="50"
+                Margin="0,0,16,0"
+                VerticalAlignment="Center"
+                Background="{DynamicResource SliderDefaultColor}"
+                CheckedText="蜂鸣器开"
+                DockPanel.Dock="Right"
+                Foreground="#FFFFFF"
+                Style="{StaticResource VerticalTitleSwitchButtonStyle}"
+                UnCheckedText="蜂鸣器关" 
+                IsChecked="{Binding IsOpenBuzzer}"
+                Command="{Binding SwitchBuzzerCommand}" Cursor="Hand"/>
+
+            <Button x:Name="changeskin" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="30" Height="30" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFFFFF" Click="changeskin_Click">
+                <Button.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem x:Name="menuBlue"  Header="夏日初恋" Click="menuAero_Click"/>
+                    </ContextMenu>
+                </Button.ContextMenu>
+                <materialDesign:PackIcon Kind="Color" ToolTip="主题"/>
+            </Button>
             <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="30" Height="30" Padding="0" Background="{x:Null}" Foreground="#FFFFFF" BorderBrush="{x:Null}" Click="WindowMin_Click">
                 <materialDesign:PackIcon Kind="Minimize"/>
             </Button>

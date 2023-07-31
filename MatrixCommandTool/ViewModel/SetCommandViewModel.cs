@@ -197,6 +197,15 @@ namespace MatrixCommandTool.ViewModel
             set => Set(ref this.mCardMode, value);
         }
 
+        private bool mIsOpenBuzzer;
+        /// <summary>
+        /// 蜂鸣器开关
+        /// </summary>
+        public bool IsOpenBuzzer
+        {
+            get => this.mIsOpenBuzzer;
+            set => Set(ref this.mIsOpenBuzzer, value);
+        }
 
         #region 弃用
         private int mCurrentSharpness;
@@ -310,6 +319,8 @@ namespace MatrixCommandTool.ViewModel
         public ICommand AddInstructionsCommand { get; set; }
 
         public ICommand FindInstructionListCommand { get; set; }
+
+        public ICommand SwitchBuzzerCommand { get; set; }
         #endregion
 
         public SetCommandViewModel(ScanBoardListRequest scanBoardListRequest, ClientSocket clientSocket)
@@ -320,6 +331,7 @@ namespace MatrixCommandTool.ViewModel
             this.SendInstructionsCommand = new RelayCommand(SendInstructions);
             this.EditInstructionsCommand = new RelayCommand(EditInstructions);
             this.AddInstructionsCommand = new RelayCommand(AddInstructions);
+            this.SwitchBuzzerCommand = new RelayCommand(SwitchBuzzer);
 
             this.mInstructionsFilterDelay = new Helper.DelayTrigger();
             this.mInstructionsFilterDelay.OnExecute = filterInstruction;
@@ -327,6 +339,37 @@ namespace MatrixCommandTool.ViewModel
             this._socket.NotifyFactory.ReceiveMessageChangedEvent += NotifyFactory_ReceiveMessageChangedEvent;
             GlobalContext.Current.CurrentVMLocator.MainVM.Serial.DataReceived += Serial_DataReceived;
         }
+
+        /// <summary>
+        /// 开启关闭蜂鸣器
+        /// </summary>
+        private void SwitchBuzzer()
+        {
+            string sendError = string.Empty;
+            if (this.IsOpenBuzzer == true)
+            {
+                if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
+                {
+                    this.SendDataBySerialPort("<BellOn>");
+                }
+                else
+                {
+                    this._scanBoardListRequest.SendIndtruction("<BellOn>", out sendError);
+                }
+            }
+            else if (this.IsOpenBuzzer == false)
+            {
+                if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
+                {
+                    this.SendDataBySerialPort("<BellOff>");
+                }
+                else
+                {
+                    this._scanBoardListRequest.SendIndtruction("<BellOff>", out sendError);
+                }
+            }
+        }
+
         string oldStr = string.Empty;
         private void Serial_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {

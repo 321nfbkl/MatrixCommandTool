@@ -131,5 +131,76 @@ namespace MatrixCommandTool.Model.BindingModel
             get => this.mInput4;
             set => Set(ref this.mInput4, value);
         }
+
+        private bool mIsCheckChannel;
+        /// <summary>
+        /// 是否选中通道号
+        /// </summary>
+        public bool IsCheckChannel
+        {
+            get => this.mIsCheckChannel;    
+            set => Set(ref this.mIsCheckChannel, value);    
+        }
+
+        private int mOnputChanne;
+        /// <summary>
+        /// 输出通道
+        /// </summary>
+        public int OnputChannel
+        {
+            get => this.mOnputChanne;
+            set => Set(ref this.mOnputChanne, value);
+        }
+
+        private int mInputChannel;
+        /// <summary>
+        /// 输入通道
+        /// </summary>
+        public int InputChannel
+        {
+            get => this.mInputChannel;
+            set => Set(ref this.mInputChannel, value);
+        }
+
+        private string mEDIDInfo;
+        /// <summary>
+        /// EDID预案
+        /// </summary>
+        public string EDEDIDInfo
+        {
+            get => this.mEDIDInfo;
+            set => Set(ref this.mEDIDInfo, value);  
+        }
+
+        private string mPlanInfo;
+        /// <summary>
+        /// 预案信息
+        /// </summary>
+        public string PlanInfo
+        {
+            get => this.mPlanInfo;
+            set => Set(ref this.mPlanInfo, value);
+        }
+
+        private string mNetInfo;
+        /// <summary>
+        /// 网络信息
+        /// </summary>
+        public string NetInfo
+        {
+            get => this.mNetInfo;
+            set => Set(ref this.mNetInfo, value);
+        }
+
+        private string mColorSettings;
+        /// <summary>
+        /// 色彩参数
+        /// </summary>
+        public string ColorSettings
+        {
+            get=>this.mColorSettings;
+            set => Set(ref this.mColorSettings, value);
+        }
+
     }
 }
