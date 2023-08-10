@@ -179,5 +179,13 @@ namespace MatrixCommandTool.View
             Button button = (Button)e.OriginalSource;
             button.ContextMenu.IsOpen = true;
         }
+
+        private void WindowMax_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.WindowState == WindowState.Normal)
+                this.WindowState = WindowState.Maximized;
+            else if (this.WindowState == WindowState.Maximized)
+                this.WindowState = WindowState.Normal;
+        }
     }
 }

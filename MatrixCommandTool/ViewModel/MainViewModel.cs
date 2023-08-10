@@ -20,6 +20,16 @@ namespace MatrixCommandTool.ViewModel
 
         #region properity
 
+        private int mIsFirstLogin=0;
+        /// <summary>
+        /// 是否刚登陆
+        /// </summary>
+        public int IsFirstLogin
+        {
+            get => this.mIsFirstLogin;
+            set => Set(ref this.mIsFirstLogin, value);
+        }
+
         private bool mIsCheckSerialPort;
         /// <summary>
         /// 是否选中串口连接
@@ -194,6 +204,8 @@ namespace MatrixCommandTool.ViewModel
                 else if (this.SelectedMartixType == "91系列")
                     GalaSoft.MvvmLight.Messaging.Messenger.Default.Send<object>(null, "ShowNine0neMartixSettingWindow");
                 this._socket.NotifyFactory.ConnectionChangedEvent -= NotifyFactory_ConnectionChangedEvent;
+
+
             }
             else
                 Console.WriteLine("连接失败!");

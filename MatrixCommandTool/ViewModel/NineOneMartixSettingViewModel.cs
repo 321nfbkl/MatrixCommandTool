@@ -8,6 +8,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO.Packaging;
 using System.IO.Ports;
 using System.Linq;
 using System.Runtime.Remoting.Channels;
@@ -15,6 +16,8 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Automation.Peers;
 using System.Windows.Input;
 
 namespace MatrixCommandTool.ViewModel
@@ -23,7 +26,21 @@ namespace MatrixCommandTool.ViewModel
     {
         public ScanBoardListRequest _scanBoardListRequest;
         public ClientSocket _socket;
+        /// <summary>
+        /// System.Threading.Timer 实例，
+        /// 最推荐使用的定时器
+        /// </summary>
+        private System.Threading.Timer mThreadingTimer;
+
+
         #region Properities
+        private Visibility mIsOverAllMsg=Visibility.Collapsed;
+        public Visibility IsOverAllMsg
+        {
+            get => this.mIsOverAllMsg;
+            set => Set(ref this.mIsOverAllMsg, value);
+        }
+
         private bool mIsCheckedColor;
         /// <summary>
         /// 
@@ -129,6 +146,15 @@ namespace MatrixCommandTool.ViewModel
             set => Set(ref this.mNewPlanName, value);
         }
 
+        private string mSendInstructionStr;
+        /// <summary>
+        /// 发送的指令
+        /// </summary>
+        public string SendInstructionStr
+        {
+            get => this.mSendInstructionStr;
+            set => Set(ref this.mSendInstructionStr, value);
+        }
 
         private bool mIsMutilCheck;
         /// <summary>
@@ -217,7 +243,14 @@ namespace MatrixCommandTool.ViewModel
             }
         }
 
-        private bool mIsOpenBuzzer;
+        private bool mIsAlreadySetOuputFour;
+        public bool IsAlreadySetOuputFour
+        {
+            get => this.mIsAlreadySetOuputFour;
+            set => Set(ref this.mIsAlreadySetOuputFour, value);
+        }
+
+        private bool mIsOpenBuzzer=false;
         /// <summary>
         /// 蜂鸣器开关
         /// </summary>
@@ -267,14 +300,14 @@ namespace MatrixCommandTool.ViewModel
             {
                 if (Set(ref this.mSelectedOutFourType, value))
                 {
-                    if (value == "HDMI")
-                    {
-                        SetHDMI(4);
-                    }
-                    else if (value == "DVI")
-                    {
-                        SetDvi(4);
-                    }
+                    //if (value == "HDMI")
+                    //{
+                    //    SetHDMI(4);
+                    //}
+                    //else if (value == "DVI")
+                    //{
+                    //    SetDvi(4);
+                    //}
                 }
             }
         }
@@ -290,14 +323,14 @@ namespace MatrixCommandTool.ViewModel
             {
                 if (Set(ref this.mSelectedOutThreeType, value))
                 {
-                    if (value == "HDMI")
-                    {
-                        SetHDMI(3);
-                    }
-                    else if (value == "DVI")
-                    {
-                        SetDvi(3);
-                    }
+                    //if (value == "HDMI")
+                    //{
+                    //    SetHDMI(3);
+                    //}
+                    //else if (value == "DVI")
+                    //{
+                    //    SetDvi(3);
+                    //}
                 }
             }
         }
@@ -313,14 +346,14 @@ namespace MatrixCommandTool.ViewModel
             {
                 if (Set(ref this.mSelectedOutTwoType, value))
                 {
-                    if (value == "HDMI")
-                    {
-                        SetHDMI(2);
-                    }
-                    else if (value == "DVI")
-                    {
-                        SetDvi(2);
-                    }
+                    //if (value == "HDMI")
+                    //{
+                    //    SetHDMI(2);
+                    //}
+                    //else if (value == "DVI")
+                    //{
+                    //    SetDvi(2);
+                    //}
                 }
             }
         }
@@ -336,14 +369,14 @@ namespace MatrixCommandTool.ViewModel
             {
                 if (Set(ref this.mSelectedOutOneType, value))
                 {
-                    if (value == "HDMI")
-                    {
-                        SetHDMI(1);
-                    }
-                    else if (value == "DVI")
-                    {
-                        SetDvi(1);
-                    }
+                    //if (value == "HDMI")
+                    //{
+                    //    SetHDMI(1);
+                    //}
+                    //else if (value == "DVI")
+                    //{
+                    //    SetDvi(1);
+                    //}
                 }
             }
         }
@@ -361,14 +394,14 @@ namespace MatrixCommandTool.ViewModel
             {
                 if (Set(ref this.mSelectedOutFourBack, value))
                 {
-                    if (value == "设为蓝屏")
-                    {
-                        SetOutBgBlueScreen(4);
-                    }
-                    else if (value == "设为黑屏")
-                    {
-                        SetOutBgBlackScreen(4);
-                    }
+                    //if (value == "设为蓝屏")
+                    //{
+                    //    SetOutBgBlueScreen(4);
+                    //}
+                    //else if (value == "设为黑屏")
+                    //{
+                    //    SetOutBgBlackScreen(4);
+                    //}
                 }
             }
         }
@@ -385,14 +418,14 @@ namespace MatrixCommandTool.ViewModel
             {
                 if (Set(ref this.mSelectedOutThreeBack, value))
                 {
-                    if (value == "设为蓝屏")
-                    {
-                        SetOutBgBlueScreen(3);
-                    }
-                    else if (value == "设为黑屏")
-                    {
-                        SetOutBgBlackScreen(3);
-                    }
+                    //if (value == "设为蓝屏")
+                    //{
+                    //    SetOutBgBlueScreen(3);
+                    //}
+                    //else if (value == "设为黑屏")
+                    //{
+                    //    SetOutBgBlackScreen(3);
+                    //}
                 }
             }
         }
@@ -408,14 +441,14 @@ namespace MatrixCommandTool.ViewModel
             {
                 if (Set(ref this.mSelectedOutTwoBack, value))
                 {
-                    if (value == "设为蓝屏")
-                    {
-                        SetOutBgBlueScreen(2);
-                    }
-                    else if (value == "设为黑屏")
-                    {
-                        SetOutBgBlackScreen(2);
-                    }
+                    //if (value == "设为蓝屏")
+                    //{
+                    //    SetOutBgBlueScreen(2);
+                    //}
+                    //else if (value == "设为黑屏")
+                    //{
+                    //    SetOutBgBlackScreen(2);
+                    //}
                 }
             }
         }
@@ -431,14 +464,14 @@ namespace MatrixCommandTool.ViewModel
             {
                 if (Set(ref this.mSelectedOutOneBack, value))
                 {
-                    if (value == "设为蓝屏")
-                    {
-                        SetOutBgBlueScreen(1);
-                    }
-                    else if (value == "设为黑屏")
-                    {
-                        SetOutBgBlackScreen(1);
-                    }
+                    //if (value == "设为蓝屏")
+                    //{
+                    //    SetOutBgBlueScreen(1);
+                    //}
+                    //else if (value == "设为黑屏")
+                    //{
+                    //    SetOutBgBlackScreen(1);
+                    //}
                 }
             }
         }
@@ -454,14 +487,14 @@ namespace MatrixCommandTool.ViewModel
             {
                 if (Set(ref this.mSelectedBackFourName, value))
                 {
-                    if (value == "设为蓝屏")
-                    {
-                        SetBgBlueScreen(4);
-                    }
-                    else if (value == "设为黑屏")
-                    {
-                        SetBgBlackScreen(4);
-                    }
+                    //if (value == "设为蓝屏")
+                    //{
+                    //    SetBgBlueScreen(4);
+                    //}
+                    //else if (value == "设为黑屏")
+                    //{
+                    //    SetBgBlackScreen(4);
+                    //}
                 }
             }
         }
@@ -475,14 +508,14 @@ namespace MatrixCommandTool.ViewModel
             {
                 if (Set(ref this.mSelectedBackThreeName, value))
                 {
-                    if (value == "设为蓝屏")
-                    {
-                        SetBgBlueScreen(3);
-                    }
-                    else if (value == "设为黑屏")
-                    {
-                        SetBgBlackScreen(3);
-                    }
+                    //if (value == "设为蓝屏")
+                    //{
+                    //    SetBgBlueScreen(3);
+                    //}
+                    //else if (value == "设为黑屏")
+                    //{
+                    //    SetBgBlackScreen(3);
+                    //}
                 }
             }
         }
@@ -496,14 +529,14 @@ namespace MatrixCommandTool.ViewModel
             {
                 if (Set(ref this.mSelectedBackTwoName, value))
                 {
-                    if (value == "设为蓝屏")
-                    {
-                        SetBgBlueScreen(2);
-                    }
-                    else if (value == "设为黑屏")
-                    {
-                        SetBgBlackScreen(2);
-                    }
+                    //if (value == "设为蓝屏")
+                    //{
+                    //    SetBgBlueScreen(2);
+                    //}
+                    //else if (value == "设为黑屏")
+                    //{
+                    //    SetBgBlackScreen(2);
+                    //}
                 }
             }
         }
@@ -542,14 +575,14 @@ namespace MatrixCommandTool.ViewModel
             {
                 if (Set(ref mSelectedOutFourAudioName, value))
                 {
-                    if (value == "模拟音频")
-                    {
-                        SetMoniOutAudioMode(4);
-                    }
-                    else if (value == "嵌入音频")
-                    {
-                        SetQianruOutAudioMode(4);
-                    }
+                    //if (value == "模拟音频")
+                    //{
+                    //    SetMoniOutAudioMode(4);
+                    //}
+                    //else if (value == "嵌入音频")
+                    //{
+                    //    SetQianruOutAudioMode(4);
+                    //}
                 }
             }
         }
@@ -563,14 +596,14 @@ namespace MatrixCommandTool.ViewModel
             {
                 if (Set(ref mSelectedOutThreeAudioName, value))
                 {
-                    if (value == "模拟音频")
-                    {
-                        SetMoniOutAudioMode(3);
-                    }
-                    else if (value == "嵌入音频")
-                    {
-                        SetQianruOutAudioMode(3);
-                    }
+                    //if (value == "模拟音频")
+                    //{
+                    //    SetMoniOutAudioMode(3);
+                    //}
+                    //else if (value == "嵌入音频")
+                    //{
+                    //    SetQianruOutAudioMode(3);
+                    //}
                 }
             }
         }
@@ -584,14 +617,14 @@ namespace MatrixCommandTool.ViewModel
             {
                 if (Set(ref mSelectedOutTwoAudioName, value))
                 {
-                    if (value == "模拟音频")
-                    {
-                        SetMoniOutAudioMode(2);
-                    }
-                    else if (value == "嵌入音频")
-                    {
-                        SetQianruOutAudioMode(2);
-                    }
+                    //if (value == "模拟音频")
+                    //{
+                    //    SetMoniOutAudioMode(2);
+                    //}
+                    //else if (value == "嵌入音频")
+                    //{
+                    //    SetQianruOutAudioMode(2);
+                    //}
                 }
             }
         }
@@ -605,14 +638,14 @@ namespace MatrixCommandTool.ViewModel
             {
                 if (Set(ref mSelectedOutOneAudioName, value))
                 {
-                    if (value == "模拟音频")
-                    {
-                        SetMoniOutAudioMode(1);
-                    }
-                    else if (value == "嵌入音频")
-                    {
-                        SetQianruOutAudioMode(1);
-                    }
+                    //if (value == "模拟音频")
+                    //{
+                    //    SetMoniOutAudioMode(1);
+                    //}
+                    //else if (value == "嵌入音频")
+                    //{
+                    //    SetQianruOutAudioMode(1);
+                    //}
                 }
             }
         }
@@ -626,14 +659,14 @@ namespace MatrixCommandTool.ViewModel
             {
                 if (Set(ref mSelectedInFourAudioName, value))
                 {
-                    if (value == "模拟音频")
-                    {
-                        SetMoniAudioMode(4);
-                    }
-                    else if (value == "嵌入音频")
-                    {
-                        SetQianruAudioMode(4);
-                    }
+                    //if (value == "模拟音频")
+                    //{
+                    //    SetMoniAudioMode(4);
+                    //}
+                    //else if (value == "嵌入音频")
+                    //{
+                    //    SetQianruAudioMode(4);
+                    //}
                 }
             }
         }
@@ -647,14 +680,14 @@ namespace MatrixCommandTool.ViewModel
             {
                 if (Set(ref mSelectedInThreeAudioName, value))
                 {
-                    if (value == "模拟音频")
-                    {
-                        SetMoniAudioMode(3);
-                    }
-                    else if (value == "嵌入音频")
-                    {
-                        SetQianruAudioMode(3);
-                    }
+                    //if (value == "模拟音频")
+                    //{
+                    //    SetMoniAudioMode(3);
+                    //}
+                    //else if (value == "嵌入音频")
+                    //{
+                    //    SetQianruAudioMode(3);
+                    //}
                 }
             }
         }
@@ -668,14 +701,14 @@ namespace MatrixCommandTool.ViewModel
             {
                 if (Set(ref mSelectedTwoInAudioName, value))
                 {
-                    if (value == "模拟音频")
-                    {
-                        SetMoniAudioMode(2);
-                    }
-                    else if (value == "嵌入音频")
-                    {
-                        SetQianruAudioMode(2);
-                    }
+                    //if (value == "模拟音频")
+                    //{
+                    //    SetMoniAudioMode(2);
+                    //}
+                    //else if (value == "嵌入音频")
+                    //{
+                    //    SetQianruAudioMode(2);
+                    //}
                 }
             }
         }
@@ -688,14 +721,14 @@ namespace MatrixCommandTool.ViewModel
             {
                 if (Set(ref mSelectedOneInAudioName, value))
                 {
-                    if (value == "模拟音频")
-                    {
-                        SetMoniAudioMode(1);
-                    }
-                    else if (value == "嵌入音频")
-                    {
-                        SetQianruAudioMode(1);
-                    }
+                    //if (value == "模拟音频")
+                    //{
+                    //    SetMoniAudioMode(1);
+                    //}
+                    //else if (value == "嵌入音频")
+                    //{
+                    //    SetQianruAudioMode(1);
+                    //}
                 }
             }
         }
@@ -711,6 +744,62 @@ namespace MatrixCommandTool.ViewModel
         }
         #endregion
 
+        #region 分辨率
+        private string mSelectedOutOneResolution;
+        public string SelectedOutOneResolution
+        {
+            get => this.mSelectedOutOneResolution;
+            set
+            {
+                if (Set(ref this.mSelectedOutOneResolution, value))
+                {
+                    //SendResolution(1, value);
+                }
+            }
+        }
+
+
+
+        private string mSelectedOutTwoResolution;
+        public string SelectedOutTwoResolution
+        {
+            get => this.mSelectedOutTwoResolution;
+            set
+            {
+                if (Set(ref this.mSelectedOutTwoResolution, value))
+                {
+                    //SendResolution(2, value);
+                }
+            }
+        }
+
+        private string mSelectedOutThreeResolution;
+        public string SelectedOutThreeResolution
+        {
+            get => this.mSelectedOutThreeResolution;
+            set
+            {
+                if (Set(ref this.mSelectedOutThreeResolution, value))
+                {
+                   // SendResolution(3, value);
+                }
+            }
+        }
+
+        private string mSelectedOutFourResolution;
+        public string SelectedOutFourResolution
+        {
+            get => this.mSelectedOutFourResolution;
+            set
+            {
+                if (Set(ref this.mSelectedOutFourResolution, value))
+                {
+                    //SendResolution(4, value);
+                }
+            }
+        }
+        #endregion
+
         /// <summary>
         /// 分页显示
         /// </summary>
@@ -722,6 +811,8 @@ namespace MatrixCommandTool.ViewModel
         /// 色调调整指令
         /// </summary>
         public IList<BoardBingModel> NineOneColorAdj { get; set; } = new ObservableCollection<BoardBingModel>();
+
+        public IList<BoardBingModel> ChannelsList { get; set; } = new ObservableCollection<BoardBingModel>();   
 
         /// <summary>
         /// 输出通道列表
@@ -756,6 +847,11 @@ namespace MatrixCommandTool.ViewModel
         public IList<string> TypeList { get; set; } = new ObservableCollection<string>();
 
         /// <summary>
+        /// 分辨率列表
+        /// </summary>
+        public IList<string> ResolutionList { get; set; } = new ObservableCollection<string>();
+
+        /// <summary>
         /// 背景列表
         /// </summary>
         public IList<string> BackList { get; set; } = new ObservableCollection<string>();
@@ -782,6 +878,7 @@ namespace MatrixCommandTool.ViewModel
 
         public IList<BoardBingModel> FilterInstructions { get; set; } = new ObservableCollection<BoardBingModel>();
 
+        public IList<BoardBingModel> ChannelStatus { get; set; }=new ObservableCollection<BoardBingModel>();
         #endregion
 
         #region Command
@@ -829,6 +926,12 @@ namespace MatrixCommandTool.ViewModel
         public ICommand GetColorInfoCommand { get; set; }
 
         public ICommand ResetColorInfoCommand { get; set; }
+
+        public ICommand QuerySwitchChannelCommand { get; set; }
+
+        public ICommand QueryPortScanCommand { get; set; }
+
+        public ICommand QueryAudioCommand { get; set; }
         #endregion
 
         public NineOneMartixSettingViewModel(ClientSocket clientSocket, ScanBoardListRequest scanBoardListRequest)
@@ -838,7 +941,7 @@ namespace MatrixCommandTool.ViewModel
             this.SendColorAdjInstructionsCommand = new RelayCommand(SendColorAdjInstructions);
             this.mInstructionsFilterDelay = new Helper.DelayTrigger();
             this.mInstructionsFilterDelay.OnExecute = filterInstruction;
-            this.SwitchOneCommand = new RelayCommand<string>(SwitchOne);
+            this.SwitchOneCommand = new RelayCommand<BoardBingModel>(SwitchOne);
             this.SwitchTwoCommand = new RelayCommand<string>(SwitchTwo);
             this.SwitchThreeCommand = new RelayCommand<string>(SwitchThree);
             this.SwitchFourCommand = new RelayCommand<string>(SwitchFour);
@@ -863,6 +966,10 @@ namespace MatrixCommandTool.ViewModel
             this.GetColorInfoCommand = new RelayCommand(GetColorInfo);
             this.ResetColorInfoCommand = new RelayCommand(ResetColorInfo);
 
+            this.QuerySwitchChannelCommand = new RelayCommand(QuerySwitchChannel);
+            this.QueryPortScanCommand = new RelayCommand(QueryPortScan);
+            this.QueryAudioCommand = new RelayCommand(QueryAudio);
+
             this.AudioList.Add("模拟音频");
             this.AudioList.Add("嵌入音频");
             this.BackList.Add("设为蓝屏");
@@ -870,10 +977,26 @@ namespace MatrixCommandTool.ViewModel
             this.TypeList.Add("HDMI");
             this.TypeList.Add("DVI");
 
-            this.PagesSource.Add(new BoardBingModel() { OutputName = "输出1" });
-            this.PagesSource.Add(new BoardBingModel() { OutputName = "输出2" });
-            this.PagesSource.Add(new BoardBingModel() { OutputName = "输出3" });
-            this.PagesSource.Add(new BoardBingModel() { OutputName = "输出4" });
+            this.ResolutionList.Add("1024x768p60");
+            this.ResolutionList.Add("1280x720p50");
+            this.ResolutionList.Add("1280x720p60");
+            this.ResolutionList.Add("1280x1024p60");
+            this.ResolutionList.Add("1366x768p60");
+            this.ResolutionList.Add("1400x1050p60");
+            this.ResolutionList.Add("1600x1200p60");
+            this.ResolutionList.Add("1680x1050p60");
+            this.ResolutionList.Add("1920x1080p30");
+            this.ResolutionList.Add("1920x1080p50");
+            this.ResolutionList.Add("1920x1080p60");
+            this.ResolutionList.Add("1920x1200p60");
+            this.ResolutionList.Add("3840x2160p30");
+            this.ResolutionList.Add("3840x2160p60");
+
+            this.PagesSource.Add(new BoardBingModel() { OutputName = "输入1" });
+            this.PagesSource.Add(new BoardBingModel() { OutputName = "输入2" });
+            this.PagesSource.Add(new BoardBingModel() { OutputName = "输入3" });
+            this.PagesSource.Add(new BoardBingModel() { OutputName = "输入4" });
+
 
             #region MyRegion
             //#region 音频
@@ -923,11 +1046,83 @@ namespace MatrixCommandTool.ViewModel
             this.SelectedOutFourType = null;
             //#endregion
             #endregion
-
+            mThreadingTimer = new System.Threading.Timer(MessageRecvFinished, null, Timeout.Infinite, Timeout.Infinite);
             initCommandList();
+            initData();
             GlobalContext.Current.CurrentVMLocator.MainVM.Serial.DataReceived += Serial_DataReceived;
             this._socket.NotifyFactory.ReceiveMessageChangedEvent += NotifyFactory_ReceiveMessageChangedEvent;
+            // 初始化一个定时器：具有回调函数，无状态的，不启动，不终止定时器
+           
         }
+
+        private void QuerySwitchChannel()
+        {
+            QueryChannelStatus();
+        }
+
+        /// <summary>
+        /// 初始化数据 打开蜂鸣器
+        /// </summary>
+        private void initData()
+        {
+            if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
+            {
+                SwitchBuzzer();
+            }
+            else
+            {
+                SwitchBuzzer();
+            }
+        }
+
+        /// <summary>
+        /// 查询通道的音频状态。
+        /// </summary>
+        public void QueryAudio()
+        {
+            string queryerror = string.Empty;
+            if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
+            {
+                this.SendDataBySerialPort("<Audio>");
+            }
+            else
+            {
+                this._scanBoardListRequest.SendIndtruction("<Audio>", out queryerror);
+            }
+        }
+
+        /// <summary>
+        /// 查询接口分辨率、输出模式、背景颜色
+        /// </summary>
+        public void QueryPortScan()
+        {
+            string queryerror = string.Empty;
+            if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
+            {
+                this.SendDataBySerialPort("<PortScan>");
+            }
+            else
+            {
+                this._scanBoardListRequest.SendIndtruction("<PortScan>", out queryerror);
+            }
+        }
+
+        /// <summary>
+        /// 查询通道映射关系状态
+        /// </summary>
+        public void QueryChannelStatus()
+        {
+            string queryerror = string.Empty;
+            if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
+            {
+                this.SendDataBySerialPort("<Status>");
+            }
+            else
+            {
+                this._scanBoardListRequest.SendIndtruction("<Status>", out queryerror);
+            }
+        }
+
         string mes = string.Empty;
         string edidmes = string.Empty;
         string colormes = string.Empty;
@@ -937,6 +1132,7 @@ namespace MatrixCommandTool.ViewModel
         /// <param name="notify"></param>
         private void NotifyFactory_ReceiveMessageChangedEvent(ReceiveMessageNotify notify)
         {
+            this.IsOverAllMsg = Visibility.Visible;
             if (notify.Message == null)
                 return;
             Console.WriteLine(notify.Message);
@@ -947,6 +1143,7 @@ namespace MatrixCommandTool.ViewModel
                 {
                     this.EDIDPlanList.Clear();
                     this.EDIDPlanList.Add(new BoardBingModel() { EDEDIDInfo = notify.Message });
+                    this.IsOverAllMsg = Visibility.Collapsed;
                 }, true);
             }
             if (notify.Message.IndexOf("01-") > -1)
@@ -955,6 +1152,7 @@ namespace MatrixCommandTool.ViewModel
                 {
                     this.ScenePlanList.Clear();
                     this.ScenePlanList.Add(new BoardBingModel() { PlanInfo = notify.Message });
+                    this.IsOverAllMsg = Visibility.Collapsed;
                 }, true);
             }
             if (notify.Message.IndexOf("Network Information") > -1)
@@ -965,6 +1163,7 @@ namespace MatrixCommandTool.ViewModel
                         this.NetInfoList.Clear();
                         this.NetInfoList.Add(new BoardBingModel() { NetInfo= notify.Message });
                         mes = string.Empty;
+                        this.IsOverAllMsg = Visibility.Collapsed;
                     }, true);
                 
           
@@ -977,8 +1176,176 @@ namespace MatrixCommandTool.ViewModel
                     this.ColorSettingsList.Clear();
                     this.ColorSettingsList.Add(new BoardBingModel() { ColorSettings = notify.Message });
                     colormes = string.Empty;
+                    this.IsOverAllMsg = Visibility.Collapsed;
                 }, true);
             }
+            if (notify.Message.IndexOf("Channel Status") > -1)
+            {
+                App.RunInUIThread(() =>
+                {
+                    for (int m = 0; m < 4; m++)
+                    {
+                        for (int j = 0; j < 4; j++)
+                        {
+                            this.ChannelsList.Add(new BoardBingModel() { IsCheckChannel = false, OnputChannel = m, InputChannel = j });
+                        }
+                    }
+                    string[] getAry = notify.Message.Split(new char[] { '\n' });
+                    List<int> temp_index = getAry.Select((item, index) => new { item, index }).Where(t => t.item.IndexOf("->") > -1).Select(t => t.index).ToList();
+                    int i = 1;
+                    int j4 = 0;
+                    int j1 = 0;
+                    int j2 = 0;
+                    int j3 = 0;
+                    if (temp_index.Count() < 1)
+                        return;
+                    foreach (var item in temp_index)
+                    {
+                        int len = getAry[item].Count();
+                        Console.WriteLine(len);
+                        if (len == 8)
+                        {
+                            //没有给到其他输出
+                            continue;
+                        }
+                        else if (len == 9)
+                        {
+                            //给到1个输出
+                            j1 = int.Parse(getAry[item].Substring(8, 1));
+                        }
+                        else if (len == 14)
+                        {
+                            //给了两个输出
+                            j1 = int.Parse(getAry[item].Substring(8, 1));
+                            j2 = int.Parse(getAry[item].Substring(11, 1));
+                        }
+                        else if (len == 17)
+                        {
+                            //给了3个输出
+                            j1 = int.Parse(getAry[item].Substring(8, 1));
+                            j2 = int.Parse(getAry[item].Substring(11, 1));
+                            j3 = int.Parse(getAry[item].Substring(14, 1));
+                        }
+                        else if (len == 20)
+                        {
+                            //给了4个输出
+                            j1 = int.Parse(getAry[item].Substring(8, 1));
+                            j2 = int.Parse(getAry[item].Substring(11, 1));
+                            j3 = int.Parse(getAry[item].Substring(14, 1));
+                            j4 = int.Parse(getAry[item].Substring(17, 1));
+
+                        }
+                        var findchannel1 = this.ChannelsList.FirstOrDefault(x => (x.OnputChannel + 1 == j1) && (x.InputChannel + 1) == i);
+                        if (findchannel1 != null)
+                            findchannel1.IsCheckChannel = true;
+                        var findchannel2 = this.ChannelsList.FirstOrDefault(x => (x.OnputChannel + 1 == j2) && (x.InputChannel + 1) == i);
+                        if (findchannel2 != null)
+                            findchannel2.IsCheckChannel = true;
+                        var findchannel3 = this.ChannelsList.FirstOrDefault(x => (x.OnputChannel + 1 == j3) && (x.InputChannel + 1) == i);
+                        if (findchannel3 != null)
+                            findchannel3.IsCheckChannel = true;
+                        var findchannel4 = this.ChannelsList.FirstOrDefault(x => (x.OnputChannel + 1 == j4) && (x.InputChannel + 1) == i);
+                        if (findchannel4 != null)
+                            findchannel4.IsCheckChannel = true;
+                        i++;
+                    }
+                    this.IsOverAllMsg = Visibility.Collapsed;
+                }, true);
+            }
+
+            if (notify.Message.IndexOf("Audio Type ") > -1)
+            {
+                App.RunInUIThread(() =>
+                {
+                    string[] getAudio = notify.Message.Split(new string[] { "\n" }, StringSplitOptions.None);
+                    Console.WriteLine(getAudio);
+
+                    if (getAudio[2].IndexOf("Ext.") > -1)
+                    {
+                        this.SelectedOneInAudioName = "模拟音频";
+                    }
+                    else
+                    {
+                        this.SelectedOneInAudioName = "嵌入音频";
+                    }
+                    if (getAudio[3].IndexOf("Ext.") > -1)
+                    {
+                        this.SelectedTwoInAudioName = "模拟音频";
+                    }
+                    else
+                    {
+                        this.SelectedTwoInAudioName = "嵌入音频";
+                    }
+                    if (getAudio[4].IndexOf("Ext.") > -1)
+                    {
+                        this.SelectedInThreeAudioName = "模拟音频";
+                    }
+                    else
+                    {
+                        this.SelectedInThreeAudioName = "嵌入音频";
+                    }
+                    if (getAudio[5].IndexOf("Ext.") > -1)
+                    {
+                        this.SelectedInFourAudioName = "模拟音频";
+                    }
+                    else
+                    {
+                        this.SelectedInFourAudioName = "嵌入音频";
+                    }
+                    this.IsOverAllMsg = Visibility.Collapsed;
+                }, true);
+            }
+
+            if(notify.Message.IndexOf("Out Channel |  Resolution  | Mode | BackColor ") > -1)
+            {
+                App.RunInUIThread(() => {
+                string[] getPort = notify.Message.Split(new string[] { "*/\n/*" }, StringSplitOptions.None);
+                //Console.WriteLine(notify.Message);
+                for (int k = 1; k <= 4; k++)
+                {
+                    var split = getPort[k].Split(new char[] { '|' });
+                    Console.WriteLine(split);
+                    if (split[0].IndexOf(" CH-2 ") > -1)
+                    {
+                        this.SelectedOutTwoResolution = split[1].Trim();
+                        if (split[3].Trim() == "Blue")
+                            this.SelectedOutTwoBack = "设为蓝屏";
+                        else
+                            this.SelectedOutTwoBack = "设为黑屏";
+                        this.SelectedOutTwoType = split[2].Trim();
+                    }
+                    if (split[0].IndexOf(" CH-1 ") > -1)
+                    {
+                        this.SelectedOutOneResolution = split[1].Trim();
+                        if (split[3].Trim() == "Blue")
+                            this.SelectedOutOneBack = "设为蓝屏";
+                        else
+                            this.SelectedOutOneBack = "设为黑屏";
+                        this.SelectedOutOneType = split[2].Trim();
+                    }
+                    if (split[0].IndexOf(" CH-3 ") > -1)
+                    {
+                        this.SelectedOutThreeResolution = split[1].Trim();
+                        if (split[3].Trim() == "Blue")
+                            this.SelectedOutThreeBack = "设为蓝屏";
+                        else
+                            this.SelectedOutThreeBack = "设为黑屏";
+                        this.SelectedOutThreeType = split[2].Trim();
+                    }
+                    if (split[0].IndexOf(" CH-4 ") > -1)
+                    {
+                        this.SelectedOutFourResolution = split[1].Trim();
+                        if (split[3].Trim() == "Blue")
+                            this.SelectedOutFourBack = "设为蓝屏";
+                        else
+                            this.SelectedOutFourBack = "设为黑屏";
+                        this.SelectedOutFourType = split[2].Trim();
+                    }
+                }
+                    this.IsOverAllMsg = Visibility.Collapsed;
+                }, true);
+            }
+            
         }
 
         #region 色彩参数
@@ -1000,11 +1367,23 @@ namespace MatrixCommandTool.ViewModel
             string sendError = string.Empty;
             if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
             {
-                this.SendDataBySerialPort("<ColorReset>");
+                foreach (var item in this.OutPutColorChannels)
+                {
+                    if (item.IsCheckChannel == true)
+                    {
+                        this.SendDataBySerialPort($"{item.OnputChannel}SETOUT.<ColorReset>");
+                    }
+                }
             }
             else
             {
-                this._scanBoardListRequest.SendIndtruction("<ColorReset>", out sendError);
+                foreach (var item in this.OutPutColorChannels)
+                {
+                    if (item.IsCheckChannel == true)
+                    {
+                        this._scanBoardListRequest.SendIndtruction($"{item.OnputChannel}SETOUT.<ColorReset>", out sendError);
+                    }
+                }
             }
         }
         #endregion
@@ -1157,37 +1536,221 @@ namespace MatrixCommandTool.ViewModel
         }
         #endregion
 
+
         string oldStr = string.Empty;
+  
+
         private void Serial_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
+            this.IsOverAllMsg = Visibility.Visible;
+            string str = GlobalContext.Current.CurrentVMLocator.MainVM.Serial.ReadExisting(); //以字符串方式读
+            if (String.IsNullOrEmpty(str) || str.Equals("<Set Succeed!>\r\n"))
+                return;
+
+            this.mThreadingTimer.Change(500, Timeout.Infinite);
+
+            if (str != null)
+            {
+                this._recvMessageCache += str;
+            }
+        }
+
+        private string _recvMessageCache = string.Empty;
+
+        private void MessageRecvFinished(object _)
+        {
+            if (string.IsNullOrEmpty(this._recvMessageCache))
+                return;
 
             App.RunInUIThread(() =>
             {
-                string str = GlobalContext.Current.CurrentVMLocator.MainVM.Serial.ReadExisting(); //以字符串方式读
-                if (String.IsNullOrEmpty(str) || str.Equals("<Set Succeed!>\r\n"))
-                    return;
-                Console.Write(str);//"/* EDID Scan */\n1-EDID_1080P\n2-EDID_4K\n3-Default1\n4-Default2\n5-LEARN_CH1\n6-LEARN_CH2\n7-LEARN_CH3\n8-LEARN_CH4\n"
-                if (str.IndexOf("EDID Scan") > -1)
+                if (_recvMessageCache.IndexOf("Channel Status") > -1)
+                {
+                    this.ChannelsList.Clear();
+                    for (int m = 0; m < 4; m++)
+                    {
+                        for (int j = 0; j < 4; j++)
+                        {
+                            this.ChannelsList.Add(new BoardBingModel() { IsCheckChannel = false, OnputChannel = m, InputChannel = j });
+                        }
+                    }
+                    string[] getAry = _recvMessageCache.Split(new char[] { '\n' }, 7);
+                    List<int> temp_index = getAry.Select((item, index) => new { item, index }).Where(t => t.item.IndexOf("->") > -1).Select(t => t.index).ToList();
+                    int i = 1;
+                    int j4 = 0;
+                    int j1 = 0;
+                    int j2 = 0;
+                    int j3 = 0;
+                    if (temp_index.Count() < 1)
+                        return;
+                    foreach (var item in temp_index)
+                    {
+                        int len = getAry[item].Count();
+                        Console.WriteLine(len);
+                        if (len == 8)
+                        {
+                            //没有给到其他输出
+                            continue;
+                        }
+                        else if (len == 11)
+                        {
+                            //给到1个输出
+                            j1 = int.Parse(getAry[item].Substring(8, 1));
+                        }
+                        else if (len == 14)
+                        {
+                            //给了两个输出
+                            j1 = int.Parse(getAry[item].Substring(8, 1));
+                            j2 = int.Parse(getAry[item].Substring(11, 1));
+                        }
+                        else if (len == 17)
+                        {
+                            //给了3个输出
+                            j1 = int.Parse(getAry[item].Substring(8, 1));
+                            j2 = int.Parse(getAry[item].Substring(11, 1));
+                            j3 = int.Parse(getAry[item].Substring(14, 1));
+                        }
+                        else if (len == 20)
+                        {
+                            //给了4个输出
+                            j1 = int.Parse(getAry[item].Substring(8, 1));
+                            j2 = int.Parse(getAry[item].Substring(11, 1));
+                            j3 = int.Parse(getAry[item].Substring(14, 1));
+                            j4 = int.Parse(getAry[item].Substring(17, 1));
+
+                        }
+                        var findchannel1 = this.ChannelsList.FirstOrDefault(x => (x.OnputChannel + 1 == j1) && (x.InputChannel + 1) == i);
+                        if (findchannel1 != null)
+                            findchannel1.IsCheckChannel = true;
+                        var findchannel2 = this.ChannelsList.FirstOrDefault(x => (x.OnputChannel + 1 == j2) && (x.InputChannel + 1) == i);
+                        if (findchannel2 != null)
+                            findchannel2.IsCheckChannel = true;
+                        var findchannel3 = this.ChannelsList.FirstOrDefault(x => (x.OnputChannel + 1 == j3) && (x.InputChannel + 1) == i);
+                        if (findchannel3 != null)
+                            findchannel3.IsCheckChannel = true;
+                        var findchannel4 = this.ChannelsList.FirstOrDefault(x => (x.OnputChannel + 1 == j4) && (x.InputChannel + 1) == i);
+                        if (findchannel4 != null)
+                            findchannel4.IsCheckChannel = true;
+                        i++;
+                    }
+                }
+
+                if(_recvMessageCache.IndexOf("Out Channel |  Resolution  | Mode | BackColor ") > -1)
+                {
+                    string[] getPort = _recvMessageCache.Split(new string[] { "*/\n/*" }, StringSplitOptions.None);
+                    Console.WriteLine(_recvMessageCache);
+                    List<int> temp_indexport = getPort.Select((item, index) => new { item, index }).Where(t => t.item.IndexOf("CH-") > -1).Select(t => t.index).ToList();
+                    for (int k = 1; k <= 4; k++)
+                    {
+                        var split = getPort[k].Split(new char[] { '|' });
+                        Console.WriteLine(split);
+                        if (split[0].IndexOf(" CH-2 ") > -1)
+                        {
+                            this.SelectedOutTwoResolution = split[1].Trim();
+                            if (split[3].Trim() == "Blue")
+                                this.SelectedOutTwoBack = "设为蓝屏";
+                            else
+                                this.SelectedOutTwoBack = "设为黑屏";
+                            this.SelectedOutTwoType = split[2].Trim();
+                        }
+                        if (split[0].IndexOf(" CH-1 ") > -1)
+                        {
+                            this.SelectedOutOneResolution = split[1].Trim();
+                            if (split[3].Trim() == "Blue")
+                                this.SelectedOutOneBack = "设为蓝屏";
+                            else
+                                this.SelectedOutOneBack = "设为黑屏";
+                            this.SelectedOutOneType = split[2].Trim();
+                        }
+                        if (split[0].IndexOf(" CH-3 ") > -1)
+                        {
+                            this.SelectedOutThreeResolution = split[1].Trim();
+                            if (split[3].Trim() == "Blue")
+                                this.SelectedOutThreeBack = "设为蓝屏";
+                            else
+                                this.SelectedOutThreeBack = "设为黑屏";
+                            this.SelectedOutThreeType = split[2].Trim();
+                        }
+                        if (split[0].IndexOf(" CH-4 ") > -1)
+                        {
+                            this.SelectedOutFourResolution = split[1].Trim();
+                            if (split[3].Trim() == "Blue")
+                                this.SelectedOutFourBack = "设为蓝屏";
+                            else
+                                this.SelectedOutFourBack = "设为黑屏";
+                            this.SelectedOutFourType = split[2].Trim();
+                        }
+                    }
+                }
+
+                if (_recvMessageCache.IndexOf("Audio Type ") > -1)
+                {
+                    string[] getAudio = _recvMessageCache.Split(new string[] { "\n" }, StringSplitOptions.None);
+                    Console.WriteLine(getAudio);
+                    List<int> temp_indexaudio = getAudio.Select((item, index) => new { item, index }).Where(t => t.item.IndexOf(":") > -1).Select(t => t.index).ToList();
+                    if (temp_indexaudio.Count() < 4)
+                        return;
+                    if (getAudio[temp_indexaudio[0]].IndexOf("Ext.") > -1)
+                    {
+                        this.SelectedOneInAudioName = "模拟音频";
+                    }
+                    else
+                    {
+                        this.SelectedOneInAudioName = "嵌入音频";
+                    }
+                    if (getAudio[temp_indexaudio[1]].IndexOf("Ext.") > -1)
+                    {
+                        this.SelectedTwoInAudioName = "模拟音频";
+                    }
+                    else
+                    {
+                        this.SelectedTwoInAudioName = "嵌入音频";
+                    }
+                    if (getAudio[temp_indexaudio[2]].IndexOf("Ext.") > -1)
+                    {
+                        this.SelectedInThreeAudioName = "模拟音频";
+                    }
+                    else
+                    {
+                        this.SelectedInThreeAudioName = "嵌入音频";
+                    }
+                    if (getAudio[temp_indexaudio[3]].IndexOf("Ext.") > -1)
+                    {
+                        this.SelectedInFourAudioName = "模拟音频";
+                    }
+                    else
+                    {
+                        this.SelectedInFourAudioName = "嵌入音频";
+                    }
+
+                }
+
+                if (_recvMessageCache.IndexOf("EDID Scan") > -1)
                 {
                     this.EDIDPlanList.Clear();
-                    this.EDIDPlanList.Add(new BoardBingModel() { EDEDIDInfo = str });
+                    this.EDIDPlanList.Add(new BoardBingModel() { EDEDIDInfo = _recvMessageCache });
                 }
-                if (str.IndexOf("01-") > -1)
+                if (_recvMessageCache.IndexOf("01-") > -1)
                 {
                     this.ScenePlanList.Clear();
-                    this.ScenePlanList.Add(new BoardBingModel() { PlanInfo = str });
+                    this.ScenePlanList.Add(new BoardBingModel() { PlanInfo = _recvMessageCache });
                 }
-                if (str.IndexOf("Network Information") > -1)
+                if (_recvMessageCache.IndexOf("Network Information") > -1)
                 {
                     this.NetInfoList.Clear();
-                    this.NetInfoList.Add(new BoardBingModel() { NetInfo = str });
+                    this.NetInfoList.Add(new BoardBingModel() { NetInfo = _recvMessageCache });
                 }
-                if (str.IndexOf(" CHN  | Brightness | Contrast | Saturability |  HUE") > -1)
+                if (_recvMessageCache.IndexOf(" CHN  | Brightness | Contrast | Saturability |  HUE") > -1)
                 {
                     this.ColorSettingsList.Clear();
-                    this.ColorSettingsList.Add(new BoardBingModel() { ColorSettings = str });
+                    this.ColorSettingsList.Add(new BoardBingModel() { ColorSettings = _recvMessageCache });
                 }
+                this.IsOverAllMsg = Visibility.Collapsed;
+                this._recvMessageCache = string.Empty;
+                this.mThreadingTimer.Change(Timeout.Infinite, Timeout.Infinite);
             }, true);
+
+            
         }
 
         /// <summary>
@@ -1224,7 +1787,7 @@ namespace MatrixCommandTool.ViewModel
         /// <summary>
         /// 设置DVI
         /// </summary>
-        private void SetDvi(int channelNum)
+        public void SetDvi(int channelNum)
         {
             string sendError = string.Empty;
             if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
@@ -1240,7 +1803,7 @@ namespace MatrixCommandTool.ViewModel
         /// <summary>
         /// 设置HDMI
         /// </summary>
-        private void SetHDMI(int channelNum)
+        public void SetHDMI(int channelNum)
         {
             string sendError = string.Empty;
             if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
@@ -1255,7 +1818,7 @@ namespace MatrixCommandTool.ViewModel
         /// <summary>
         /// 设置黑屏
         /// </summary>
-        private void SetBgBlackScreen(int channelNum)
+        public void SetBgBlackScreen(int channelNum)
         {
             string sendError = string.Empty;
             if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
@@ -1271,7 +1834,7 @@ namespace MatrixCommandTool.ViewModel
         /// <summary>
         /// 设置蓝屏
         /// </summary>
-        private void SetBgBlueScreen(int channelNum)
+        public void SetBgBlueScreen(int channelNum)
         {
             string sendError = string.Empty;
             if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
@@ -1287,7 +1850,7 @@ namespace MatrixCommandTool.ViewModel
         /// <summary>
         /// 设置输出黑屏
         /// </summary>
-        private void SetOutBgBlackScreen(int channelNum)
+        public void SetOutBgBlackScreen(int channelNum)
         {
             string sendError = string.Empty;
             if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
@@ -1303,7 +1866,7 @@ namespace MatrixCommandTool.ViewModel
         /// <summary>
         /// 设置输出蓝屏
         /// </summary>
-        private void SetOutBgBlueScreen(int channelNum)
+        public void SetOutBgBlueScreen(int channelNum)
         {
             string sendError = string.Empty;
             if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
@@ -1319,7 +1882,7 @@ namespace MatrixCommandTool.ViewModel
         /// <summary>
         /// 输入嵌入
         /// </summary>
-        private void SetQianruAudioMode(int channelNum)
+        public void SetQianruAudioMode(int channelNum)
         {
             string sendError = string.Empty;
             if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
@@ -1335,7 +1898,7 @@ namespace MatrixCommandTool.ViewModel
         /// <summary>
         ///输入 模拟
         /// </summary>
-        private void SetMoniAudioMode(int channelNum)
+        public void SetMoniAudioMode(int channelNum)
         {
             string sendError = string.Empty;
             if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
@@ -1348,37 +1911,6 @@ namespace MatrixCommandTool.ViewModel
             }
         }
 
-        /// <summary>
-        /// 输出嵌入
-        /// </summary>
-        private void SetQianruOutAudioMode(int channelNum)
-        {
-            string sendError = string.Empty;
-            if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
-            {
-                this.SendDataBySerialPort($"{channelNum}SETOUT.03C02.");
-            }
-            else
-            {
-                this._scanBoardListRequest.SendIndtruction($"{channelNum}SETIN.03C02.", out sendError);
-            }
-        }
-
-        /// <summary>
-        /// 输出模拟
-        /// </summary>
-        private void SetMoniOutAudioMode(int channelNum)
-        {
-            string sendError = string.Empty;
-            if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
-            {
-                this.SendDataBySerialPort($"{channelNum}SETOUT.01C02.");
-            }
-            else
-            {
-                this._scanBoardListRequest.SendIndtruction($"{channelNum}SETIN.01C02.", out sendError);
-            }
-        }
 
         #endregion
 
@@ -1439,11 +1971,11 @@ namespace MatrixCommandTool.ViewModel
             {
                 if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
                 {
-                    this.SendDataBySerialPort($"{outname}E{indeid.Instructions}.");
+                    this.SendDataBySerialPort($"{outname}L{indeid.Instructions}.");
                 }
                 else
                 {
-                    this._scanBoardListRequest.SendIndtruction($"{outname}E{indeid.Instructions}.", out sendError);
+                    this._scanBoardListRequest.SendIndtruction($"{outname}L{indeid.Instructions}.", out sendError);
                 }
             }
 
@@ -1452,54 +1984,75 @@ namespace MatrixCommandTool.ViewModel
         #endregion
 
         #region 输入输出切换
-        private void SwitchOne(string name)
+
+
+        private void SwitchOne(BoardBingModel boardBing)
         {
+            foreach (var item in this.ChannelsList)
+            {
+                if (item.IsCheckChannel == true && item.OnputChannel == boardBing.OnputChannel)
+                    item.IsCheckChannel = false;
+            }
             string sendError = string.Empty;
-            if (name == "输出1")
+            int outchannel = 0;
+            outchannel=boardBing.OnputChannel + 1;
+            int intputchannel = 0;
+            intputchannel = boardBing.InputChannel + 1;   
+            if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
             {
-                //xVy.
-                if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
-                {
-                    this.SendDataBySerialPort("1V1.");
-                }
-                else
-                {
-                    this._scanBoardListRequest.SendIndtruction("1V1.", out sendError);
-                }
+                this.SendDataBySerialPort($"{intputchannel}V{outchannel}.");
             }
-            else if (name == "输出2")
+            else
             {
-                if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
-                {
-                    this.SendDataBySerialPort("1V2.");
-                }
-                else
-                {
-                    this._scanBoardListRequest.SendIndtruction("1V2.", out sendError);
-                }
+                this._scanBoardListRequest.SendIndtruction($"{intputchannel}V{outchannel}.", out sendError);
             }
-            else if (name == "输出3")
-            {
-                if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
-                {
-                    this.SendDataBySerialPort("1V3.");
-                }
-                else
-                {
-                    this._scanBoardListRequest.SendIndtruction("1V3.", out sendError);
-                }
-            }
-            else if (name == "输出4")
-            {
-                if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
-                {
-                    this.SendDataBySerialPort("1V4.");
-                }
-                else
-                {
-                    this._scanBoardListRequest.SendIndtruction("1V4.", out sendError);
-                }
-            }
+            boardBing.IsCheckChannel = true;
+
+            //if (name == "输出1")
+            //{
+            //    //xVy.
+            //    if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
+            //    {
+            //        this.SendDataBySerialPort("1V1.");
+            //    }
+            //    else
+            //    {
+            //        this._scanBoardListRequest.SendIndtruction("1V1.", out sendError);
+            //    }
+            //}
+            //else if (name == "输出2")
+            //{
+            //    if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
+            //    {
+            //        this.SendDataBySerialPort("1V2.");
+            //    }
+            //    else
+            //    {
+            //        this._scanBoardListRequest.SendIndtruction("1V2.", out sendError);
+            //    }
+            //}
+            //else if (name == "输出3")
+            //{
+            //    if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
+            //    {
+            //        this.SendDataBySerialPort("1V3.");
+            //    }
+            //    else
+            //    {
+            //        this._scanBoardListRequest.SendIndtruction("1V3.", out sendError);
+            //    }
+            //}
+            //else if (name == "输出4")
+            //{
+            //    if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
+            //    {
+            //        this.SendDataBySerialPort("1V4.");
+            //    }
+            //    else
+            //    {
+            //        this._scanBoardListRequest.SendIndtruction("1V4.", out sendError);
+            //    }
+            //}
         }
 
         private void SwitchTwo(string name)
@@ -1605,40 +2158,41 @@ namespace MatrixCommandTool.ViewModel
         private void SwitchFour(string name)
         {
             string sendError = string.Empty;
-            if (name == "输出1")
+            if (name == "输入1")
             {
                 if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
                 {
-                    this.SendDataBySerialPort("4V1.");
+                    this.SendDataBySerialPort("1V4.");
                 }
                 else
                 {
-                    this._scanBoardListRequest.SendIndtruction("4V1.", out sendError);
+                    this._scanBoardListRequest.SendIndtruction("1V4.", out sendError);
                 }
+                this.IsAlreadySetOuputFour = false;
             }
-            else if (name == "输出2")
+            else if (name == "输入2")
             {
                 if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
                 {
-                    this.SendDataBySerialPort("4V2.");
+                    this.SendDataBySerialPort("2V4.");
                 }
                 else
                 {
-                    this._scanBoardListRequest.SendIndtruction("4V2.", out sendError);
+                    this._scanBoardListRequest.SendIndtruction("2V4.", out sendError);
                 }
             }
-            else if (name == "输出3")
+            else if (name == "输入3")
             {
                 if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
                 {
-                    this.SendDataBySerialPort("4V3.");
+                    this.SendDataBySerialPort("3V4.");
                 }
                 else
                 {
-                    this._scanBoardListRequest.SendIndtruction("4V3.", out sendError);
+                    this._scanBoardListRequest.SendIndtruction("3V4.", out sendError);
                 }
             }
-            else if (name == "输出4")
+            else if (name == "输入4")
             {
                 if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
                 {
@@ -1704,20 +2258,20 @@ namespace MatrixCommandTool.ViewModel
             this.OutPutColorChannels.Add(new BoardBingModel() { IsCheckChannel = false, OnputChannel = 4 });
 
             this.NineOneColorAdj.Clear();
-            this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "设置背景为蓝屏，重启有效", IsCheckInstructions = false, Code = "15C02." });
-            this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "设置背景为黑屏，重启有效", IsCheckInstructions = false, Code = "16C02." });
-            this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "关闭背景颜色，无信号输入时关闭输出，重启有效", IsCheckInstructions = false, Code = "17C02." });
-            this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "分辨率设置为 1024 X 768@60Hz ", IsCheckInstructions = false, Code = "01C08." });
-            this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "分辨率设置为 1280 X 720@60Hz ", IsCheckInstructions = false, Code = "02C08." });
-            this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "分辨率设置为 1280 X 1024@60Hz ", IsCheckInstructions = false, Code = "03C08." });
-            this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "分辨率设置为 1366 X 768@60Hz ", IsCheckInstructions = false, Code = "04C08." });
-            this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "分辨率设置为 1400 X 1050@60Hz ", IsCheckInstructions = false, Code = "05C08." });
-            this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "分辨率设置为 1440 X 900@60Hz", IsCheckInstructions = false, Code = "07C08." });
-            this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "分辨率设置为 1600 X 1200@60Hz", IsCheckInstructions = false, Code = "08C08." });
-            this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "分辨率设置为 1680 X 1050@60Hz", IsCheckInstructions = false, Code = "09C08." });
-            this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "分辨率设置为 1920 X 1080@50Hz", IsCheckInstructions = false, Code = "17C08." });
-            this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "分辨率设置为 1920 X 1080@60Hz", IsCheckInstructions = false, Code = "11C08." });
-            this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "分辨率设置为 1920 X 1200@60Hz", IsCheckInstructions = false, Code = "12C08." });
+            this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "1024x768p60", IsCheckInstructions = false, Code = "01C08." });
+            this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "1280x720p50", IsCheckInstructions = false, Code = "02C08." });
+            this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "1280x720p60", IsCheckInstructions = false, Code = "03C08." });
+            this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "1280x1024p60", IsCheckInstructions = false, Code = "04C08." });
+            this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "1400x1050p60", IsCheckInstructions = false, Code = "05C08." });
+            this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "1440x900p60", IsCheckInstructions = false, Code = "07C08." });
+            this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "1600x1200p60", IsCheckInstructions = false, Code = "08C08." });
+            this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "1680x1050p60", IsCheckInstructions = false, Code = "09C08." });
+            this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "1920x1080p30", IsCheckInstructions = false, Code = "18C08." });
+            this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "1920x1080p50", IsCheckInstructions = false, Code = "17C08." });
+            this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "1920x1080p60", IsCheckInstructions = false, Code = "11C08." });
+            this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "1920x1200p60", IsCheckInstructions = false, Code = "12C08." });
+            this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "3840x2160p30", IsCheckInstructions = false, Code = "24C08." });
+            this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "3840x2160p60", IsCheckInstructions = false, Code = "30C08." });
 
             this.InputEdid.Clear();
             this.InputEdid.Add(new BoardBingModel() { Instructions = "1", IsCheckInstructions = false });
@@ -1731,7 +2285,29 @@ namespace MatrixCommandTool.ViewModel
             this.OutputEdid.Add(new BoardBingModel() { Instructions = "3", IsCheckInstructions = false });
             this.OutputEdid.Add(new BoardBingModel() { Instructions = "4", IsCheckInstructions = false });
 
+
         }
+
+        #region 分辨率
+        public void SendResolution(int channelNum,string selesctedInstruction)
+        {
+            string sendError = string.Empty;
+            foreach(var item in this.NineOneColorAdj)
+            {
+                if (item.Instructions == selesctedInstruction)
+                {
+                    if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
+                    {
+                        this.SendDataBySerialPort($"{channelNum}SETOUT.{item.Code}");
+                    }
+                    else
+                    {
+                        this._scanBoardListRequest.SendIndtruction($"{channelNum}SETIN.{item.Code}", out sendError);
+                    }
+                }
+            }
+        }
+        #endregion
 
         /// <summary>
         /// 发送色调调整命令
@@ -1740,38 +2316,38 @@ namespace MatrixCommandTool.ViewModel
         {
             string sendError = string.Empty;
             string sendcode = string.Empty;
-            this.SendColorAdjInstructionsList.Clear();
-            foreach (var item in this.NineOneColorAdj)
-            {
-                if (item.IsCheckInstructions == true)
-                {
+            //this.SendColorAdjInstructionsList.Clear();
+            //foreach (var item in this.NineOneColorAdj)
+            //{
+            //    if (item.IsCheckInstructions == true)
+            //    {
                     if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
                     {
-                        foreach (var channels in this.OutPutChannels)
-                        {
-                            if (channels.IsCheckChannel == true)
-                            {
-                                sendcode = $"{channels.OnputChannel}SETOUT.";
-                                this.SendDataBySerialPort($"{sendcode}{item.Code}");
-                            }
-                        }
+                        //foreach (var channels in this.OutPutChannels)
+                        //{
+                        //    if (channels.IsCheckChannel == true)
+                        //    {
+                                //sendcode = $"{channels.OnputChannel}SETOUT.";
+                                this.SendDataBySerialPort(SendInstructionStr);
+                        //    }
+                        //}
                     }
                     else
                     {
-                        foreach (var channels in this.OutPutChannels)
-                        {
-                            if (channels.IsCheckChannel == true)
-                            {
-                                sendcode = $"{channels.OnputChannel}SETOUT.";
-                                this._scanBoardListRequest.SendIndtruction($"{sendcode}{item.Code}", out sendError);
-                            }
-                        }
+                        //foreach (var channels in this.OutPutChannels)
+                        //{
+                        //    if (channels.IsCheckChannel == true)
+                        //    {
+                        //        sendcode = $"{channels.OnputChannel}SETOUT.";
+                                this._scanBoardListRequest.SendIndtruction(SendInstructionStr, out sendError);
+                        //    }
+                        //}
                        
                     }
-                    this.SendColorAdjInstructionsList.Add(new BoardBingModel() { Instructions = item.Instructions, Code = $"{sendcode}{item.Code}" });
-                    Thread.Sleep(SendIntevar);
-                }
-            }
+                    this.SendColorAdjInstructionsList.Add(new BoardBingModel() { Code = SendInstructionStr });
+                    //Thread.Sleep(SendIntevar);
+                //}
+            //}
         }
 
         public void SendDataBySerialPort(string message)
@@ -1781,6 +2357,9 @@ namespace MatrixCommandTool.ViewModel
             byte[] sendData = null;
             try
             {
+                // 马上启动定时器
+                mThreadingTimer.Change(0, Timeout.Infinite);
+                this._recvMessageCache = String.Empty;
                 sendData = Encoding.UTF8.GetBytes(message.Trim());
                 Console.WriteLine(message);
                 GlobalContext.Current.CurrentVMLocator.MainVM.Serial.Write(sendData, 0, sendData.Length);
