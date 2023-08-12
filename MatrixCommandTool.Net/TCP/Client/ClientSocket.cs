@@ -258,7 +258,7 @@ namespace MatrixCommandTool.Net.TCP
 
             if (message != null)
             {
-                string msg = Encoding.UTF8.GetString(message.Payload);
+                string msg = Encoding.ASCII.GetString(message.Payload);
                 this._recvMessageCache += msg;
             }
             e.SetReadlength(readlength);

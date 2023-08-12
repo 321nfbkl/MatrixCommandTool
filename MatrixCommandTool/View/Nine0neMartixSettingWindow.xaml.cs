@@ -282,6 +282,10 @@ namespace MatrixCommandTool.View
                     {
                         GlobalContext.Current.CurrentVMLocator.NineOneMartixSettingVM.SetOutBgBlackScreen(int.Parse(combox.Tag.ToString()));
                     }
+                    else if (combox.SelectedItem.ToString() == "关闭背景颜色")
+                    {
+                        GlobalContext.Current.CurrentVMLocator.NineOneMartixSettingVM.CloseBackGround(int.Parse(combox.Tag.ToString()));
+                    }
                 }
             }
         }

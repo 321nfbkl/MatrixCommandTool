@@ -8,7 +8,7 @@
         xmlns:controls="clr-namespace:MatrixCommandTool.Controls"
           xmlns:myLib="clr-namespace:MyLoadingLib;assembly=MyLoadingLib"
         mc:Ignorable="d"
-        Title="SetCommandWindow" Height="800" Width="1400"  Style="{StaticResource NoneWindowStyle_Radius}" WindowStartupLocation="CenterScreen"
+        Title="SetCommandWindow" Height="850" Width="1400"  Style="{StaticResource NoneWindowStyle_Radius}" WindowStartupLocation="CenterScreen"
         DataContext="{Binding Source={StaticResource Locator}, Path=NineOneMartixSettingVM}">
     <Grid x:Name="nineonegrid" Background="{DynamicResource BgDefaultColor}">
         <Grid.RowDefinitions>
@@ -88,7 +88,7 @@
                             Grid.Column="1"
                             IsChecked="{Binding IsCheckedSwitch}"
                             Content="输入输出切换"
-                            Click="QuerySwitchChannelClick"
+                            
                             Height="50"
                              Style="{DynamicResource RadioButtonStyle}"/>
             <RadioButton
@@ -125,7 +125,7 @@
                             Content="信号设置"
                             Height="50"
                             Style="{DynamicResource RadioButtonStyle}"
-                            Click="rbtn_signal_Click"
+                            
                             Grid.Column="3"/>
             <RadioButton
                             x:Name="rbtn_seeting"
@@ -148,12 +148,16 @@
                 <TabItem  Header="ColorAdjust"
                     IsSelected="{Binding ElementName=rbtn_color,Path=IsChecked}"
                     Visibility="Collapsed">
-                    <Border BorderBrush="#FFFFFF" BorderThickness="2" Width="1100" Height="300"  HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <Border BorderBrush="#FFFFFF" BorderThickness="2" Width="1100" Height="350"  HorizontalAlignment="Center" VerticalAlignment="Top">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="50"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
                             <StackPanel Orientation="Horizontal">
                                 <TextBox x:Name="search" 
                              Width="300" 
@@ -175,15 +179,16 @@
                          Style="{DynamicResource ButtonStyle}"/>
                             </StackPanel>
                             <Grid Margin="12" Grid.Row="1">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+    
+                                <TextBlock
                     FontSize="16"
                     Foreground="#FFFFFF"
                     Text="已发送命令" />
-                                    <ListBox
+                                <ListBox
                             Grid.Row="1"
                             Margin="0,4"
                             Background="Transparent"
@@ -191,23 +196,23 @@
                             ItemsSource="{Binding SendColorAdjInstructionsList}"
                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
                             ScrollViewer.CanContentScroll="True">
-                                        <ListBox.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <StackPanel />
-                                            </ItemsPanelTemplate>
-                                        </ListBox.ItemsPanel>
-                                        <ListBox.ItemContainerStyle>
-                                            <Style TargetType="{x:Type ListBoxItem}">
-                                                <Setter Property="Template">
-                                                    <Setter.Value>
-                                                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                                            <StackPanel
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel />
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                    <ListBox.ItemContainerStyle>
+                                        <Style TargetType="{x:Type ListBoxItem}">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                                        <StackPanel
                                                     Orientation="Horizontal"
                                                     x:Name="bd"
                                                     Height="48"
                                                     Background="Transparent"
                                                     Cursor="Hand">
-                                                                <TextBlock
+                                                            <TextBlock
                                                                 x:Name="txt_name"
                                                                 Margin="5,0,0,0"
                                                                 HorizontalAlignment="Left"
@@ -215,14 +220,33 @@
                                                                 FontSize="16"
                                                                 Foreground="#FFFFFF"
                                                                 Text="{Binding Code}" />
-                                                            </StackPanel>
-                                                        </ControlTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Style>
-                                        </ListBox.ItemContainerStyle>
-                                    </ListBox>
+                                                        </StackPanel>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </ListBox.ItemContainerStyle>
+                                </ListBox>
+
+                            </Grid>
+
+                            <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1">
+                                <Grid Margin="12">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock
+                                        FontSize="16"
+                                        Foreground="#FFFFFF"
+                                        Text="返回消息" />
+                                    <TextBlock Text="{Binding NotifyMessage,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  
+                                               Grid.Row="1"
+                                               FontSize="16"
+                                               Foreground="#FFFFFF"/>
                                 </Grid>
+                            </StackPanel>
                             <!--</Border>-->
                         </Grid>
                     </Border>
@@ -319,7 +343,7 @@
                                         Grid.Column="3"
                                         Grid.ColumnSpan="2"/>
                             </Grid>
-                       
+
                         </Border>
 
                         <Border BorderBrush="#FFFFFF" BorderThickness="1" Margin="12 0" Visibility="Collapsed">
@@ -445,16 +469,16 @@
                                                         <Condition Property="Selector.IsSelectionActive" Value="false"/>
                                                     </MultiTrigger.Conditions>
                                                     <Setter Property="Foreground" Value="White"/>
-                                                 
+
                                                 </MultiTrigger>
-                                               
+
                                             </Style.Triggers>
                                         </Style>
                                     </DataGrid.CellStyle>
                                     <DataGrid.RowStyle>
                                         <Style TargetType="DataGridRow">
                                             <Setter Property="Background" Value="Transparent"/>
-                                            
+
                                         </Style>
                                     </DataGrid.RowStyle>
                                 </DataGrid>
@@ -575,14 +599,14 @@
                             </Grid>
                         </Border>
                     </Grid>
-                   
+
                 </TabItem>
 
                 <TabItem Header="EDID"
                          IsSelected="{Binding ElementName=rbtn_EDID,Path=IsChecked}"
                          Visibility="Collapsed">
 
-                    <Border BorderBrush="#FFFFFF" BorderThickness="2" Width="1100" Height="300"  HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <Border BorderBrush="#FFFFFF" BorderThickness="2" Width="1100"   HorizontalAlignment="Center" VerticalAlignment="Top">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -710,7 +734,7 @@
                         Content="学习"
                         Command="{Binding SendEdidInstructionsCommand}"
                          Style="{DynamicResource ButtonStyle}"/>
-                               
+
                             </Grid>
 
                             <TextBlock Text="*输入通道x学习输出通道y的EDID" FontSize="16" Foreground="#FFFFFF" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
@@ -770,134 +794,19 @@
                     </Border>
                 </TabItem>
 
-                <TabItem Header="ScenePlan"
-                         IsSelected="{Binding ElementName=rbtn_yuan,Path=IsChecked}"
-                         Visibility="Collapsed">
-
-                    <Grid  HorizontalAlignment="Center" Width="1100">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <Border  BorderBrush="#FFFFFF" BorderThickness="1">
-                                <Grid Margin="12">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
-                                    <Button 
-                        Width="140"
-                        Height="50"
-                        Content="查询所有预案"
-                        Command="{Binding AllPresetScanCommand}"
-                         Style="{DynamicResource ButtonStyle}"/>
-                                    <ListBox
-                                x:Name="inputscene"
-                                Grid.Row="1"
-                                Margin="8,0,0,0"
-                                Background="Transparent"
-                                BorderThickness="0"
-                                ItemTemplate="{StaticResource BoardItemTemplate}"
-                                ItemsSource="{Binding ScenePlanList}"
-                                ScrollViewer.CanContentScroll="True"
-                                SelectedItem="{Binding SelectedScenePlan}">
-                                        <ListBox.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <WrapPanel Orientation="Horizontal" Margin="5 0 0 0"/>
-                                            </ItemsPanelTemplate>
-                                        </ListBox.ItemsPanel>
-                                        <ListBox.ItemContainerStyle>
-                                            <Style TargetType="{x:Type ListBoxItem}">
-                                                <Setter Property="Template">
-                                                    <Setter.Value>
-                                                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                                            <StackPanel
-                                                    Orientation="Horizontal"
-                                                    x:Name="bd"
-                                                    Background="Transparent"
-                                                    Cursor="Hand">
-                                                                <TextBlock
-                                                                x:Name="txt_name"
-                                                                Margin="5,0,0,0"
-                                                                HorizontalAlignment="Left"
-                                                                VerticalAlignment="Center"
-                                                                FontSize="16"
-                                                                Foreground="Black"
-                                                                Text="{Binding PlanInfo}" />
-                                                            </StackPanel>
-                                                        </ControlTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Style>
-                                        </ListBox.ItemContainerStyle>
-                                    </ListBox>
-                                </Grid>
-                            </Border>
-
-                            <Border Grid.Column="1"  BorderBrush="#FFFFFF" BorderThickness="1">
-                                <Grid Margin="12">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="50"/>
-                                        <RowDefinition Height="20"/>
-                                        <RowDefinition Height="80"/>
-                                        <RowDefinition Height="80"/>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="100"/>
-                                        <ColumnDefinition Width="100"/>
-                                        <ColumnDefinition Width="100"/>
-                                        <ColumnDefinition Width="100"/>
-                                        <ColumnDefinition Width="100"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <StackPanel Grid.ColumnSpan="4" Orientation="Horizontal" >
-                                        <TextBlock Text="修改" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        <TextBox Text="{Binding ModifyPlanIndex}" FontSize="14" Foreground="Black" Background="#ffffff" Width="60" Height="30" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        <TextBlock Text="号预案名称为" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        <TextBox Text="{Binding NewPlanName}" FontSize="16" Foreground="Black" Background="#ffffff" Width="150" Height="30"/>
-                                    </StackPanel>
-                                    
-                                    <TextBlock Grid.Row="1"  VerticalAlignment="Top" Grid.Column="2" Grid.ColumnSpan="3" Text="*修改的场景名称长度不超过10"  FontSize="16" Foreground="Black" HorizontalAlignment="Left"/>
-                                   
-                                    <StackPanel Grid.Row="2" Orientation="Horizontal" Grid.ColumnSpan="4"  >
-                                        <TextBlock Text="选择" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        <TextBox TextAlignment="Center" Text="{Binding PlanIndex,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontSize="16" Foreground="Black" Background="#ffffff" Width="60" Height="30"/>
-                                        <TextBlock Text="号预案" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
-                                    </StackPanel>
-                                    <!--<StackPanel Grid.Row="3" Orientation="Horizontal" Grid.ColumnSpan="4"  >
-                                        <TextBlock Text="保存场景预案到新增序号" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </StackPanel>-->
-                                    
-                                    <StackPanel Grid.Row="3" Orientation="Horizontal" Grid.ColumnSpan="4" >
-                                        <TextBlock Text="保存预案到序号" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        <TextBox Text="{Binding SavePlanToIndex}" TextAlignment="Center" FontSize="16" Foreground="Black" Background="#ffffff" Width="60" Height="30"/>
-
-
-                                    </StackPanel>
-                                    <Button Width="60"  Grid.Column="4"   Height="20" Content="确定修改" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding ModifyPlanNameCommand}" Style="{DynamicResource ButtonStyle}"/>
-                                    <Button Width="60"  Grid.Row="2" Grid.Column="4"  Height="20" Content="确定选择" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding ChoosePlanCommand}" Style="{DynamicResource ButtonStyle}"/>
-                                    <!--<Button Width="60" Grid.Row="3" Grid.Column="4"   Height="20" Content="确定新增" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding SendColorAdjInstructionsCommand}" Style="{DynamicResource ButtonStyle}"/>-->
-                                    <Button Width="60" Grid.Row="3" Grid.Column="4"  Height="20" Content="确定保存" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding SavePlanAsIndexCommand}" Style="{DynamicResource ButtonStyle}"/>
-                                </Grid>
-
-                            </Border>
-                        </Grid>
-                    </Grid>
-                </TabItem>
-
                 <TabItem Header="SignalSet"
                          IsSelected="{Binding ElementName=rbtn_signal,Path=IsChecked}"
                          Visibility="Collapsed">
-                    <Border BorderBrush="#FFFFFF" BorderThickness="2" Width="1100" Height="300"  HorizontalAlignment="Center" VerticalAlignment="Top" >
-                        <Grid  HorizontalAlignment="Left" Width="1100" Height="300" >
+                    <Border BorderBrush="#FFFFFF" BorderThickness="2" Width="1100"   HorizontalAlignment="Center" VerticalAlignment="Top" >
+                        <Grid  HorizontalAlignment="Left">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1.5*"/>
                                 <ColumnDefinition Width="2*"/>
                             </Grid.ColumnDefinitions>
-
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
@@ -961,6 +870,7 @@
                                     ItemsSource="{Binding AudioList}"
                                     SelectedItem="{Binding SelectedInThreeAudioName}"
                                     Grid.Row="4"
+                                    Tag="3"
                                     Grid.Column="2"
                                      DropDownClosed="ComboBox_DropDownClosed"/>
                                 <ComboBox
@@ -975,6 +885,7 @@
                                     SelectedItem="{Binding SelectedInFourAudioName}"
                                     DropDownClosed="ComboBox_DropDownClosed"
                                     Grid.Row="5"
+                                    Tag="4"
                                     Grid.Column="2"/>
                                 <TextBlock Text="4K60" FontSize="14" Foreground="#FFFFFF" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 <TextBlock Text="4K60" FontSize="14" Foreground="#FFFFFF" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -1006,8 +917,8 @@
                                 <Button Content="获取输出板卡" Command="{Binding QueryPortScanCommand}" Margin="0 6 0 0" Style="{DynamicResource ButtonStyle}" Grid.ColumnSpan="5" Foreground="#ffffff" FontSize="16" Width="220" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 <TextBlock Text="编号" FontSize="14" Foreground="#ffffff" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 <TextBlock Text="输出格式" FontSize="14" Foreground="#ffffff" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                               
-                                <TextBlock Text="背景" FontSize="14" Foreground="#ffffff" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                                <TextBlock Text="背景(重启有效)" FontSize="14" Foreground="#ffffff" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 <TextBlock Text="输出类型" FontSize="14" Foreground="#ffffff" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 <TextBlock Text="分辨率" FontSize="14" Foreground="#ffffff" Grid.Row="1" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
@@ -1019,9 +930,8 @@
                                 <TextBlock Text="2" FontSize="14" Foreground="#ffffff" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 <TextBlock Text="3" FontSize="14" Foreground="#ffffff" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 <TextBlock Text="4" FontSize="14" Foreground="#ffffff" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                      
-                                <!--背景-->
 
+                                <!--#region 背景-->
                                 <ComboBox
                                     Width="140" Height="40" 
                                     Background="#ffffff"
@@ -1034,6 +944,7 @@
                                     SelectedItem="{Binding SelectedOutOneBack}"
                                     Grid.Row="2"
                                     Grid.Column="2"
+                                    Tag="1"
                                     DropDownClosed="ComboBoxBack_DropDownClosed"/>
                                 <ComboBox
                                     Width="140" Height="40" 
@@ -1046,6 +957,7 @@
                                     ItemsSource="{Binding BackList}"
                                     SelectedItem="{Binding SelectedOutTwoBack}"
                                     Grid.Row="3"
+                                    Tag="2"
                                     Grid.Column="2"
                                     DropDownClosed="ComboBoxBack_DropDownClosed"/>
                                 <ComboBox
@@ -1059,6 +971,7 @@
                                     ItemsSource="{Binding BackList}"
                                     SelectedItem="{Binding SelectedOutThreeBack}"
                                     Grid.Row="4"
+                                    Tag="3"
                                     Grid.Column="2"
                                     DropDownClosed="ComboBoxBack_DropDownClosed"/>
                                 <ComboBox
@@ -1066,6 +979,7 @@
                                     Background="#ffffff"
                                     Foreground="Black"
                                     FontSize="16"
+                                    Tag="4"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     SelectedIndex="0"                                
@@ -1074,8 +988,9 @@
                                     Grid.Row="5"
                                     Grid.Column="2"
                                     DropDownClosed="ComboBoxBack_DropDownClosed"/>
-                                <!--输出类型-->
+                                <!--#endregion-->
 
+                                <!--#region 输出类型-->
                                 <ComboBox
                                     Width="140" Height="40" 
                                     Background="#ffffff"
@@ -1087,6 +1002,7 @@
                                     ItemsSource="{Binding TypeList}"
                                     SelectedItem="{Binding SelectedOutOneType}"
                                     Grid.Row="2"
+                                    Tag="1"
                                     Grid.Column="3"
                                     DropDownClosed="ComboBoxType_DropDownClosed"/>
                                 <ComboBox
@@ -1100,6 +1016,7 @@
                                     ItemsSource="{Binding TypeList}"
                                     SelectedItem="{Binding SelectedOutTwoType}"
                                     Grid.Row="3"
+                                    Tag="2"
                                     Grid.Column="3"
                                      DropDownClosed="ComboBoxType_DropDownClosed"/>
                                 <ComboBox
@@ -1113,6 +1030,7 @@
                                     ItemsSource="{Binding TypeList}"
                                     SelectedItem="{Binding SelectedOutThreeType}"
                                     Grid.Row="4"
+                                    Tag="3"
                                     Grid.Column="3"
                                      DropDownClosed="ComboBoxType_DropDownClosed"/>
                                 <ComboBox
@@ -1126,10 +1044,12 @@
                                     ItemsSource="{Binding TypeList}"
                                     SelectedItem="{Binding SelectedOutFourType}"
                                     Grid.Row="5"
+                                    Tag="4"
                                     Grid.Column="3"
                                      DropDownClosed="ComboBoxType_DropDownClosed"/>
-
-                                <!--分辨率-->
+                                <!--#endregion-->
+                                
+                                <!--#region 分辨率-->
                                 <ComboBox
                                     Width="140" Height="40" 
                                     Background="#ffffff"
@@ -1141,6 +1061,7 @@
                                     ItemsSource="{Binding ResolutionList}"
                                     SelectedItem="{Binding SelectedOutOneResolution}"
                                     Grid.Row="2"
+                                    Tag="1"
                                     Grid.Column="4"
                                     DropDownClosed="ComboBoxResolution_DropDownClosed"/>
                                 <ComboBox
@@ -1154,6 +1075,7 @@
                                     ItemsSource="{Binding ResolutionList}"
                                     SelectedItem="{Binding SelectedOutTwoResolution}"
                                     Grid.Row="3"
+                                    Tag="2"
                                     Grid.Column="4"
                                      DropDownClosed="ComboBoxResolution_DropDownClosed"/>
                                 <ComboBox
@@ -1167,6 +1089,7 @@
                                     ItemsSource="{Binding ResolutionList}"
                                     SelectedItem="{Binding SelectedOutThreeResolution}"
                                     Grid.Row="4"
+                                    Tag="3"
                                     Grid.Column="4"
                                      DropDownClosed="ComboBoxResolution_DropDownClosed"/>
                                 <ComboBox
@@ -1180,9 +1103,13 @@
                                     ItemsSource="{Binding ResolutionList}"
                                     SelectedItem="{Binding SelectedOutFourResolution}"
                                     Grid.Row="5"
+                                    Tag="4"
                                     Grid.Column="4"
                                      DropDownClosed="ComboBoxResolution_DropDownClosed"/>
+                                <!--#endregion-->
                             </Grid>
+
+                            <TextBlock Grid.Column="1"  Text="*修改背景颜色后，重启有效" FontSize="16" Foreground="#ffffff" Grid.Row="1"  HorizontalAlignment="Left" VerticalAlignment="Center"/>
                         </Grid>
                     </Border>
                 </TabItem>
@@ -1202,24 +1129,24 @@
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="180"/>
                                     <ColumnDefinition Width="250"/>
                                     <ColumnDefinition Width="100"/>
                                     <ColumnDefinition Width="200"/>
                                     <!--<ColumnDefinition Width="120"/>
                                     <ColumnDefinition Width="180"/>-->
-                           
-                                </Grid.ColumnDefinitions>
-                 
-                                <Button Width="120" Grid.Column="0" Height="40" Content="获取网口信息" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding QueryNetSetCommand}" Style="{DynamicResource ButtonStyle}"/>
-                                <Button Width="120" Grid.Column="5" Height="40" Content="复位网口设置" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ResetNetSetCommand}" Style="{DynamicResource ButtonStyle}"/>
-                                <Button Width="120" Grid.Column="1" Height="40" Content="设置IP" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ModifyIPCommand}" Style="{DynamicResource ButtonStyle}"/>
-                                <Button Width="120" Grid.Column="1" Grid.Row="1" Height="40" Content="设置端口号" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ModifyPortCommand}" Style="{DynamicResource ButtonStyle}"/>
-                                <Button Width="120" Grid.Column="1" Grid.Row="2"  Height="40" Content="设置子网掩码" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ModifyNetmaskCommand}" Style="{DynamicResource ButtonStyle}"/>
-                                <Button Width="120" Grid.Column="1" Grid.Row="3" Height="40" Content="设置网关" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ModifyGatewayCommand}" Style="{DynamicResource ButtonStyle}"/>
-                                <Button Width="120" Grid.Column="5" Grid.Row="1"  Height="40" Content="恢复出厂设置" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ResetAllSetingCommand}" Style="{DynamicResource ButtonStyle}"/>
 
-                            <!--网口信息-->
+                                </Grid.ColumnDefinitions>
+
+                                <Button Width="180" Grid.Column="0" Height="40" Content="获取网口信息" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding QueryNetSetCommand}" Style="{DynamicResource ButtonStyle}"/>
+                                <Button Width="180" Grid.Column="5" Height="40" Content="复位网口设置，重启有效" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ResetNetSetCommand}" Style="{DynamicResource ButtonStyle}"/>
+                                <Button Width="180" Grid.Column="1" Height="40" Content="设置IP，重启有效" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ModifyIPCommand}" Style="{DynamicResource ButtonStyle}"/>
+                                <Button Width="180" Grid.Column="1" Grid.Row="1" Height="40" Content="设置端口号，重启有效" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ModifyPortCommand}" Style="{DynamicResource ButtonStyle}"/>
+                                <Button Width="180" Grid.Column="1" Grid.Row="2"  Height="40" Content="设置子网掩码，重启有效" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ModifyNetmaskCommand}" Style="{DynamicResource ButtonStyle}"/>
+                                <Button Width="180" Grid.Column="1" Grid.Row="3" Height="40" Content="设置网关，重启有效" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ModifyGatewayCommand}" Style="{DynamicResource ButtonStyle}"/>
+                                <Button Width="180" Grid.Column="5" Grid.Row="1"  Height="40" Content="恢复出厂设置，重启有效" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ResetAllSetingCommand}" Style="{DynamicResource ButtonStyle}"/>
+
+                                <!--网口信息-->
                                 <ListBox
                                     Grid.Row="1"
                                     Grid.RowSpan="3"
@@ -1262,7 +1189,7 @@
                                     </ListBox.ItemContainerStyle>
                                 </ListBox>
 
-                            <!--设置信息-->
+                                <!--设置信息-->
                                 <TextBox Margin="12" Grid.Column="2" TextAlignment="Left" HorizontalAlignment="Left" Text="{Binding SetIpAddr,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontSize="16" Foreground="Black" Background="#ffffff" Width="250" Height="40"/>
                                 <TextBox Margin="12" Grid.Column="2" Grid.Row="1" TextAlignment="Left" HorizontalAlignment="Left" Text="{Binding SetPort,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontSize="16" Foreground="Black" Background="#ffffff" Width="250" Height="40"/>
                                 <TextBox Margin="12" Grid.Column="2" Grid.Row="2" TextAlignment="Left" HorizontalAlignment="Left" Text="{Binding SetNetMask,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontSize="16" Foreground="Black" Background="#ffffff" Width="250" Height="40"/>
@@ -1653,7 +1580,7 @@
                     </ListBox.ItemContainerStyle>
                 </ListBox>
             </Grid>
-            
+
         </Border>
 
 
