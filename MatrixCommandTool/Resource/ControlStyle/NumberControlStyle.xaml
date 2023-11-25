@@ -1,0 +1,74 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:MatrixCommandTool.Controls" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+                    xmlns:cvt="clr-namespace:MatrixCommandTool.Converter">
+    <cvt:BooleanToVisibilityConverter x:Key="numberControlBool2Vis" />
+    <Style TargetType="{x:Type controls:NumberControl}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:NumberControl}">
+                    <Border>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="auto " />
+                            </Grid.ColumnDefinitions>
+
+                            <!--减号-->
+
+                            <Button x:Name="PART_ButtonReduce" 
+                                    Grid.Column="0"
+                                    Width="20"
+                                    Height="20"
+                                    Margin="6"
+                                    Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
+                                    Padding="0" 
+                                    Background="{x:Null}" 
+                                    Foreground="#FFFFFF" 
+                                    BorderBrush="{x:Null}"
+                                    Cursor="Hand"
+                                    IsEnabled="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=IsMinNumber,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                    Visibility="Visible" >
+                                <materialDesign:PackIcon Kind="Minimize"/>
+                            </Button>
+
+
+                            <!--加号-->
+                            <Button
+                                x:Name="PART_ButtonAdd"
+                                Grid.Column="2"
+                                Width="20"
+                                Height="20"
+                                Margin="6"
+                                Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
+                                Padding="0" 
+                                Background="{x:Null}" 
+                                Foreground="#FFFFFF" 
+                                BorderBrush="{x:Null}"
+                                Cursor="Hand"
+                                IsEnabled="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsMaxNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Visibility="Visible" >
+                                <materialDesign:PackIcon Kind="Add"/>
+                            </Button>
+
+                            <TextBox
+                                x:Name="PART_TextBoxNumber"
+                                Grid.Column="1"
+                                        Width="180"
+                                        Background="#FFFFFF"
+                                        Foreground="Black"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                VerticalContentAlignment="Center"
+                                BorderThickness="0"
+                                FontSize="14"
+                                InputMethod.IsInputMethodEnabled="False"
+                                Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                TextAlignment="Center" />
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

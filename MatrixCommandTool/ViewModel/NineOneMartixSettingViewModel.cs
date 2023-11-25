@@ -285,6 +285,16 @@ namespace MatrixCommandTool.ViewModel
             set => Set(ref this.mSetGateway, value);
         }
 
+        private string mBoardTypeInfo;
+        /// <summary>
+        /// 板卡型号和软件件版本信息
+        /// </summary>
+        public string BoardTypeInfo
+        {
+            get => this.mBoardTypeInfo;
+            set => Set(ref this.mBoardTypeInfo, value);
+        }
+
         private string mNotifyMessage;
         /// <summary>
         /// 接受到的消息
@@ -810,6 +820,121 @@ namespace MatrixCommandTool.ViewModel
         }
         #endregion
 
+        #region 色调调整
+
+        private int mColorSetValue;
+        /// <summary>
+        /// 设置色调
+        /// </summary>
+        public int ColorSetValue
+        {
+            get => this.mColorSetValue;
+            set
+            {
+                if (Set(ref this.mColorSetValue, value))
+                {
+                    SendColorDragDelta(value);
+                }
+            }
+        }
+
+        private int mContractSetValue;
+        /// <summary>
+        /// 设置对比度
+        /// </summary>
+        public int ContractSetValue
+        {
+            get => this.mContractSetValue;
+            set
+            {
+                if (Set(ref this.mContractSetValue, value))
+                {
+                    SendContrastDragDelta(value);
+                }
+            }
+        }
+
+        private int mSaturationSetValue;
+        /// <summary>
+        /// 设置饱和度
+        /// </summary>
+        public int SaturationSetValue
+        {
+            get => this.mSaturationSetValue;
+            set
+            {
+                if (Set(ref this.mSaturationSetValue, value))
+                {
+                    SendSaturationDragDelta(value);
+                }
+            }
+        }
+
+        private int mRSetValue;
+        /// <summary>
+        /// 设置R值
+        /// </summary>
+        public int RSetValue
+        {
+            get => this.mRSetValue;
+            set
+            {
+                if (Set(ref this.mRSetValue, value))
+                {
+                    SendRVauleDragDelta(value);
+                }
+            }
+        }
+
+        private int mGSetValue;
+        /// <summary>
+        /// 设置G值
+        /// </summary>
+        public int GSetValue
+        {
+            get => this.mGSetValue;
+            set
+            {
+                if (Set(ref this.mGSetValue, value))
+                {
+                    SendGVauleDragDelta(value);
+                }
+            }
+        }
+
+        private int mBSetValue;
+        /// <summary>
+        /// 设置B值
+        /// </summary>
+        public int BSetValue
+        {
+            get => this.mBSetValue;
+            set
+            {
+                if (Set(ref this.mBSetValue, value))
+                {
+                    SendBVauleDragDelta(value);
+                }
+            }
+        }
+
+        private int mLightSetValue;
+        /// <summary>
+        /// 设置亮度
+        /// </summary>
+        public int LightSetValue
+        {
+            get => this.mLightSetValue;
+            set
+            {
+                if (Set(ref this.mLightSetValue, value))
+                {
+                    SendBrightnessDragDelta(value);
+                }
+            }
+        }
+        #endregion
+
         /// <summary>
         /// 分页显示
         /// </summary>
@@ -943,6 +1068,8 @@ namespace MatrixCommandTool.ViewModel
         public ICommand QueryPortScanCommand { get; set; }
 
         public ICommand QueryAudioCommand { get; set; }
+
+        public ICommand QueryBoardTypeCommand { get; set; }
         #endregion
 
         public NineOneMartixSettingViewModel(ClientSocket clientSocket, ScanBoardListRequest scanBoardListRequest)
@@ -961,6 +1088,7 @@ namespace MatrixCommandTool.ViewModel
             this.ScanAllEdidPlanCommand = new RelayCommand(ScanAllEdidPlan);
             this.AllPresetScanCommand = new RelayCommand(AllPresetScan);
             this.QueryNetSetCommand = new RelayCommand(QueryNetSet);
+            this.QueryBoardTypeCommand = new RelayCommand(QueryBoardType);
 
             this.SwitchBuzzerCommand = new RelayCommand(SwitchBuzzer);
             this.ModifyPlanNameCommand = new RelayCommand(ModifyPlanName);
@@ -994,6 +1122,7 @@ namespace MatrixCommandTool.ViewModel
             this.ResolutionList.Add("1280x720p60");
             this.ResolutionList.Add("1280x1024p60");
             this.ResolutionList.Add("1366x768p60");
+            this.ResolutionList.Add("1400x900p60");
             this.ResolutionList.Add("1400x1050p60");
             this.ResolutionList.Add("1600x1200p60");
             this.ResolutionList.Add("1680x1050p60");
@@ -1003,6 +1132,9 @@ namespace MatrixCommandTool.ViewModel
             this.ResolutionList.Add("1920x1200p60");
             this.ResolutionList.Add("3840x2160p30");
             this.ResolutionList.Add("3840x2160p60");
+            this.ResolutionList.Add("2048x1152p60");
+            this.ResolutionList.Add("2560x1440p60");
+            this.ResolutionList.Add("2560x1600p60");
 
             this.PagesSource.Add(new BoardBingModel() { OutputName = "输入1" });
             this.PagesSource.Add(new BoardBingModel() { OutputName = "输入2" });
@@ -1044,8 +1176,40 @@ namespace MatrixCommandTool.ViewModel
             initData();
             GlobalContext.Current.CurrentVMLocator.MainVM.Serial.DataReceived += Serial_DataReceived;
             this._socket.NotifyFactory.ReceiveMessageChangedEvent += NotifyFactory_ReceiveMessageChangedEvent;
+
+            this._socket.NotifyFactory.ConnectionChangedEvent += NotifyFactory_ConnectionChangedEvent; ;
             // 初始化一个定时器：具有回调函数，无状态的，不启动，不终止定时器
 
+        }
+
+        /// <summary>
+        /// 查询板卡型号
+        /// </summary>
+        private void QueryBoardType()
+        {
+            string queryerror = string.Empty;
+            if (GlobalContext.Current.CurrentVMLocator.MainVM.IsOpen == true && GlobalContext.Current.CurrentVMLocator.MainVM.Serial != null)
+            {
+                this.SendDataBySerialPort("<Type>");
+            }
+            else
+            {
+                this._scanBoardListRequest.SendIndtruction("<Type>", out queryerror);
+            }
+        }
+
+        private void NotifyFactory_ConnectionChangedEvent(TCPConnectionChangedNotify notify)
+        {
+            if (notify.Status == true)
+            {
+                this._socket.NotifyFactory.ConnectionChangedEvent -= NotifyFactory_ConnectionChangedEvent;
+            }
+            else
+            {
+                MessageBox.Show("连接失败");
+                Console.WriteLine("连接失败!");
+            }
+                
         }
 
         private void QuerySwitchChannel()
@@ -1127,29 +1291,62 @@ namespace MatrixCommandTool.ViewModel
         {
             this.IsOverAllMsg = Visibility.Visible;
             if (notify.Message == null)
+            {
+                //MessageBox.Show("无数据返回，请检查连接");
+                //this.IsOverAllMsg = Visibility.Collapsed;
                 return;
+            }
             Console.WriteLine(notify.Message);
             if (flagSend)
                 this.NotifyMessage = notify.Message;
+            if(notify.Message.IndexOf("SOFTWARE VERSION") > -1)
+            {
+                App.RunInUIThread(() =>
+                {
+                    MessageBox.Show("<SET SUCCESSFUL!>");
+                    this.BoardTypeInfo = notify.Message.Replace("*","");
+                    this.IsOverAllMsg = Visibility.Collapsed;
+                }, true);
+            }
+            if(notify.Message.IndexOf("The setting is successful, restart to take effect!") > -1)
+            {
+                App.RunInUIThread(() =>
+                {
+                    MessageBox.Show("<SET SUCCESSFUL!,RESTART TO TAKE EFFECT!>");
+                    this.IsOverAllMsg = Visibility.Collapsed;
+                }, true);
+            }  
             if(notify.Message.IndexOf("Command Help") > -1)
             {
-                MessageBox.Show("<SET SUCCESSFUL!>");
+                App.RunInUIThread(() =>
+                {
+                    MessageBox.Show("<SET SUCCESSFUL!>");
                 this.IsOverAllMsg = Visibility.Collapsed;
-            }
-            if (notify.Message.IndexOf("Modified successfully, restarting!\n") > -1)
+            }, true);
+        }
+            if (notify.Message.IndexOf("Modified successfully") > -1)
             {
-                MessageBox.Show("Modified successfully, restarting!\n");
+                App.RunInUIThread(() =>
+                {
+                    MessageBox.Show("Modified successfully!\n");
                 this.IsOverAllMsg = Visibility.Collapsed;
+                }, true);
             }
             if (notify.Message.IndexOf("SET SUCCESSFUL") > -1)
             {
-                MessageBox.Show("<SET SUCCESSFUL!>");
-                this.IsOverAllMsg = Visibility.Collapsed;
+                App.RunInUIThread(() =>
+                {
+                    MessageBox.Show("<SET SUCCESSFUL!>");
+                    this.IsOverAllMsg = Visibility.Collapsed;
+                }, true);
             }
             if (notify.Message.IndexOf("Setting Failed") > -1)
             {
-                MessageBox.Show("<Setting Failed!>");
+                App.RunInUIThread(() =>
+                {
+                    MessageBox.Show("<Setting Failed!>");
                 this.IsOverAllMsg = Visibility.Collapsed;
+                }, true);
             }
             if (notify.Message.IndexOf("EDID Scan") > -1)
             {
@@ -1225,7 +1422,7 @@ namespace MatrixCommandTool.ViewModel
                             //没有给到其他输出
                             //continue;
                         }
-                        else if (len == 9)
+                        else if (len == 11)
                         {
                             //给到1个输出
                             j1 = int.Parse(getAry[item].Substring(8, 1));
@@ -1376,8 +1573,6 @@ namespace MatrixCommandTool.ViewModel
                     this.IsOverAllMsg = Visibility.Collapsed;
                 }, true);
             }
-
-
         }
 
         #region 色彩参数
@@ -1592,18 +1787,25 @@ namespace MatrixCommandTool.ViewModel
         private void MessageRecvFinished(object _)
         {
             if (string.IsNullOrEmpty(this._recvMessageCache))
+            {
+                MessageBox.Show("无数据返回，请检查连接");
                 return;
+            }
             if (flagSend)
                 this.NotifyMessage = _recvMessageCache;
             App.RunInUIThread(() =>
             {
+                if (_recvMessageCache.IndexOf("The setting is successful, restart to take effect!") > -1)
+                {
+                    MessageBox.Show("<SET SUCCESSFUL!,RESTART TO TAKE EFFECT!>");
+                }
                 if (_recvMessageCache.IndexOf("Command Help") > -1)
                 {
                     MessageBox.Show("<SET SUCCESSFUL!>");
                 }
-                if (_recvMessageCache.IndexOf("Modified successfully, restarting") > -1)
+                if (_recvMessageCache.IndexOf("Modified successfully") > -1)
                 {
-                    MessageBox.Show("Modified successfully, restarting!\n");
+                    MessageBox.Show("Modified successfully!\n");
                 }
                 if (_recvMessageCache.IndexOf("SET SUCCESSFUL") > -1)
                 {
@@ -2350,6 +2552,9 @@ namespace MatrixCommandTool.ViewModel
             this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "1920x1200p60", IsCheckInstructions = false, Code = "12C08." });
             this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "3840x2160p30", IsCheckInstructions = false, Code = "24C08." });
             this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "3840x2160p60", IsCheckInstructions = false, Code = "30C08." });
+            this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "2048x1152p60", IsCheckInstructions = false, Code = "31C08." });
+            this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "2560x1440p60", IsCheckInstructions = false, Code = "32C08." });
+            this.NineOneColorAdj.Add(new BoardBingModel() { Instructions = "2560x1600p60", IsCheckInstructions = false, Code = "33C08." });
 
             this.InputEdid.Clear();
             this.InputEdid.Add(new BoardBingModel() { Instructions = "1", IsCheckInstructions = false });

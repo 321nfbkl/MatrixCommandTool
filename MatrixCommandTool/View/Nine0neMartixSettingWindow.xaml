@@ -69,69 +69,52 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <RadioButton
-                            x:Name="rbtn_color"
-                            HorizontalContentAlignment="Center"
-                            VerticalContentAlignment="Top"
-                            Checked="rbtn_color_Checked"
-                            GroupName="Tb"
-                            IsChecked="{Binding IsCheckedColor}"
-                            Content="色调及分辨率调整"
-                            Height="50"
-                
-                            Style="{DynamicResource RadioButtonStyle}"/>
-            <RadioButton
                             x:Name="rbtn_switch"
                             HorizontalContentAlignment="Center"
                             VerticalContentAlignment="Top"
-                            Checked="rbtn_switch_Checked"
                             GroupName="Tb"
-                            Grid.Column="1"
+                            Grid.Column="0"
                             IsChecked="{Binding IsCheckedSwitch}"
                             Content="输入输出切换"
-                            
                             Height="50"
                              Style="{DynamicResource RadioButtonStyle}"/>
+            
+            <RadioButton
+                            x:Name="rbtn_color"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Top"
+                            GroupName="Tb"
+                            Grid.Column="3"
+                            IsChecked="{Binding IsCheckedColor}"
+                            Content="指令发送"
+                            Height="50" 
+                            Style="{DynamicResource RadioButtonStyle}"/>
+
             <RadioButton
                             x:Name="rbtn_EDID"
                             HorizontalContentAlignment="Center"
                             VerticalContentAlignment="Top"
-                            Checked="rbtn_EDID_Checked"
                             GroupName="Tb"
                             IsChecked="{Binding IsCheckedEDID}"
                             Content="EDID学习"
                             Height="50"
                             Style="{DynamicResource RadioButtonStyle}"
                             Grid.Column="2"/>
-            <RadioButton
-                            x:Name="rbtn_yuan"
-                            HorizontalContentAlignment="Center"
-                            VerticalContentAlignment="Top"
-                            Checked="rbtn_yuan_Checked"
-                            GroupName="Tb"
-                            IsChecked="{Binding IsCheckedScene}"
-                            Content="预案场景"
-                            Visibility="Hidden"
-                            Height="50"
-                            Style="{DynamicResource RadioButtonStyle}"
-                            Grid.Column="3"/>
 
             <RadioButton
                             x:Name="rbtn_signal"
                             HorizontalContentAlignment="Center"
                             VerticalContentAlignment="Top"
-                            Checked="rbtn_signal_Checked"
                             GroupName="Tb"
                             IsChecked="{Binding IsCheckedSignal}"
                             Content="信号设置"
                             Height="50"
-                            Style="{DynamicResource RadioButtonStyle}"
-                            
-                            Grid.Column="3"/>
+                            Grid.Column="1"
+                            Style="{DynamicResource RadioButtonStyle}"/>
             <RadioButton
                             x:Name="rbtn_seeting"
                             HorizontalContentAlignment="Center"
                             VerticalContentAlignment="Top"
-                            Checked="rbtn_seetingl_Checked"
                             GroupName="Tb"
                             IsChecked="{Binding IsCheckedSetting}"
                             Content="系统设置"
@@ -145,117 +128,10 @@
                     Background="Transparent"
                     BorderThickness="1"
                 BorderBrush="#ffffff">
-                <TabItem  Header="ColorAdjust"
-                    IsSelected="{Binding ElementName=rbtn_color,Path=IsChecked}"
-                    Visibility="Collapsed">
-                    <Border BorderBrush="#FFFFFF" BorderThickness="2" Width="1100" Height="350"  HorizontalAlignment="Center" VerticalAlignment="Top">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="50"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBox x:Name="search" 
-                             Width="300" 
-                             Height="40"
-                             FontSize="16"
-                                         Foreground="#FFFFFF"
-                                         Margin="12 0 0 0"
-                             BorderBrush="#FFFFFF"
-                             BorderThickness="1"
-                             TextAlignment="Left"
-                             Style="{StaticResource TextBoxStyle}"
-                             Text="{Binding SendInstructionStr,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
-                                <Button
-                        Width="80"
-                        Height="40"
-                        Content="发送"
-                                    Margin="12 0 0 0"
-                        Command="{Binding SendColorAdjInstructionsCommand}"
-                         Style="{DynamicResource ButtonStyle}"/>
-                            </StackPanel>
-                            <Grid Margin="12" Grid.Row="1">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-    
-                                <TextBlock
-                    FontSize="16"
-                    Foreground="#FFFFFF"
-                    Text="已发送命令" />
-                                <ListBox
-                            Grid.Row="1"
-                            Margin="0,4"
-                            Background="Transparent"
-                            BorderThickness="0"
-                            ItemsSource="{Binding SendColorAdjInstructionsList}"
-                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                            ScrollViewer.CanContentScroll="True">
-                                    <ListBox.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel />
-                                        </ItemsPanelTemplate>
-                                    </ListBox.ItemsPanel>
-                                    <ListBox.ItemContainerStyle>
-                                        <Style TargetType="{x:Type ListBoxItem}">
-                                            <Setter Property="Template">
-                                                <Setter.Value>
-                                                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                                        <StackPanel
-                                                    Orientation="Horizontal"
-                                                    x:Name="bd"
-                                                    Height="48"
-                                                    Background="Transparent"
-                                                    Cursor="Hand">
-                                                            <TextBlock
-                                                                x:Name="txt_name"
-                                                                Margin="5,0,0,0"
-                                                                HorizontalAlignment="Left"
-                                                                VerticalAlignment="Center"
-                                                                FontSize="16"
-                                                                Foreground="#FFFFFF"
-                                                                Text="{Binding Code}" />
-                                                        </StackPanel>
-                                                    </ControlTemplate>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </Style>
-                                    </ListBox.ItemContainerStyle>
-                                </ListBox>
-
-                            </Grid>
-
-                            <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1">
-                                <Grid Margin="12">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
-
-                                    <TextBlock
-                                        FontSize="16"
-                                        Foreground="#FFFFFF"
-                                        Text="返回消息" />
-                                    <TextBlock Text="{Binding NotifyMessage,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  
-                                               Grid.Row="1"
-                                               FontSize="16"
-                                               Foreground="#FFFFFF"/>
-                                </Grid>
-                            </StackPanel>
-                            <!--</Border>-->
-                        </Grid>
-                    </Border>
-                </TabItem>
-
                 <TabItem Header="SwitchInput"
                          IsSelected="{Binding ElementName=rbtn_switch,Path=IsChecked}"
                          Visibility="Collapsed">
-                    <Grid>
+                    <Grid Width="1350">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1.5*"/>
                             <ColumnDefinition Width="2*"/>
@@ -601,7 +477,334 @@
                     </Grid>
 
                 </TabItem>
+                
+                <TabItem Header="SignalSet"
+                         IsSelected="{Binding ElementName=rbtn_signal,Path=IsChecked}"
+                         Visibility="Collapsed">
+                    <Border BorderBrush="#FFFFFF" BorderThickness="2"    HorizontalAlignment="Center" VerticalAlignment="Top" >
+                        <Grid  HorizontalAlignment="Left" Width="1350">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="1.5*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid Margin="80,0 0 0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="50"/>
+                                    <RowDefinition Height="50"/>
+                                    <RowDefinition Height="50"/>
+                                    <RowDefinition Height="50"/>
+                                    <RowDefinition Height="50"/>
+                                    <RowDefinition Height="50"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Content="获取输入板卡" Command="{Binding QueryAudioCommand}" Margin="0 6 0 0" Style="{DynamicResource ButtonStyle}" Grid.ColumnSpan="5"  Foreground="#ffffff" FontSize="16" Width="220" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="输入通道" FontSize="14" Foreground="#ffffff" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <!--<TextBlock Text="输入格式" FontSize="14" Foreground="#ffffff" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>-->
+                                <TextBlock Text="音频" FontSize="14" Foreground="#ffffff" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="输入1" FontSize="14" Foreground="#ffffff" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <!--<TextBlock Text="4K60" FontSize="14" Foreground="#FFFFFF" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>-->
+                                <!--音频-->
+                                <ComboBox
+                                    Width="200" Height="40" 
+                                    Background="#ffffff"
+                                    Foreground="Black"
+                                    FontSize="16"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    SelectedIndex="0"                                
+                                    ItemsSource="{Binding AudioList}"
+                                    SelectedItem="{Binding SelectedOneInAudioName}"
+                                    Grid.Row="2"
+                                    Grid.Column="2"
+                                    Tag="1"
+                                    DropDownClosed="ComboBox_DropDownClosed"/>
+                                <ComboBox
+                                    Width="200" Height="40" 
+                                    Background="#ffffff"
+                                    Foreground="Black"
+                                    FontSize="16"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    SelectedIndex="0"                                
+                                    ItemsSource="{Binding AudioList}"
+                                    SelectedItem="{Binding SelectedTwoInAudioName}"
+                                    Grid.Row="3"
+                                    Grid.Column="2"
+                                    Tag="2"
+                                    DropDownClosed="ComboBox_DropDownClosed"/>
+                                <ComboBox
+                                    Width="200" Height="40" 
+                                    Background="#ffffff"
+                                    Foreground="Black"
+                                    FontSize="16"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    SelectedIndex="0"                                
+                                    ItemsSource="{Binding AudioList}"
+                                    SelectedItem="{Binding SelectedInThreeAudioName}"
+                                    Grid.Row="4"
+                                    Tag="3"
+                                    Grid.Column="2"
+                                     DropDownClosed="ComboBox_DropDownClosed"/>
+                                <ComboBox
+                                    Width="200" Height="40" 
+                                    Background="#ffffff"
+                                    Foreground="Black"
+                                    FontSize="16"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    SelectedIndex="0"                                
+                                    ItemsSource="{Binding AudioList}"
+                                    SelectedItem="{Binding SelectedInFourAudioName}"
+                                    DropDownClosed="ComboBox_DropDownClosed"
+                                    Grid.Row="5"
+                                    Tag="4"
+                                    Grid.Column="2"/>
+                                <!--<TextBlock Text="4K60" FontSize="14" Foreground="#FFFFFF" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="4K60" FontSize="14" Foreground="#FFFFFF" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="4K60" FontSize="14" Foreground="#FFFFFF" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>-->
+                                <TextBlock Text="输入2" FontSize="14" Foreground="#ffffff" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="输入3" FontSize="14" Foreground="#ffffff" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="输入4" FontSize="14" Foreground="#ffffff" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
+
+                            </Grid>
+                            <Grid Grid.Column="1" >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="50"/>
+                                    <RowDefinition Height="50"/>
+                                    <RowDefinition Height="50"/>
+                                    <RowDefinition Height="50"/>
+                                    <RowDefinition Height="50"/>
+                                    <RowDefinition Height="50"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Content="获取输出板卡" Command="{Binding QueryPortScanCommand}" Margin="0 6 0 0" Style="{DynamicResource ButtonStyle}" Grid.ColumnSpan="5" Foreground="#ffffff" FontSize="16" Width="220" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="输出通道" FontSize="14" Foreground="#ffffff" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <!--<TextBlock Text="输出格式" FontSize="14" Foreground="#ffffff" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>-->
+
+                                <TextBlock Text="背景(重启有效)" FontSize="14" Foreground="#ffffff" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="输出类型" FontSize="14" Foreground="#ffffff" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="分辨率" FontSize="14" Foreground="#ffffff" Grid.Row="1" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                                <!--<TextBlock Text="4K60" FontSize="14" Foreground="#FFFFFF" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="4K60" FontSize="14" Foreground="#FFFFFF" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="4K60" FontSize="14" Foreground="#FFFFFF" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="4K60" FontSize="14" Foreground="#FFFFFF" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>-->
+                                <TextBlock Text="输出1" FontSize="14" Foreground="#ffffff" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="输出2" FontSize="14" Foreground="#ffffff" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="输出3" FontSize="14" Foreground="#ffffff" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="输出4" FontSize="14" Foreground="#ffffff" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                                <!--#region 背景-->
+                                <ComboBox
+                                    Width="200" Height="40" 
+                                    Background="#ffffff"
+                                    Foreground="Black"
+                                    FontSize="16"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    SelectedIndex="0"                                
+                                    ItemsSource="{Binding BackList}"
+                                    SelectedItem="{Binding SelectedOutOneBack}"
+                                    Grid.Row="2"
+                                    Grid.Column="2"
+                                    Tag="1"
+                                    DropDownClosed="ComboBoxBack_DropDownClosed"/>
+                                <ComboBox
+                                    Width="200" Height="40" 
+                                    Background="#ffffff"
+                                    Foreground="Black"
+                                    FontSize="16"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    SelectedIndex="0"                                
+                                    ItemsSource="{Binding BackList}"
+                                    SelectedItem="{Binding SelectedOutTwoBack}"
+                                    Grid.Row="3"
+                                    Tag="2"
+                                    Grid.Column="2"
+                                    DropDownClosed="ComboBoxBack_DropDownClosed"/>
+                                <ComboBox
+                                    Width="200" Height="40" 
+                                    Background="#ffffff"
+                                    Foreground="Black"
+                                    FontSize="16"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    SelectedIndex="0"                                
+                                    ItemsSource="{Binding BackList}"
+                                    SelectedItem="{Binding SelectedOutThreeBack}"
+                                    Grid.Row="4"
+                                    Tag="3"
+                                    Grid.Column="2"
+                                    DropDownClosed="ComboBoxBack_DropDownClosed"/>
+                                <ComboBox
+                                    Width="200" Height="40" 
+                                    Background="#ffffff"
+                                    Foreground="Black"
+                                    FontSize="16"
+                                    Tag="4"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    SelectedIndex="0"                                
+                                    ItemsSource="{Binding BackList}"
+                                    SelectedItem="{Binding SelectedOutFourBack}"
+                                    Grid.Row="5"
+                                    Grid.Column="2"
+                                    DropDownClosed="ComboBoxBack_DropDownClosed"/>
+                                <!--#endregion-->
+
+                                <!--#region 输出类型-->
+                                <ComboBox
+                                    Margin="12 0 0 0"
+                                    Width="200" Height="40" 
+                                    Background="#ffffff"
+                                    Foreground="Black"
+                                    FontSize="16"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    SelectedIndex="0"                                
+                                    ItemsSource="{Binding TypeList}"
+                                    SelectedItem="{Binding SelectedOutOneType}"
+                                    Grid.Row="2"
+                                    Tag="1"
+                                    Grid.Column="3"
+                                    DropDownClosed="ComboBoxType_DropDownClosed"/>
+                                <ComboBox
+                                      Margin="12 0 0 0"
+                                    Width="200" Height="40" 
+                                    Background="#ffffff"
+                                    Foreground="Black"
+                                    FontSize="16"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    SelectedIndex="0"                                
+                                    ItemsSource="{Binding TypeList}"
+                                    SelectedItem="{Binding SelectedOutTwoType}"
+                                    Grid.Row="3"
+                                    Tag="2"
+                                    Grid.Column="3"
+                                     DropDownClosed="ComboBoxType_DropDownClosed"/>
+                                <ComboBox
+                                      Margin="12 0 0 0"
+                                    Width="200" Height="40" 
+                                    Background="#ffffff"
+                                    Foreground="Black"
+                                    FontSize="16"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    SelectedIndex="0"                                
+                                    ItemsSource="{Binding TypeList}"
+                                    SelectedItem="{Binding SelectedOutThreeType}"
+                                    Grid.Row="4"
+                                    Tag="3"
+                                    Grid.Column="3"
+                                     DropDownClosed="ComboBoxType_DropDownClosed"/>
+                                <ComboBox
+                                      Margin="12 0 0 0"
+                                    Width="200" Height="40" 
+                                    Background="#ffffff"
+                                    Foreground="Black"
+                                    FontSize="16"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    SelectedIndex="0"                                
+                                    ItemsSource="{Binding TypeList}"
+                                    SelectedItem="{Binding SelectedOutFourType}"
+                                    Grid.Row="5"
+                                    Tag="4"
+                                    Grid.Column="3"
+                                     DropDownClosed="ComboBoxType_DropDownClosed"/>
+                                <!--#endregion-->
+                                
+                                <!--#region 分辨率-->
+                                <ComboBox
+                                      Margin="12 0 0 0"
+                                    Width="200" Height="40" 
+                                    Background="#ffffff"
+                                    Foreground="Black"
+                                    FontSize="16"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    SelectedIndex="0"                                
+                                    ItemsSource="{Binding ResolutionList}"
+                                    SelectedItem="{Binding SelectedOutOneResolution}"
+                                    Grid.Row="2"
+                                    Tag="1"
+                                    Grid.Column="4"
+                                    DropDownClosed="ComboBoxResolution_DropDownClosed"/>
+                                <ComboBox
+                                      Margin="12 0 0 0"
+                                    Width="200" Height="40" 
+                                    Background="#ffffff"
+                                    Foreground="Black"
+                                    FontSize="16"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    SelectedIndex="0"                                
+                                    ItemsSource="{Binding ResolutionList}"
+                                    SelectedItem="{Binding SelectedOutTwoResolution}"
+                                    Grid.Row="3"
+                                    Tag="2"
+                                    Grid.Column="4"
+                                     DropDownClosed="ComboBoxResolution_DropDownClosed"/>
+                                <ComboBox
+                                      Margin="12 0 0 0"
+                                    Width="200" Height="40" 
+                                    Background="#ffffff"
+                                    Foreground="Black"
+                                    FontSize="16"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    SelectedIndex="0"                                
+                                    ItemsSource="{Binding ResolutionList}"
+                                    SelectedItem="{Binding SelectedOutThreeResolution}"
+                                    Grid.Row="4"
+                                    Tag="3"
+                                    Grid.Column="4"
+                                     DropDownClosed="ComboBoxResolution_DropDownClosed"/>
+                                <ComboBox
+                                      Margin="12 0 0 0"
+                                    Width="200" Height="40" 
+                                    Background="#ffffff"
+                                    Foreground="Black"
+                                    FontSize="16"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    SelectedIndex="0"                                
+                                    ItemsSource="{Binding ResolutionList}"
+                                    SelectedItem="{Binding SelectedOutFourResolution}"
+                                    Grid.Row="5"
+                                    Tag="4"
+                                    Grid.Column="4"
+                                     DropDownClosed="ComboBoxResolution_DropDownClosed"/>
+                                <!--#endregion-->
+                            </Grid>
+
+                            <TextBlock Grid.Column="1"  Text="*修改背景颜色后，重启有效" FontSize="16" Foreground="#ffffff" Grid.Row="1"  HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                </TabItem>
                 <TabItem Header="EDID"
                          IsSelected="{Binding ElementName=rbtn_EDID,Path=IsChecked}"
                          Visibility="Collapsed">
@@ -794,322 +997,109 @@
                     </Border>
                 </TabItem>
 
-                <TabItem Header="SignalSet"
-                         IsSelected="{Binding ElementName=rbtn_signal,Path=IsChecked}"
-                         Visibility="Collapsed">
-                    <Border BorderBrush="#FFFFFF" BorderThickness="2" Width="1100"   HorizontalAlignment="Center" VerticalAlignment="Top" >
-                        <Grid  HorizontalAlignment="Left">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1.5*"/>
-                                <ColumnDefinition Width="2*"/>
-                            </Grid.ColumnDefinitions>
+                <TabItem  Header="ColorAdjust"
+                    IsSelected="{Binding ElementName=rbtn_color,Path=IsChecked}"
+                    Visibility="Collapsed">
+                    <Border BorderBrush="#FFFFFF" BorderThickness="2" Width="1100" Height="350"  HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <Grid>
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="50"/>
                                 <RowDefinition Height="*"/>
-                                <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
-                            <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox x:Name="search" 
+                             Width="300" 
+                             Height="40"
+                             FontSize="16"
+                                         Foreground="#FFFFFF"
+                                         Margin="12 0 0 0"
+                             BorderBrush="#FFFFFF"
+                             BorderThickness="1"
+                             TextAlignment="Left"
+                             Style="{StaticResource TextBoxStyle}"
+                             Text="{Binding SendInstructionStr,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                <Button
+                        Width="80"
+                        Height="40"
+                        Content="发送"
+                                    Margin="12 0 0 0"
+                        Command="{Binding SendColorAdjInstructionsCommand}"
+                         Style="{DynamicResource ButtonStyle}"/>
+                            </StackPanel>
+                            <Grid Margin="12" Grid.Row="1">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="50"/>
-                                    <RowDefinition Height="50"/>
-                                    <RowDefinition Height="50"/>
-                                    <RowDefinition Height="50"/>
-                                    <RowDefinition Height="50"/>
-                                    <RowDefinition Height="50"/>
+                                    <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="150"/>
-                                    <ColumnDefinition Width="150"/>
-                                    <ColumnDefinition Width="auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Button Content="获取输入板卡" Command="{Binding QueryAudioCommand}" Margin="0 6 0 0" Style="{DynamicResource ButtonStyle}" Grid.ColumnSpan="5"  Foreground="#ffffff" FontSize="16" Width="220" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="编号" FontSize="14" Foreground="#ffffff" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="输入格式" FontSize="14" Foreground="#ffffff" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="音频" FontSize="14" Foreground="#ffffff" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="1" FontSize="14" Foreground="#ffffff" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="4K60" FontSize="14" Foreground="#FFFFFF" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <!--音频-->
-                                <ComboBox
-                                    Width="140" Height="40" 
-                                    Background="#ffffff"
-                                    Foreground="Black"
-                                    FontSize="16"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    SelectedIndex="0"                                
-                                    ItemsSource="{Binding AudioList}"
-                                    SelectedItem="{Binding SelectedOneInAudioName}"
-                                    Grid.Row="2"
-                                    Grid.Column="2"
-                                    Tag="1"
-                                    DropDownClosed="ComboBox_DropDownClosed"/>
-                                <ComboBox
-                                    Width="140" Height="40" 
-                                    Background="#ffffff"
-                                    Foreground="Black"
-                                    FontSize="16"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    SelectedIndex="0"                                
-                                    ItemsSource="{Binding AudioList}"
-                                    SelectedItem="{Binding SelectedTwoInAudioName}"
-                                    Grid.Row="3"
-                                    Grid.Column="2"
-                                    Tag="2"
-                                    DropDownClosed="ComboBox_DropDownClosed"/>
-                                <ComboBox
-                                    Width="140" Height="40" 
-                                    Background="#ffffff"
-                                    Foreground="Black"
-                                    FontSize="16"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    SelectedIndex="0"                                
-                                    ItemsSource="{Binding AudioList}"
-                                    SelectedItem="{Binding SelectedInThreeAudioName}"
-                                    Grid.Row="4"
-                                    Tag="3"
-                                    Grid.Column="2"
-                                     DropDownClosed="ComboBox_DropDownClosed"/>
-                                <ComboBox
-                                    Width="140" Height="40" 
-                                    Background="#ffffff"
-                                    Foreground="Black"
-                                    FontSize="16"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    SelectedIndex="0"                                
-                                    ItemsSource="{Binding AudioList}"
-                                    SelectedItem="{Binding SelectedInFourAudioName}"
-                                    DropDownClosed="ComboBox_DropDownClosed"
-                                    Grid.Row="5"
-                                    Tag="4"
-                                    Grid.Column="2"/>
-                                <TextBlock Text="4K60" FontSize="14" Foreground="#FFFFFF" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="4K60" FontSize="14" Foreground="#FFFFFF" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="4K60" FontSize="14" Foreground="#FFFFFF" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="2" FontSize="14" Foreground="#ffffff" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="3" FontSize="14" Foreground="#ffffff" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="4" FontSize="14" Foreground="#ffffff" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
+                                <TextBlock
+                    FontSize="16"
+                    Foreground="#FFFFFF"
+                    Text="已发送命令" />
+                                <ListBox
+                            Grid.Row="1"
+                            Margin="0,4"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            ItemsSource="{Binding SendColorAdjInstructionsList}"
+                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                            ScrollViewer.CanContentScroll="True">
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel />
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                    <ListBox.ItemContainerStyle>
+                                        <Style TargetType="{x:Type ListBoxItem}">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                                        <StackPanel
+                                                    Orientation="Horizontal"
+                                                    x:Name="bd"
+                                                    Height="48"
+                                                    Background="Transparent"
+                                                    Cursor="Hand">
+                                                            <TextBlock
+                                                                x:Name="txt_name"
+                                                                Margin="5,0,0,0"
+                                                                HorizontalAlignment="Left"
+                                                                VerticalAlignment="Center"
+                                                                FontSize="16"
+                                                                Foreground="#FFFFFF"
+                                                                Text="{Binding Code}" />
+                                                        </StackPanel>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </ListBox.ItemContainerStyle>
+                                </ListBox>
 
                             </Grid>
-                            <Grid Grid.Column="1">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="50"/>
-                                    <RowDefinition Height="50"/>
-                                    <RowDefinition Height="50"/>
-                                    <RowDefinition Height="50"/>
-                                    <RowDefinition Height="50"/>
-                                    <RowDefinition Height="50"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="150"/>
-                                    <ColumnDefinition Width="150"/>
-                                    <ColumnDefinition Width="150"/>
-                                    <ColumnDefinition Width="150"/>
-                                </Grid.ColumnDefinitions>
-                                <Button Content="获取输出板卡" Command="{Binding QueryPortScanCommand}" Margin="0 6 0 0" Style="{DynamicResource ButtonStyle}" Grid.ColumnSpan="5" Foreground="#ffffff" FontSize="16" Width="220" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="编号" FontSize="14" Foreground="#ffffff" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="输出格式" FontSize="14" Foreground="#ffffff" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-                                <TextBlock Text="背景(重启有效)" FontSize="14" Foreground="#ffffff" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="输出类型" FontSize="14" Foreground="#ffffff" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="分辨率" FontSize="14" Foreground="#ffffff" Grid.Row="1" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1">
+                                <Grid Margin="12">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
 
-                                <TextBlock Text="4K60" FontSize="14" Foreground="#FFFFFF" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="4K60" FontSize="14" Foreground="#FFFFFF" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="4K60" FontSize="14" Foreground="#FFFFFF" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="4K60" FontSize="14" Foreground="#FFFFFF" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="1" FontSize="14" Foreground="#ffffff" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="2" FontSize="14" Foreground="#ffffff" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="3" FontSize="14" Foreground="#ffffff" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="4" FontSize="14" Foreground="#ffffff" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
-                                <!--#region 背景-->
-                                <ComboBox
-                                    Width="140" Height="40" 
-                                    Background="#ffffff"
-                                    Foreground="Black"
-                                    FontSize="16"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    SelectedIndex="0"                                
-                                    ItemsSource="{Binding BackList}"
-                                    SelectedItem="{Binding SelectedOutOneBack}"
-                                    Grid.Row="2"
-                                    Grid.Column="2"
-                                    Tag="1"
-                                    DropDownClosed="ComboBoxBack_DropDownClosed"/>
-                                <ComboBox
-                                    Width="140" Height="40" 
-                                    Background="#ffffff"
-                                    Foreground="Black"
-                                    FontSize="16"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    SelectedIndex="0"                                
-                                    ItemsSource="{Binding BackList}"
-                                    SelectedItem="{Binding SelectedOutTwoBack}"
-                                    Grid.Row="3"
-                                    Tag="2"
-                                    Grid.Column="2"
-                                    DropDownClosed="ComboBoxBack_DropDownClosed"/>
-                                <ComboBox
-                                    Width="140" Height="40" 
-                                    Background="#ffffff"
-                                    Foreground="Black"
-                                    FontSize="16"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    SelectedIndex="0"                                
-                                    ItemsSource="{Binding BackList}"
-                                    SelectedItem="{Binding SelectedOutThreeBack}"
-                                    Grid.Row="4"
-                                    Tag="3"
-                                    Grid.Column="2"
-                                    DropDownClosed="ComboBoxBack_DropDownClosed"/>
-                                <ComboBox
-                                    Width="140" Height="40" 
-                                    Background="#ffffff"
-                                    Foreground="Black"
-                                    FontSize="16"
-                                    Tag="4"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    SelectedIndex="0"                                
-                                    ItemsSource="{Binding BackList}"
-                                    SelectedItem="{Binding SelectedOutFourBack}"
-                                    Grid.Row="5"
-                                    Grid.Column="2"
-                                    DropDownClosed="ComboBoxBack_DropDownClosed"/>
-                                <!--#endregion-->
-
-                                <!--#region 输出类型-->
-                                <ComboBox
-                                    Width="140" Height="40" 
-                                    Background="#ffffff"
-                                    Foreground="Black"
-                                    FontSize="16"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    SelectedIndex="0"                                
-                                    ItemsSource="{Binding TypeList}"
-                                    SelectedItem="{Binding SelectedOutOneType}"
-                                    Grid.Row="2"
-                                    Tag="1"
-                                    Grid.Column="3"
-                                    DropDownClosed="ComboBoxType_DropDownClosed"/>
-                                <ComboBox
-                                    Width="140" Height="40" 
-                                    Background="#ffffff"
-                                    Foreground="Black"
-                                    FontSize="16"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    SelectedIndex="0"                                
-                                    ItemsSource="{Binding TypeList}"
-                                    SelectedItem="{Binding SelectedOutTwoType}"
-                                    Grid.Row="3"
-                                    Tag="2"
-                                    Grid.Column="3"
-                                     DropDownClosed="ComboBoxType_DropDownClosed"/>
-                                <ComboBox
-                                    Width="140" Height="40" 
-                                    Background="#ffffff"
-                                    Foreground="Black"
-                                    FontSize="16"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    SelectedIndex="0"                                
-                                    ItemsSource="{Binding TypeList}"
-                                    SelectedItem="{Binding SelectedOutThreeType}"
-                                    Grid.Row="4"
-                                    Tag="3"
-                                    Grid.Column="3"
-                                     DropDownClosed="ComboBoxType_DropDownClosed"/>
-                                <ComboBox
-                                    Width="140" Height="40" 
-                                    Background="#ffffff"
-                                    Foreground="Black"
-                                    FontSize="16"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    SelectedIndex="0"                                
-                                    ItemsSource="{Binding TypeList}"
-                                    SelectedItem="{Binding SelectedOutFourType}"
-                                    Grid.Row="5"
-                                    Tag="4"
-                                    Grid.Column="3"
-                                     DropDownClosed="ComboBoxType_DropDownClosed"/>
-                                <!--#endregion-->
-                                
-                                <!--#region 分辨率-->
-                                <ComboBox
-                                    Width="140" Height="40" 
-                                    Background="#ffffff"
-                                    Foreground="Black"
-                                    FontSize="16"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    SelectedIndex="0"                                
-                                    ItemsSource="{Binding ResolutionList}"
-                                    SelectedItem="{Binding SelectedOutOneResolution}"
-                                    Grid.Row="2"
-                                    Tag="1"
-                                    Grid.Column="4"
-                                    DropDownClosed="ComboBoxResolution_DropDownClosed"/>
-                                <ComboBox
-                                    Width="140" Height="40" 
-                                    Background="#ffffff"
-                                    Foreground="Black"
-                                    FontSize="16"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    SelectedIndex="0"                                
-                                    ItemsSource="{Binding ResolutionList}"
-                                    SelectedItem="{Binding SelectedOutTwoResolution}"
-                                    Grid.Row="3"
-                                    Tag="2"
-                                    Grid.Column="4"
-                                     DropDownClosed="ComboBoxResolution_DropDownClosed"/>
-                                <ComboBox
-                                    Width="140" Height="40" 
-                                    Background="#ffffff"
-                                    Foreground="Black"
-                                    FontSize="16"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    SelectedIndex="0"                                
-                                    ItemsSource="{Binding ResolutionList}"
-                                    SelectedItem="{Binding SelectedOutThreeResolution}"
-                                    Grid.Row="4"
-                                    Tag="3"
-                                    Grid.Column="4"
-                                     DropDownClosed="ComboBoxResolution_DropDownClosed"/>
-                                <ComboBox
-                                    Width="140" Height="40" 
-                                    Background="#ffffff"
-                                    Foreground="Black"
-                                    FontSize="16"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    SelectedIndex="0"                                
-                                    ItemsSource="{Binding ResolutionList}"
-                                    SelectedItem="{Binding SelectedOutFourResolution}"
-                                    Grid.Row="5"
-                                    Tag="4"
-                                    Grid.Column="4"
-                                     DropDownClosed="ComboBoxResolution_DropDownClosed"/>
-                                <!--#endregion-->
-                            </Grid>
-
-                            <TextBlock Grid.Column="1"  Text="*修改背景颜色后，重启有效" FontSize="16" Foreground="#ffffff" Grid.Row="1"  HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    <TextBlock
+                                        FontSize="16"
+                                        Foreground="#FFFFFF"
+                                        Text="返回消息" />
+                                    <TextBlock Text="{Binding NotifyMessage,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  
+                                               Grid.Row="1"
+                                               FontSize="16"
+                                               Foreground="#FFFFFF"/>
+                                </Grid>
+                            </StackPanel>
+                            <!--</Border>-->
                         </Grid>
                     </Border>
                 </TabItem>
@@ -1118,7 +1108,7 @@
                          IsSelected="{Binding ElementName=rbtn_seeting,Path=IsChecked}"
                          Visibility="Collapsed">
 
-                    <Grid  HorizontalAlignment="Center" Width="1100">
+                    <Grid  HorizontalAlignment="Center" Width="1350">
                         <Border Grid.Column="1"  BorderBrush="#FFFFFF" BorderThickness="1">
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -1129,31 +1119,31 @@
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="180"/>
-                                    <ColumnDefinition Width="250"/>
-                                    <ColumnDefinition Width="100"/>
                                     <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="300"/>
+                                    <ColumnDefinition Width="*"/>
                                     <!--<ColumnDefinition Width="120"/>
                                     <ColumnDefinition Width="180"/>-->
 
                                 </Grid.ColumnDefinitions>
 
-                                <Button Width="180" Grid.Column="0" Height="40" Content="获取网口信息" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding QueryNetSetCommand}" Style="{DynamicResource ButtonStyle}"/>
-                                <Button Width="180" Grid.Column="5" Height="40" Content="复位网口设置，重启有效" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ResetNetSetCommand}" Style="{DynamicResource ButtonStyle}"/>
-                                <Button Width="180" Grid.Column="1" Height="40" Content="设置IP，重启有效" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ModifyIPCommand}" Style="{DynamicResource ButtonStyle}"/>
-                                <Button Width="180" Grid.Column="1" Grid.Row="1" Height="40" Content="设置端口号，重启有效" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ModifyPortCommand}" Style="{DynamicResource ButtonStyle}"/>
-                                <Button Width="180" Grid.Column="1" Grid.Row="2"  Height="40" Content="设置子网掩码，重启有效" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ModifyNetmaskCommand}" Style="{DynamicResource ButtonStyle}"/>
-                                <Button Width="180" Grid.Column="1" Grid.Row="3" Height="40" Content="设置网关，重启有效" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ModifyGatewayCommand}" Style="{DynamicResource ButtonStyle}"/>
-                                <Button Width="180" Grid.Column="5" Grid.Row="1"  Height="40" Content="恢复出厂设置，重启有效" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ResetAllSetingCommand}" Style="{DynamicResource ButtonStyle}"/>
+                                <Button Width="180" Margin="12" Grid.Column="0" Height="40" Content="获取网口信息" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding QueryNetSetCommand}" Style="{DynamicResource ButtonStyle}"/>
+                                <Button Width="180"  Margin="12" Grid.Column="5" Height="40" Content="查询板卡型号及软硬件版本" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding QueryBoardTypeCommand}" Style="{DynamicResource ButtonStyle}"/>
+                                <Button Width="180"  Margin="12" Grid.Column="0" Grid.Row="3" Height="40" Content="复位网口设置，重启矩阵有效" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ResetNetSetCommand}" Style="{DynamicResource ButtonStyle}"/>
+                                <Button Width="180"  Margin="12" Grid.Column="1" Height="40" Content="设置IP，重启矩阵有效" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ModifyIPCommand}" Style="{DynamicResource ButtonStyle}"/>
+                                <Button Width="180"  Margin="12" Grid.Column="1" Grid.Row="1" Height="40" Content="设置端口号，重启矩阵有效" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ModifyPortCommand}" Style="{DynamicResource ButtonStyle}"/>
+                                <Button Width="180"  Margin="12" Grid.Column="1" Grid.Row="2"  Height="40" Content="设置子网掩码，重启矩阵有效" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ModifyNetmaskCommand}" Style="{DynamicResource ButtonStyle}"/>
+                                <Button Width="180"  Margin="12" Grid.Column="1" Grid.Row="3" Height="40" Content="设置网关，重启矩阵有效" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ModifyGatewayCommand}" Style="{DynamicResource ButtonStyle}"/>
+                                <Button Width="180"  Margin="12" Grid.Column="0"  Grid.Row="2"  Height="40" Content="恢复出厂设置，重启矩阵有效" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ResetAllSetingCommand}" Style="{DynamicResource ButtonStyle}"/>
 
                                 <!--网口信息-->
                                 <ListBox
-                                    Grid.Row="1"
+                                    Grid.Row="0"
                                     Grid.RowSpan="3"
-                                    Margin="0,4"
+                                    Margin="12"
                                     Background="Transparent"
                                     BorderThickness="0"
-                                    VerticalAlignment="Top"
+                                    VerticalAlignment="Center"
                                     HorizontalAlignment="Left"
                                     ItemsSource="{Binding NetInfoList}"
                                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
@@ -1188,6 +1178,8 @@
                                         </Style>
                                     </ListBox.ItemContainerStyle>
                                 </ListBox>
+                                
+
 
                                 <!--设置信息-->
                                 <TextBox Margin="12" Grid.Column="2" TextAlignment="Left" HorizontalAlignment="Left" Text="{Binding SetIpAddr,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontSize="16" Foreground="Black" Background="#ffffff" Width="250" Height="40"/>
@@ -1195,6 +1187,9 @@
                                 <TextBox Margin="12" Grid.Column="2" Grid.Row="2" TextAlignment="Left" HorizontalAlignment="Left" Text="{Binding SetNetMask,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontSize="16" Foreground="Black" Background="#ffffff" Width="250" Height="40"/>
                                 <TextBox Margin="12" Grid.Column="2" Grid.Row="3" TextAlignment="Left" HorizontalAlignment="Left" Text="{Binding SetGateway,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontSize="16" Foreground="Black" Background="#ffffff" Width="250" Height="40"/>
 
+                                <Border  Margin="12" Grid.Row="0" Grid.Column="5" Grid.RowSpan="2" VerticalAlignment="Center">
+                                    <TextBlock  Text="{Binding BoardTypeInfo,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontSize="16" Foreground="#FFFFFF" Background="Transparent"  />
+                                </Border>
                                 <!--<Button Width="60" Margin="12"  Grid.Column="3" Height="40" Content="确定修改" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ModifyIPCommand}" Style="{DynamicResource ButtonStyle}"/>
                                 <Button Width="60" Margin="12" Grid.Column="3" Grid.Row="1" Height="40" Content="确定修改" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ModifyPortCommand}" Style="{DynamicResource ButtonStyle}"/>
                                 <Button Width="60" Margin="12" Grid.Column="3" Grid.Row="2"  Height="40" Content="确定修改" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding ModifyNetmaskCommand}" Style="{DynamicResource ButtonStyle}"/>
@@ -1271,11 +1266,11 @@
                 <Border Margin="12" Grid.Column="1" Background="Transparent"   Height="220">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
 
                         <StackPanel
@@ -1289,25 +1284,14 @@
                                Height="24"
                                FontSize="14"
                                TextAlignment="Center"/>
-                            <TextBlock
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        FontSize="16"
-                        Foreground="#FFFFFF"
-                        Margin="0 0 18 0"
-                        Text="{Binding ElementName=colorslider_Scale, Path=Value, StringFormat={}{0}}" />
-                            <Slider
-                        x:Name="colorslider_Scale"
-                        Width="250"
-                        VerticalAlignment="Center"
-                        IsMoveToPointEnabled="True"
-                        IsSnapToTickEnabled="True"
-                        Maximum="99"
-                        Foreground="{DynamicResource SliderDefaultColor}"
-                        Minimum="0"
-                        SmallChange="1"  
-                        PreviewMouseLeftButtonUp="colorslider_PreviewMouseDown"
-                        Thumb.DragDelta="colorslider_DragDelta"/>
+                            <controls:NumberControl Width="220" Height="30"
+                                                    VerticalContentAlignment="Center"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    HorizontalContentAlignment="Center"
+                                                    Number="{Binding ColorSetValue,Mode=TwoWay}"
+                                                    MaxNumber="99"
+                                                    MinNumber="0"/>
                         </StackPanel>
 
                         <StackPanel
@@ -1322,27 +1306,14 @@
                                FontSize="14"
                                Foreground="#FFFFFF"
                                TextAlignment="Center"/>
-                            <TextBlock
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        FontSize="16"
-                        Foreground="#FFFFFF"
-                        Margin="0 0 18 0"
-                        Text="{Binding ElementName=slider_ScaleContrast, Path=Value, StringFormat={}{0}}" />
-
-                            <Slider
-                         Width="250"
-                        x:Name="slider_ScaleContrast"
-                        VerticalAlignment="Center"
-                        IsMoveToPointEnabled="True"
-                        IsSnapToTickEnabled="True"
-                             Maximum="99"
-                        Minimum="0"
-                        Foreground="{DynamicResource SliderDefaultColor}"
-                        SmallChange="1" 
-                        Value="{Binding CurrentContrast}"
-                        PreviewMouseLeftButtonUp="sliderContrast_PreviewMouseDown"
-                        Thumb.DragDelta="slider_DragDeltaContrast"/>
+                            <controls:NumberControl Width="220" Height="30"
+                                                    VerticalContentAlignment="Center"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    HorizontalContentAlignment="Center"
+                                                    Number="{Binding ContractSetValue,Mode=TwoWay}"
+                                                    MaxNumber="99"
+                                                    MinNumber="0"/>
                         </StackPanel>
 
                         <StackPanel
@@ -1357,27 +1328,14 @@
                                Height="24"
                                FontSize="14"
                                TextAlignment="Center"/>
-                            <TextBlock
-                         HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        FontSize="16"
-                        Foreground="#FFFFFF"
-                        Margin="0 0 18 0"
-                        Text="{Binding ElementName=saturationslider_Scale, Path=Value, StringFormat={}{0}}" />
-
-                            <Slider
-                         Width="250"
-                        x:Name="saturationslider_Scale"
-                        VerticalAlignment="Center"
-                        IsMoveToPointEnabled="True"
-                        IsSnapToTickEnabled="True"
-                             Maximum="99"
-                        Foreground="{DynamicResource SliderDefaultColor}"
-                        Minimum="0"
-                        SmallChange="1" 
-                        Value="{Binding CurrentSaturation}"
-                        PreviewMouseLeftButtonUp="saturationslider_PreviewMouseDown"
-                        Thumb.DragDelta="saturationslider_DragDelta"/>
+                            <controls:NumberControl Width="220" Height="30"
+                                                    VerticalContentAlignment="Center"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    HorizontalContentAlignment="Center"
+                                                    Number="{Binding SaturationSetValue,Mode=TwoWay}"
+                                                    MaxNumber="99"
+                                                    MinNumber="0"/>
 
                         </StackPanel>
                         <StackPanel
@@ -1392,27 +1350,14 @@
                                Height="24"
                                FontSize="14"
                                TextAlignment="Center"/>
-                            <TextBlock
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        FontSize="16"
-                        Foreground="#FFFFFF"
-                        Margin="0 0 18 0"
-                        Text="{Binding ElementName=rvalueslider_Scale, Path=Value, StringFormat={}{0}}" />
-
-                            <Slider
-                        x:Name="rvalueslider_Scale"
-                         Width="250"
-                        VerticalAlignment="Center"
-                        IsMoveToPointEnabled="True"
-                        IsSnapToTickEnabled="True"
-                        Maximum="99"
-                        Minimum="0"
-                        Foreground="{DynamicResource SliderDefaultColor}"
-                        SmallChange="1" 
-                        Value="{Binding CurrentVolume}"
-                        PreviewMouseLeftButtonUp="rvalueslider_PreviewMouseDown"
-                        Thumb.DragDelta="rvalueslider_DragDelta"/>
+                            <controls:NumberControl Width="220" Height="30"
+                                                    VerticalContentAlignment="Center"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    HorizontalContentAlignment="Center"
+                                                    Number="{Binding RSetValue,Mode=TwoWay}"
+                                                    MaxNumber="99"
+                                                    MinNumber="0"/>
                         </StackPanel>
                     </Grid>
 
@@ -1421,10 +1366,10 @@
                 <Border  Margin="12" Grid.Column="2"   Height="200">
                     <Grid Margin="0,0,30,0">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
                         <StackPanel
                 Margin="12"
@@ -1437,27 +1382,14 @@
                                Height="24"
                                FontSize="14"
                                TextAlignment="Center"/>
-                            <TextBlock
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        FontSize="16"
-                        Foreground="#FFFFFF"
-                        Margin="0 0 18 0"
-                        Text="{Binding ElementName=brightnessslider_Scale, Path=Value, StringFormat={}{0}}" />
-
-                            <Slider
-                        x:Name="brightnessslider_Scale"
-                         Width="250"
-                        VerticalAlignment="Center"
-                        IsMoveToPointEnabled="True"
-                        IsSnapToTickEnabled="True"
-                        Maximum="99"
-                        Foreground="{DynamicResource SliderDefaultColor}"
-                        Minimum="0"
-                        SmallChange="1" 
-                        Value="{Binding CurrentBrightness}"
-                        PreviewMouseLeftButtonUp="brightnessslider_PreviewMouseDown"
-                        Thumb.DragDelta="brightnessslider_DragDelta"/>
+                            <controls:NumberControl Width="220" Height="30"
+                                                    VerticalContentAlignment="Center"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    HorizontalContentAlignment="Center"
+                                                    Number="{Binding LightSetValue,Mode=TwoWay}"
+                                                    MaxNumber="99"
+                                                    MinNumber="0"/>
                         </StackPanel>
 
                         <StackPanel
@@ -1472,26 +1404,14 @@
                                Height="24"
                                FontSize="14"
                                TextAlignment="Center"/>
-                            <TextBlock
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        FontSize="16"
-                        Foreground="#FFFFFF"
-                        Margin="0 0 18 0"
-                        Text="{Binding ElementName=gvalueslider_Scale, Path=Value, StringFormat={}{0}}" />
-                            <Slider
-                        x:Name="gvalueslider_Scale"
-                         Width="250"
-                        VerticalAlignment="Center"
-                        IsMoveToPointEnabled="True"
-                        IsSnapToTickEnabled="True"
-                              Maximum="99"
-                        Foreground="{DynamicResource SliderDefaultColor}"
-                        Minimum="0"
-                        SmallChange="1" 
-                        Value="{Binding CurrentRedTone}"
-                        PreviewMouseLeftButtonUp="gslider_PreviewMouseDown"
-                        Thumb.DragDelta="gslider_DragDelta"/>
+                            <controls:NumberControl Width="220" Height="30"
+                                                    VerticalContentAlignment="Center"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    HorizontalContentAlignment="Center"
+                                                    Number="{Binding GSetValue,Mode=TwoWay}"
+                                                    MaxNumber="99"
+                                                    MinNumber="0"/>
                         </StackPanel>
 
                         <StackPanel
@@ -1506,27 +1426,14 @@
                                Height="24"
                                FontSize="14"
                                TextAlignment="Center"/>
-                            <TextBlock
-                         HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        FontSize="16"
-                        Foreground="#FFFFFF"
-                        Margin="0 0 18 0"
-                        Text="{Binding ElementName=bslider_Scale, Path=Value, StringFormat={}{0}}" />
-
-                            <Slider
-                        x:Name="bslider_Scale"
-                         Width="250"
-                        VerticalAlignment="Center"
-                        IsMoveToPointEnabled="True"
-                        IsSnapToTickEnabled="True"
-                        Maximum="99"
-                        Minimum="0"
-                        SmallChange="1" 
-                        Foreground="{DynamicResource SliderDefaultColor}"
-                        Value="{Binding CurrentGreenTone}"
-                        PreviewMouseLeftButtonUp="bslider_PreviewMouseDown"
-                        Thumb.DragDelta="bslider_DragDelta"/>
+                            <controls:NumberControl Width="220" Height="30"
+                                                    VerticalContentAlignment="Center"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    HorizontalContentAlignment="Center"
+                                                    Number="{Binding BSetValue,Mode=TwoWay}"
+                                                    MaxNumber="99"
+                                                    MinNumber="0"/>
                         </StackPanel>
 
 

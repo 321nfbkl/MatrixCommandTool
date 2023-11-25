@@ -143,6 +143,7 @@ namespace MatrixCommandTool.Net.TCP
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine($"连接已断开，消息发送失败 ： {message}");
                 Console.ResetColor();
+                this._notifyFactory.InvokeConnectionChanged(false);
                 return;
             }
             var messageBt = Encoding.UTF8.GetBytes(message);
